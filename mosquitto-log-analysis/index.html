@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>Archives | BiteeNew</title>
+  <title>Mosquitto服务器的日志分析 | BiteeNew</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="BiteeNew">
-<meta property="og:url" content="https://biteenew.github.io/archives/index.html">
+  <meta name="description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。 准备工作在使用Mosquitto之前，我们需要安装Mosquitto。如果不知">
+<meta name="keywords" content="MQTT,Mosquitto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mosquitto服务器的日志分析">
+<meta property="og:url" content="https://biteenew.github.io/mosquitto-log-analysis/index.html">
 <meta property="og:site_name" content="BiteeNew">
+<meta property="og:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。 准备工作在使用Mosquitto之前，我们需要安装Mosquitto。如果不知">
+<meta property="og:updated_time" content="2018-01-08T06:36:05.829Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BiteeNew">
+<meta name="twitter:title" content="Mosquitto服务器的日志分析">
+<meta name="twitter:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。 准备工作在使用Mosquitto之前，我们需要安装Mosquitto。如果不知">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
   
@@ -159,36 +164,86 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-mosquitto-log-analysis" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/mosquitto-log-analysis/" class="archive-article-date">
-  	<time datetime="2018-01-08T06:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/mosquitto-log-analysis/">Mosquitto服务器的日志分析</a>
+    <h1 class="article-title" itemprop="name">
+      Mosquitto服务器的日志分析
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/mosquitto-log-analysis/" class="archive-article-date">
+  	<time datetime="2018-01-08T06:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>在使用Mosquitto之前，我们需要安装Mosquitto。如果不知道如何安装Mosquitto，请参考此篇文章：<a href="http://blog.csdn.net/xukai871105/article/details/39252653" target="_blank" rel="noopener">如何安装并使用MQTT服务器——Mosquitto</a>。<br>本篇文章所使用的系统以及软件环境说明如下：</p>
+<ul>
+<li>Ubuntu - 16.04 LTS</li>
+<li>Mosquitto - v1.4.12（Mosquitto服务器没有设置用户名和密码以及SSL认证）</li>
+</ul>
+<h3 id="Mosquitto的启动日志"><a href="#Mosquitto的启动日志" class="headerlink" title="Mosquitto的启动日志"></a>Mosquitto的启动日志</h3><p>安装完毕并成功启动Mosquitto之后，我们可以看到Mosquitto的启动日志：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1515307521: mosquitto version 1.4.12 (build date 2017-06-01 13:03:46+0000) starting</span><br><span class="line">1515307521: Config loaded from /mosquitto/conf/mosquitto.conf.</span><br><span class="line">1515307521: Opening ipv4 listen socket on port 1883.</span><br><span class="line">1515307521: Opening ipv6 listen socket on port 1883.</span><br></pre></td></tr></table></figure></p>
+<p>Mosquitto服务器的日志格式：第一列数字（例如<code>1515307521</code>）表示该条日志打印的Unix时间戳；第二列则是具体的日志信息。根据启动日志的最后两行信息，我们可以很清楚地知道，我们所启动的Mosquitto服务器正在监听的TCP端口为<code>1883</code>，这是Mosquitto服务器默认监听的TCP端口。</p>
+<h3 id="客户端建立连接、订阅消息的日志"><a href="#客户端建立连接、订阅消息的日志" class="headerlink" title="客户端建立连接、订阅消息的日志"></a>客户端建立连接、订阅消息的日志</h3><p>现在使用MQTT客户端连接Mosquitto服务器（1883端口）并向服务器发起消息订阅，正常情况下我们可以看到Mosquitto服务器输出的日志如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1515309375: New connection from 172.17.0.1 on port 1883.</span><br><span class="line">1515309375: New client connected from 172.17.0.1 as mqtt-client-NWq09wrg (c0, k60).</span><br><span class="line">1515309375: Sending CONNACK to mqtt-client-NWq09wrg (0, 0)</span><br><span class="line">1515309375: Received SUBSCRIBE from mqtt-client-NWq09wrg</span><br><span class="line">1515309375: 	topic/sub/<span class="built_in">test</span> (QoS 2)</span><br><span class="line">1515309375: mqtt-client-NWq09wrg 2 topic/sub/<span class="built_in">test</span></span><br><span class="line">1515309375: Sending SUBACK to mqtt-client-NWq09wrg</span><br></pre></td></tr></table></figure></p>
+<p>第1行日志表示MQTT客户端成功与Mosquitto服务器建立TCP连接，客户端IP为<code>172.17.0.1</code>，连接的TCP端口为<code>1883</code>。<br>第2行日志显示了MQTT客户端向Mosquitto服务器提交建立连接的请求（客户端调用connect接口）。日志中包含了客户端请求建立连接的一些参数，例如：</p>
+<ul>
+<li><code>mqtt-client-NWq09wrg</code> —— 表示客户端ID（clientId）</li>
+<li><code>c0</code> —— 表示客户端将cleanSession标识设置为false，即不清除session</li>
+<li><code>k60</code> —— 表示客户端将keep alive设置为60秒，即MQTT客户端与Mosquitto服务器的心跳时间间隔为60秒</li>
+</ul>
+<p>第3行日志表示Mosquitto服务器接受了客户端的建立连接请求，并向客户端返回建立连接请求的响应。<br>第4~5行日志表示Mosquitto服务器收到了来自客户端<code>mqtt-client-NWq09wrg</code>订阅消息的请求，订阅的消息主题为<code>topic/sub/test</code>，消息质量为<code>QoS 2</code>（<a href="https://www.ibm.com/support/knowledgecenter/zh/SSFKSJ_7.5.0/com.ibm.mm.tc.doc/tc60340_.htm" target="_blank" rel="noopener">MQTT QoS说明</a>）。<br>第6~7行日志表示Mosquitto服务器接受了客户端的消息订阅请求，并向客户端返回订阅请求的响应。</p>
+<p><strong>特别注意</strong>：<strong> <em>Mosquitto服务器不允许有多个客户端同时使用同一个客户端ID（clientId）与其保持连接，如果有多个客户端使用了同一个客户端ID来与Mosquitto建立连接，Mosquitto服务器只保留最新的一个客户端连接并关闭旧的连接。具体日志如下所示：2~4行即为Mosquitto服务器关闭旧连接，接受新连接的过程</em> </strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1515314560: New connection from 172.17.0.1 on port 1883.</span><br><span class="line">1515314560: Client mqtt-client-NWq09wrg already connected, closing old connection.</span><br><span class="line">1515314560: Client mqtt-client-NWq09wrg disconnected.</span><br><span class="line">1515314560: New client connected from 172.17.0.1 as mqtt-client-NWq09wrg (c1, k60).</span><br><span class="line">1515314560: Sending CONNACK to mqtt-client-NWq09wrg (0, 0)</span><br><span class="line">1515314560: Received SUBSCRIBE from mqtt-client-NWq09wrg</span><br><span class="line">1515314560: 	topic/sub/<span class="built_in">test</span> (QoS 2)</span><br><span class="line">1515314560: mqtt-client-NWq09wrg 2 topic/sub/<span class="built_in">test</span></span><br><span class="line">1515314560: Sending SUBACK to mqtt-client-NWq09wrg</span><br></pre></td></tr></table></figure></p>
+<h3 id="客户端与Mosquitto保持心跳的日志"><a href="#客户端与Mosquitto保持心跳的日志" class="headerlink" title="客户端与Mosquitto保持心跳的日志"></a>客户端与Mosquitto保持心跳的日志</h3><p>MQTT客户端成功与Mosquitto服务器建立连接后，会按照连接时设置的keep alive时间间隔定时向服务器发送心跳请求数据包——<code>PINGREQ</code>；服务器收到客户端的心跳请求数据包后，正常情况下会向客户端回复心跳响应数据包——<code>PINGRESP</code>。心跳日志如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1515313742: Received PINGREQ from mqtt-client-NWq09wrg</span><br><span class="line">1515313742: Sending PINGRESP to mqtt-client-NWq09wrg</span><br></pre></td></tr></table></figure>
+<h3 id="客户端主动取消订阅、断开连接的日志"><a href="#客户端主动取消订阅、断开连接的日志" class="headerlink" title="客户端主动取消订阅、断开连接的日志"></a>客户端主动取消订阅、断开连接的日志</h3><p>MQTT客户端分别调用unsubscribe接口和disconnect接口来向服务器发送取消消息主题订阅的请求（<code>UNSUBSCRIBE</code>）和请求断开与服务器连接的请求（<code>DISCONNECT</code>）时，Mosquitto服务器输出的日志如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1515315086: Received UNSUBSCRIBE from mqtt-client-NWq09wrg</span><br><span class="line">1515315086: 	topic/sub/<span class="built_in">test</span></span><br><span class="line">1515315086: mqtt-client-NWq09wrg topic/sub/<span class="built_in">test</span></span><br><span class="line">1515315086: Received DISCONNECT from mqtt-client-NWq09wrg</span><br><span class="line">1515315086: Client mqtt-client-NWq09wrg disconnected.</span><br></pre></td></tr></table></figure></p>
+<h3 id="发布消息的日志"><a href="#发布消息的日志" class="headerlink" title="发布消息的日志"></a>发布消息的日志</h3><p>MQTT客户端调用publish接口向Mosquitto服务器发布消息（<strong>使用QoS 2</strong>），服务器输出的日志如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1515317711: Received PUBLISH from mqtt-client-NWq09wrg (d0, q2, r0, m1, <span class="string">'topic/pub/test'</span>, ... (62 bytes))</span><br><span class="line">1515317711: Sending PUBREC to mqtt-client-NWq09wrg (Mid: 1)</span><br><span class="line">1515317711: Received PUBREL from mqtt-client-NWq09wrg (Mid: 1)</span><br><span class="line">1515317711: Sending PUBCOMP to mqtt-client-NWq09wrg (Mid: 1)</span><br></pre></td></tr></table></figure></p>
+<p><code>QoS 2</code>为MQTT协议最高等级的消息服务质量，这意味着每条发布的消息都会先存储在发送方和接收方本地，直到已处理此消息为止。消息的发送方和接收方通过一系列的来回握手的过程来确认消息是否已经被成功处理，以上的日志就表示着这个握手的过程：<br>第1行日志：表示Mosquitto服务器接收到了客户端<code>mqtt-client-NWq09wrg</code>发布的消息，日志包含了一些与发布的消息相关的参数：</p>
+<ul>
+<li><code>d</code> —— 表示MQTT协议报头的DUP字段</li>
+<li><code>q</code> —— 表示MQTT的消息服务质量QoS，这里q2即所发布消息的QoS为2</li>
+<li><code>r</code> —— 表示MQTT的retain标识，</li>
+<li><code>m</code> —— 表示消息ID（messageId：MQTT发布的每条消息都有一个唯一的messageId，亦即Mid），这里所发布消息的ID为1</li>
+<li><code>topic/pub/test</code> —— 所发布消息的主题</li>
+<li><code>(62 bytes)</code> —— 表示所发布消息的大小，单位字节</li>
+</ul>
+<p>第2行日志：表示Mosquitto服务器向客户端（消息发布方）回复收到发布消息的响应（<code>PUBREC</code>），告诉客户端此条消息已经成功收到并暂时缓存在Mosquitto服务器本地。<br>第3行日志：表示客户端成功收到服务器的发布消息响应（<code>PUBREC</code>），并向Mosquitto服务器发起释放消息的请求（<code>PUBREL</code>）。<br>第4行日志：表示Mosquitto服务器收到客户端的释放消息请求（<code>PUBREL</code>）后，向客户端返回消息成功发布的响应（<code>PUBCOMP</code>），客户端收到此响应后，才会认为该条消息成功发布并删除该条消息的本地缓存。<br><strong> <em>对于QoS为2的消息，其发布过程都会经历以上四个阶段：消息预发布（<code>PUBLISH</code>） –&gt; 消息预发布确认（<code>PUBREC</code>） –&gt; 消息释放（<code>PUBREL</code>） –&gt; 消息成功发布（<code>PUBCOMP</code>）；<br>而对于QoS为0或者1的消息，其发布过程则比较简单，没有这么复杂的过程，所以QoS为2的消息是最耗时也最耗资源的。</em> </strong></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -204,7 +259,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -217,17 +272,94 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://biteenew.github.io/mosquitto-log-analysis/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
+
   
 
-    
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
+  
+
+  
+
+  
+
+  
 
 
           </div>
@@ -250,8 +382,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
