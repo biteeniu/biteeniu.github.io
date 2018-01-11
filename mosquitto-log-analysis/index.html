@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="https://biteenew.github.io">
   <title>Mosquitto服务器的日志分析 | BiteeNew</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。 准备工作在使用Mosquitto之前，我们需要安装Mosquitto。如果不知">
+  <meta name="description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
 <meta name="keywords" content="MQTT,Mosquitto">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mosquitto服务器的日志分析">
 <meta property="og:url" content="https://biteenew.github.io/mosquitto-log-analysis/index.html">
 <meta property="og:site_name" content="BiteeNew">
-<meta property="og:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。 准备工作在使用Mosquitto之前，我们需要安装Mosquitto。如果不知">
-<meta property="og:updated_time" content="2018-01-08T06:36:05.829Z">
+<meta property="og:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
+<meta property="og:updated_time" content="2018-01-10T07:07:11.771Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mosquitto服务器的日志分析">
-<meta name="twitter:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。 准备工作在使用Mosquitto之前，我们需要安装Mosquitto。如果不知">
+<meta name="twitter:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
   
@@ -43,7 +43,7 @@
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
-<div class="overlay" style="background: #4935ab"></div>
+<div class="overlay" style="background: #4d4d4d"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
@@ -61,7 +61,9 @@
 	        
 				<li><a href="/archives/">归档</a></li>
 	        
-				<li><a href="/tags/随笔/">随笔</a></li>
+				<li><a href="/tags/MQTT">MQTT</a></li>
+	        
+				<li><a href="/tags/spring-boot">SpringBoot</a></li>
 	        
 			</ul>
 		</nav>
@@ -91,18 +93,34 @@
 		        
 					<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
 		        
-					<a class="mail" target="_blank" href="/biteenew@gmail.com" title="mail"><i class="icon-mail"></i></a>
-		        
 			</div>
 		</nav>
-	</header>		
+		<nav class="header-nav">
+        <div class="social">
+            
+                <a class="github" target="_blank" href="https://github.com/BiteeNew" title="github"><i class="icon-github"></i></a>
+            
+                <a class="weibo" target="_blank" href="#" title="weibo"><i class="icon-weibo"></i></a>
+            
+                <a class="rss" target="_blank" href="#" title="rss"><i class="icon-rss"></i></a>
+            
+                <a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
+            
+        </div>
+
+        <!--音乐播放插件-->
+        <div style="margin-top:30px;">
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=270 height=86 src="//music.163.com/outchain/player?type=2&id=342336&auto=1&height=66"></iframe>
+        </div>
+    </nav>
+	</header>
 </div>
 
     </div>
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #4935ab"></div>
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
@@ -123,6 +141,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -136,8 +156,6 @@
 			        
 						<a class="zhihu" target="_blank" href="#" title="zhihu"><i class="icon-zhihu"></i></a>
 			        
-						<a class="mail" target="_blank" href="/biteenew@gmail.com" title="mail"><i class="icon-mail"></i></a>
-			        
 				</div>
 			</nav>
 
@@ -145,11 +163,13 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 33.333333333333336%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 33.333333333333336%"><a href="/archives/">归档</a></li>
+					<li style="width: 25%"><a href="/archives/">归档</a></li>
 		        
-					<li style="width: 33.333333333333336%"><a href="/tags/随笔/">随笔</a></li>
+					<li style="width: 25%"><a href="/tags/MQTT">MQTT</a></li>
+		        
+					<li style="width: 25%"><a href="/tags/spring-boot">SpringBoot</a></li>
 		        
 				</ul>
 			</nav>
@@ -176,6 +196,11 @@
   
 
         
+            <span class="archive-article-date">
+              阅读量：<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+        
         <a href="/mosquitto-log-analysis/" class="archive-article-date">
   	<time datetime="2018-01-08T06:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
 </a>
@@ -185,6 +210,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。</p>
+<a id="more"></a>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>在使用Mosquitto之前，我们需要安装Mosquitto。如果不知道如何安装Mosquitto，请参考此篇文章：<a href="http://blog.csdn.net/xukai871105/article/details/39252653" target="_blank" rel="noopener">如何安装并使用MQTT服务器——Mosquitto</a>。<br>本篇文章所使用的系统以及软件环境说明如下：</p>
 <ul>
 <li>Ubuntu - 16.04 LTS</li>
@@ -334,6 +360,15 @@
   
 <nav id="article-nav">
   
+    <a href="/mqtt-v3.1.1-os-protocol/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MQTT协议——v3.1.1
+        
+      </div>
+    </a>
+  
   
     <a href="/mosquitto-installation-guide/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">如何安装并使用MQTT服务器——Mosquitto</div>
@@ -362,7 +397,7 @@
 
 
   
-  
+
   
 
   
@@ -376,6 +411,7 @@
         </div>
       </div>
       <footer id="footer">
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
@@ -384,9 +420,13 @@
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
       	</div>
+      	<span id="busuanzi_container_site_uv">
+          本站访问量：<span id="busuanzi_value_site_uv"></span> 次
+        </span>
     </div>
   </div>
 </footer>
+
     </div>
     <script>
 	var yiliaConfig = {
@@ -544,22 +584,6 @@ MathJax.Hub.Queue(function() {
           
             <li class="search-li">
               <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接2</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接3</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接4</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接5</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接6</a>
             </li>
           
         </ul>

@@ -6,14 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>Archives: 2018/1 | BiteeNew</title>
+  <title>MQTT协议——v3.1.1 | BiteeNew</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="BiteeNew">
-<meta property="og:url" content="https://biteenew.github.io/archives/2018/01/index.html">
+  <meta name="description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta name="keywords" content="MQTT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MQTT协议——v3.1.1">
+<meta property="og:url" content="https://biteenew.github.io/mqtt-v3.1.1-os-protocol/index.html">
 <meta property="og:site_name" content="BiteeNew">
+<meta property="og:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-control-packet-structure.png">
+<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-fixed-header-structure.png">
+<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-control-packet-type.png">
+<meta property="og:updated_time" content="2018-01-10T07:07:49.541Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BiteeNew">
+<meta name="twitter:title" content="MQTT协议——v3.1.1">
+<meta name="twitter:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta name="twitter:image" content="https://biteenew.github.io/img/mqtt/mqtt-control-packet-structure.png">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
   
@@ -179,36 +188,71 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-mqtt-v3.1.1-os-protocol" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      MQTT协议——v3.1.1
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/mqtt-v3.1.1-os-protocol/" class="archive-article-date">
+
+        
+            <span class="archive-article-date">
+              阅读量：<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+        
+        <a href="/mqtt-v3.1.1-os-protocol/" class="archive-article-date">
   	<time datetime="2018-01-09T04:58:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-09</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/mqtt-v3.1.1-os-protocol/">MQTT协议——v3.1.1</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。</p>
+<a id="more"></a>
+<h2 id="2-MQTT控制报文的结构"><a href="#2-MQTT控制报文的结构" class="headerlink" title="2 MQTT控制报文的结构"></a>2 MQTT控制报文的结构</h2><p>MQTT协议一包完整的控制报文包含三部分：<strong>固定报文头部（Fixed Header）</strong>、<strong>可变报文头部（Variable Header）</strong>以及<strong>有效载荷（Payload）</strong>，如图1所示：<br><strong>图1：MQTT控制报文结构</strong><br><img src="/img/mqtt/mqtt-control-packet-structure.png" alt="图1 MQTT控制报文结构"><br><strong>固定报文头部（Fixed Header）：</strong> 每一包MQTT控制报文都会包含此部分。其长度为2bytes ~ 5bytes，最小为2bytes，最大为5bytes；<br><strong>可变报文头部（Variable Header）：</strong> 只有部分MQTT控制报文包含此部分。其长度为固定2bytes；<br><strong>有效载荷（Payload）：</strong> 只有部分MQTT控制报文包含此部分。其长度为实际用户数据的长度。</p>
+<h3 id="2-1-MQTT固定报文头部（Fixed-Header）"><a href="#2-1-MQTT固定报文头部（Fixed-Header）" class="headerlink" title="2.1 MQTT固定报文头部（Fixed Header）"></a>2.1 MQTT固定报文头部（Fixed Header）</h3><p>MQTT固定报文头部（Fixed Header）的结构如图2所示：<br><strong>图2：MQTT固定报文头部的结构</strong><br><img src="/img/mqtt/mqtt-fixed-header-structure.png" alt="图2 MQTT固定报文头部的结构"><br>如图2所示，MQTT固定报文头部由两部分组成：Byte1和Byte2 ···</p>
+<h5 id="2-1-1-Byte1"><a href="#2-1-1-Byte1" class="headerlink" title="2.1.1 Byte1"></a>2.1.1 Byte1</h5><p>Byte1的高4bits（4bit~7bit）为MQTT控制报文的类型，其值为<strong>无符号整数值</strong>；低4bits（3bit~0bit）为MQTT控制报文类型相应的标志位（Flags）。<br>MQTT协议控制报文最多可以有16种报文类型，目前（v3.1.1）使用了14种；控制报文的类型及其相应的标志位如图3所示：<br><strong>图3：MQTT控制报文的类型</strong><br><img src="/img/mqtt/mqtt-control-packet-type.png" alt="图3 MQTT控制报文的类型"><br>从图3我们可以了解到MQTT当前版本（v3.1.1）定义的所有控制报文类型；其中每个控制报文类型都有其相对应的控制报文标志位（3bit~0bit），当前版本仅有控制报文类型<code>发布消息（PUBLISH）</code>使用到了控制报文标志位。<code>发布消息（PUBLISH）</code>的标志位定义如下：</p>
+<ul>
+<li><code>DUP</code> —— 发布消息的重复分发标识。0标识没有重复分发；1标识重复分发</li>
+<li><code>QoS</code> —— 发布消息的服务质量QoS，占2bits。其可能值为0，1，2。MQTT的QoS参考此文章：<a href="https://www.ibm.com/support/knowledgecenter/zh/SSFKSJ_7.5.0/com.ibm.mm.tc.doc/tc60340_.htm" target="_blank" rel="noopener">MQTT QoS说明</a></li>
+<li><code>RETAIN</code> —— 发布消息时设置的消息持久化标识。0表示消息不持久化；1表示消息需要持久化。例如客户端向服务器发布消息时设置了RETAIN位为1，则服务器会将此条消息保存在服务器端，当有新客户端订阅此主题，服务器会将此消息推送给新客户端。关于<code>RETAIN</code>标识的更详细介绍请看：</li>
+</ul>
+<h5 id="2-1-2-Byte2"><a href="#2-1-2-Byte2" class="headerlink" title="2.1.2 Byte2"></a>2.1.2 Byte2</h5><p>Byte2为剩余长度字段（Remaining Length），它表示的是MQTT控制报文后面所剩余的字节数，所剩余的字节数不包含剩余长度字段本身。<strong>剩余长度字段（Remaining Length）所占字节最小为1byte，最大为4bytes</strong>。剩余长度字段（Remaining Length）采用的是变长编码方案，即每个字节的最高位为延续位（<code>continuation bit</code>），用来表示否有更多的字节，所以每个字节能编码的最大值为127。以下举例说明MQTT的剩余长度字段的变长编码方案：</p>
+<h3 id="2-2-MQTT可变报文头部（Variable-Header）"><a href="#2-2-MQTT可变报文头部（Variable-Header）" class="headerlink" title="2.2 MQTT可变报文头部（Variable Header）"></a>2.2 MQTT可变报文头部（Variable Header）</h3><h3 id="2-3-MQTT有效载荷（Payload）"><a href="#2-3-MQTT有效载荷（Payload）" class="headerlink" title="2.3 MQTT有效载荷（Payload）"></a>2.3 MQTT有效载荷（Payload）</h3>
+      
 
-        <div class="article-info info-on-right">
-          
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -220,7 +264,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -233,123 +277,104 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://biteenew.github.io/mqtt-v3.1.1-os-protocol/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/mosquitto-log-analysis/" class="archive-article-date">
-  	<time datetime="2018-01-08T06:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/mosquitto-log-analysis/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Mosquitto服务器的日志分析</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/mosquitto-log-analysis/">Mosquitto服务器的日志分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Mosquitto</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/mosquitto-installation-guide/" class="archive-article-date">
-  	<time datetime="2018-01-08T05:30:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/mosquitto-installation-guide/">如何安装并使用MQTT服务器——Mosquitto</a>
-    </h1>
+
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Mosquitto</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -377,8 +402,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
