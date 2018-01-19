@@ -6,24 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>MQTT协议——v3.1.1 | BiteeNew</title>
+  <title>MQTT的RETAIN标志位 | BiteeNew</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
 <meta name="keywords" content="MQTT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MQTT协议——v3.1.1">
-<meta property="og:url" content="https://biteenew.github.io/mqtt-v3.1.1-os-protocol/index.html">
+<meta property="og:title" content="MQTT的RETAIN标志位">
+<meta property="og:url" content="https://biteenew.github.io/mqtt-retain/index.html">
 <meta property="og:site_name" content="BiteeNew">
 <meta property="og:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
-<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-control-packet-structure.png">
-<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-fixed-header-structure.png">
-<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-control-packet-type.png">
-<meta property="og:image" content="https://biteenew.github.io/img/mqtt/remaining-length.png">
-<meta property="og:updated_time" content="2018-01-19T05:34:55.578Z">
+<meta property="og:image" content="https://biteenew.github.io/img/mqtt/ratain-message-show.png">
+<meta property="og:updated_time" content="2018-01-19T10:17:17.571Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MQTT协议——v3.1.1">
+<meta name="twitter:title" content="MQTT的RETAIN标志位">
 <meta name="twitter:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
-<meta name="twitter:image" content="https://biteenew.github.io/img/mqtt/mqtt-control-packet-structure.png">
+<meta name="twitter:image" content="https://biteenew.github.io/img/mqtt/ratain-message-show.png">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
   
@@ -189,14 +186,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-mqtt-v3.1.1-os-protocol" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mqtt-retain" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      MQTT协议——v3.1.1
+      MQTT的RETAIN标志位
     </h1>
   
 
@@ -206,8 +203,8 @@
             </span>
         
         
-        <a href="/mqtt-v3.1.1-os-protocol/" class="archive-article-date">
-  	<time datetime="2018-01-09T04:58:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-09</time>
+        <a href="/mqtt-retain/" class="archive-article-date">
+  	<time datetime="2018-01-19T04:58:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-19</time>
 </a>
         
       </header>
@@ -217,45 +214,17 @@
       
         <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。</p>
 <a id="more"></a>
-<h2 id="2-MQTT控制报文的结构"><a href="#2-MQTT控制报文的结构" class="headerlink" title="2 MQTT控制报文的结构"></a>2 MQTT控制报文的结构</h2><p>MQTT协议一包完整的控制报文包含三部分：<strong>固定报文头部（Fixed Header）</strong>、<strong>可变报文头部（Variable Header）</strong>以及<strong>有效载荷（Payload）</strong>，如图1所示：<br><strong>图2.1：MQTT控制报文结构</strong><br><img src="/img/mqtt/mqtt-control-packet-structure.png" alt="图2.1 MQTT控制报文结构"><br><strong>固定报文头部（Fixed Header）：</strong> 每一包MQTT控制报文都会包含此部分，由1byte的控制报文类型 + 1byte~4bytes的剩余字段（Remaining Length）。其长度为2bytes ~ 5bytes，最小为2bytes，最大为5bytes；<br><strong>可变报文头部（Variable Header）：</strong> 只有部分MQTT控制报文包含此部分。其内容和长度根据不同的控制报文而不一样；<br><strong>有效载荷（Payload）：</strong> 只有部分MQTT控制报文包含此部分。其长度为实际用户数据的长度。</p>
-<h3 id="2-1-MQTT固定报文头部（Fixed-Header）"><a href="#2-1-MQTT固定报文头部（Fixed-Header）" class="headerlink" title="2.1 MQTT固定报文头部（Fixed Header）"></a>2.1 MQTT固定报文头部（Fixed Header）</h3><p>MQTT固定报文头部（Fixed Header）的结构如图2所示：<br><strong>图2.2：MQTT固定报文头部的结构</strong><br><img src="/img/mqtt/mqtt-fixed-header-structure.png" alt="图2。2 MQTT固定报文头部的结构"><br>如图2所示，MQTT固定报文头部由两部分组成：Byte1和Byte2 ···</p>
-<h5 id="2-1-1-Byte1"><a href="#2-1-1-Byte1" class="headerlink" title="2.1.1 Byte1"></a>2.1.1 Byte1</h5><p>Byte1的高4bits（4bit~7bit）为MQTT控制报文的类型，其值为<strong>无符号整数值</strong>；低4bits（3bit~0bit）为MQTT控制报文类型相应的标志位（Flags）。<br>MQTT协议控制报文最多可以有16种报文类型，目前（v3.1.1）使用了14种；控制报文的类型及其相应的标志位如图3所示：<br><strong>图2.3：MQTT控制报文的类型</strong><br><img src="/img/mqtt/mqtt-control-packet-type.png" alt="图2.3 MQTT控制报文的类型"><br>从图2.3我们可以了解到MQTT当前版本（v3.1.1）定义的所有控制报文类型；其中每个控制报文类型都有其相对应的控制报文标志位（3bit~0bit），当前版本仅有控制报文类型<code>发布消息（PUBLISH）</code>使用到了控制报文标志位。<code>发布消息（PUBLISH）</code>的标志位定义如下：</p>
-<ul>
-<li><code>DUP</code> —— 发布消息的重复分发标识。0标识没有重复分发；1标识重复分发</li>
-<li><code>QoS</code> —— 发布消息的服务质量QoS，占2bits。其可能值为0，1，2。MQTT的QoS参考此文章：<a href="https://www.ibm.com/support/knowledgecenter/zh/SSFKSJ_7.5.0/com.ibm.mm.tc.doc/tc60340_.htm" target="_blank" rel="noopener">MQTT QoS说明</a></li>
-<li><code>RETAIN</code> —— 发布消息时设置的消息持久化标识。0表示消息不持久化；1表示消息需要持久化。例如客户端向服务器发布消息时设置了RETAIN位为1，则服务器会将此条消息保存在服务器端，当有新客户端订阅此主题，服务器会将此消息推送给新客户端。关于<code>RETAIN</code>标识的更详细介绍请看：</li>
-</ul>
-<h5 id="2-1-2-Byte2"><a href="#2-1-2-Byte2" class="headerlink" title="2.1.2 Byte2"></a>2.1.2 Byte2</h5><p>Byte2为剩余长度字段（Remaining Length），它表示的是MQTT控制报文后面所剩余的字节数，所剩余的字节数不包含剩余长度字段本身。<strong>剩余长度字段（Remaining Length）所占字节最小为1byte，最大为4bytes</strong>。剩余长度字段（Remaining Length）采用的是变长编码方案，即每个字节的最高位为延续位（<code>continuation bit</code>），用来表示否有更多的字节，所以每个字节能编码的最大值为127。以下举例说明MQTT的剩余长度字段的变长编码方案：<br><strong>图2.4：剩余长度字段（Remaining Length）范围</strong><br><img src="/img/mqtt/remaining-length.png" alt="图2.4 剩余长度字段（Remaining Length）范围"><br>从图2.4可以得知，MQTT允许的剩余长度范围为：0byte ~ 268435455bytes（256MB）。<br><strong>算法A: 将非负整数编码成剩余长度字节，算法如下：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">do</span><br><span class="line">  encodedByte = X MOD 128</span><br><span class="line">  X = X DIV 128</span><br><span class="line">  // if there are more data to encode, set the top bit of this byte</span><br><span class="line">  if ( X &gt; 0 )</span><br><span class="line">    encodedByte = encodedByte OR 128</span><br><span class="line">  endif</span><br><span class="line">    &apos;output&apos; encodedByte</span><br><span class="line">while ( X &gt; 0 )</span><br></pre></td></tr></table></figure></p>
-<p>MOD是模运算，DIV是整数除法运算，OR是按位或操作（对应C语言中分别为<code>%</code>，<code>/</code>，<code>|</code>）</p>
-<p><strong>算法B: 将剩余长度字节解码成非负整数，算法如下：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">multiplier = 1</span><br><span class="line">value = 0</span><br><span class="line">do</span><br><span class="line">  encodedByte = &apos;next byte from stream&apos;</span><br><span class="line">  value += (encodedByte AND 127) * multiplier</span><br><span class="line">  multiplier *= 128</span><br><span class="line">  if (multiplier &gt; 128*128*128)</span><br><span class="line">    throw Error(Malformed Remaining Length)</span><br><span class="line">while ((encodedByte AND 128) != 0)</span><br></pre></td></tr></table></figure></p>
-<p>AND为C语言中的按位与操作（<code>&amp;</code>）。算法结束后，变量value的值就是剩余长度的值。</p>
-<p>下面给出算法A和算法B在Java中的具体实现：<br><strong>算法A、算法B: Java实现</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemainingLengthUtils</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 算法A：将非负整数的剩余长度编码为字节</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> len 待编码的剩余长度（非负整数）</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回剩余字节长度字段的编码字节数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] encode(<span class="keyword">long</span> len) &#123;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;  <span class="comment">// 记录当前编码的多少个字节，不能超过MQTT限制的最大4个字节</span></span><br><span class="line">        ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream(<span class="number">4</span>);</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">byte</span> encodedByte = (<span class="keyword">byte</span>) (len % <span class="number">128</span>);</span><br><span class="line">            len = len / <span class="number">128</span>;</span><br><span class="line">            <span class="comment">// 如果len &gt; 0说明还有更多字节需要编码</span></span><br><span class="line">            <span class="keyword">if</span> (len &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                encodedByte |= <span class="number">0x80</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            bos.write(encodedByte);</span><br><span class="line">            count++;</span><br><span class="line">        &#125; <span class="keyword">while</span> ((len &gt; <span class="number">0</span>) &amp;&amp; (count &lt; <span class="number">4</span>));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> bos.toByteArray();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 算法B：将剩余长度字节解码成非负整数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> bytes 剩余长度字节数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 返回剩余字节长度（非负整数）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">decode</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">byte</span> digit;</span><br><span class="line">        <span class="keyword">long</span> value = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> multiplier = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">0</span>;  <span class="comment">// 剩余长度字段起始位置的下标</span></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            digit = bytes[index++];</span><br><span class="line">            value += ((digit &amp; <span class="number">0x7F</span>) * multiplier);</span><br><span class="line">            multiplier *= <span class="number">128</span>;</span><br><span class="line">        &#125; <span class="keyword">while</span> ((digit &amp; <span class="number">0x80</span>) != <span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-2-MQTT可变报文头部（Variable-Header）"><a href="#2-2-MQTT可变报文头部（Variable-Header）" class="headerlink" title="2.2 MQTT可变报文头部（Variable Header）"></a>2.2 MQTT可变报文头部（Variable Header）</h3><p><strong>未完待续 …</strong></p>
-<h3 id="2-3-MQTT有效载荷（Payload）"><a href="#2-3-MQTT有效载荷（Payload）" class="headerlink" title="2.3 MQTT有效载荷（Payload）"></a>2.3 MQTT有效载荷（Payload）</h3><p><strong>未完待续 …</strong></p>
+<h2 id="2-MQTT的RETAIN标志位"><a href="#2-MQTT的RETAIN标志位" class="headerlink" title="2 MQTT的RETAIN标志位"></a>2 MQTT的RETAIN标志位</h2><p>当我们使用MQTT客户端发布消息（<code>PUBLISH</code>）时，如果将RETAIN标志位设置为<code>true</code>，那么MQTT服务器会将最近收到的一条RETAIN标志位为<code>true</code>的消息保存在服务器端（内存或文件）。<br><strong>特别注意：MQTT服务器只会为每一个Topic保存最近收到的一条RETAIN标志位为<code>true</code>的消息！也就是说，如果MQTT服务器上已经为某个Topic保存了一条Retained消息，当客户端再次发布一条新的Retained消息，那么服务器上原来的那条消息会被覆盖！</strong></p>
+<p><strong>每当MQTT客户端连接到MQTT服务器并订阅了某个topic，如果该topic下有Retained消息，那么MQTT服务器会立即向客户端推送该条Retained消息。</strong></p>
+<h3 id="2-1-发布RETAIN消息"><a href="#2-1-发布RETAIN消息" class="headerlink" title="2.1 发布RETAIN消息"></a>2.1 发布RETAIN消息</h3><p>如果想让MQTT服务器为某个Topic保留消息，只需要在发布消息的时候指定RETAIN标志位为<code>true</code>即可。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String topic = <span class="string">"retained/test"</span>;</span><br><span class="line">byte[] payload = new byte[] &#123;0x00, 0x01, 0x12&#125;;</span><br><span class="line">int qos = 0;</span><br><span class="line">boolen retained = <span class="literal">true</span>;</span><br><span class="line">client.publish(topic, payload, qos, retained);</span><br></pre></td></tr></table></figure></p>
+<p><strong>特别注意：消息的RETAIN标志位与消息的QoS无关，即无论使用哪种级别的QoS，只要设置了RETAIN标志位为<code>true</code>，那么MQTT服务器就会保存该条消息！</strong></p>
+<h3 id="2-2-删除RETAIN消息"><a href="#2-2-删除RETAIN消息" class="headerlink" title="2.2 删除RETAIN消息"></a>2.2 删除RETAIN消息</h3><p>如果客户端想让MQTT服务器删除某个Topic下保存的Retained消息，唯一的方法是向MQTT服务器发布一条RETAIN标志位为<code>true</code>的<strong>空消息</strong>。<br><strong>空消息</strong>即为发布消息（<code>PUBLISH</code>）的时候，Payload中设置0个字节的内容。<br>删除了某个Topic下保存的Retained消息，如果客户端没有再发布Retained消息，则MQTT服务器上对于该Topic就没有了Retained消息。<br>下面为删除某个Topic下保存的Retained消息的例子：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String topic = <span class="string">"retained/test"</span>;</span><br><span class="line">byte[] payload = new byte[0];</span><br><span class="line">int qos = 0;</span><br><span class="line">boolen retained = <span class="literal">true</span>;</span><br><span class="line">client.publish(topic, payload, qos, retained);</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-3-RETAIN消息的应用场景举例"><a href="#2-3-RETAIN消息的应用场景举例" class="headerlink" title="2.3 RETAIN消息的应用场景举例"></a>2.3 RETAIN消息的应用场景举例</h3><p>在实际应用中，我们可以利用RETAIN标志位来完成一些特定的需求。例如物联网应用中，通常我们会有硬件设备和移动APP的交互：<br><img src="/img/mqtt/ratain-message-show.png" alt="retainedMessage"></p>
+<p>用户想通过APP来控制硬件设备，在打开APP的时候，APP需要及时知道设备的在线状态，只有设备在线用户才能通过APP去控制设备。<br>如果每个设备都对应有一个Topic，例如<code>online/status/{devId}</code>，每当设备上线或者离线，服务器都会往该Topic发布一条设备连接状态的消息，并指定RETAIN为<code>true</code>；每个APP对应地订阅<code>online/status/{devId}</code>，那么每当APP启动并成功订阅<code>online/status/{devId}</code>主题的时候，就会自动收到MQTT服务器推送的设备在线状态消息。这样一来用户就能及时知道该设备是否在线，能不能控制。</p>
+<p><strong>注明：</strong> 以上提到的<code>{devId}</code>为每个设备相应的设备ID</p>
 
       
 
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -333,7 +302,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://biteenew.github.io/mqtt-v3.1.1-os-protocol/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://biteenew.github.io/mqtt-retain/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -348,8 +317,8 @@
 <nav id="article-nav">
   
   
-    <a href="/mosquitto-log-analysis/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Mosquitto服务器的日志分析</div>
+    <a href="/mqtt-v3.1.1-os-protocol-structure/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MQTT协议（v3.1.1） —— 协议结构概述</div>
       <i class="icon-circle-right"></i>
     </a>
   
