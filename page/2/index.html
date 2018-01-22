@@ -6,23 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>MQTT的Quality of Service（QoS） | BiteeNew</title>
+  <title>BiteeNew</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
-<meta name="keywords" content="MQTT">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MQTT的Quality of Service（QoS）">
-<meta property="og:url" content="https://biteenew.github.io/mqtt-qos/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="BiteeNew">
+<meta property="og:url" content="https://biteenew.github.io/page/2/index.html">
 <meta property="og:site_name" content="BiteeNew">
-<meta property="og:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
-<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-qos0.png">
-<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-qos1.png">
-<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-qos2.png">
-<meta property="og:updated_time" content="2018-01-22T08:14:00.525Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MQTT的Quality of Service（QoS）">
-<meta name="twitter:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
-<meta name="twitter:image" content="https://biteenew.github.io/img/mqtt/mqtt-qos0.png">
+<meta name="twitter:title" content="BiteeNew">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
   
@@ -154,25 +145,23 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-mqtt-qos" class="article article-type-post " itemscope itemprop="blogPost">
+            
+  
+    <article id="post-mosquitto-installation-guide" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      MQTT的Quality of Service（QoS）
+    <h1 itemprop="name">
+      <a class="article-title" href="/mosquitto-installation-guide/">如何安装并使用MQTT服务器——Mosquitto</a>
     </h1>
   
 
         
-            <span class="archive-article-date">
-              阅读量：<span id="busuanzi_value_page_pv"></span>
-            </span>
         
-        
-        <a href="/mqtt-qos/" class="archive-article-date">
-  	<time datetime="2018-01-19T10:44:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-19</time>
+        <a href="/mosquitto-installation-guide/" class="archive-article-date">
+  	<time datetime="2018-01-08T05:30:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
 </a>
         
       </header>
@@ -180,28 +169,10 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。</p>
-<a id="more"></a>
-<h2 id="2-MQTT的消息服务质量QoS"><a href="#2-MQTT的消息服务质量QoS" class="headerlink" title="2 MQTT的消息服务质量QoS"></a>2 MQTT的消息服务质量QoS</h2><p>MQTT的消息服务质量（Quality of Service，QoS）是MQTT协议确保消息可靠投递的一种机制。MQTT的消息服务质量共有三种：</p>
-<ul>
-<li>QoS 0 —— At most once，最多一次</li>
-<li>QoS 1 —— At least once，至少一次</li>
-<li>QoS 2 —— Exactly once，刚好一次</li>
-</ul>
-<h3 id="2-1-QoS-0-——-最多一次"><a href="#2-1-QoS-0-——-最多一次" class="headerlink" title="2.1 QoS 0 —— 最多一次"></a>2.1 QoS 0 —— 最多一次</h3><p>消息发送者使用<code>QoS 0</code>发送消息时，消息最多投递一次；即消息一旦发送出去，其可达性完全依靠TCP层的协议。所以使用<code>QoS 0</code>发送消息时有可能会导致消息丢失。<br><strong>图2.1 QoS 0消息发布示意图</strong><br><img src="/img/mqtt/mqtt-qos0.png" alt="qos0"><br>如上图所示，MQTT消息发送者使用<code>QoS 0</code>发送消息时，MQTT的消息接收者不会回复确认；消息的可达性完全建立在TCP协议上。</p>
-<h3 id="2-2-QoS-1-——-至少一次"><a href="#2-2-QoS-1-——-至少一次" class="headerlink" title="2.2 QoS 1 —— 至少一次"></a>2.2 QoS 1 —— 至少一次</h3><p>消息发送者使用<code>QoS 1</code>发送消息时，可以确保消息<strong>至少到达消息接收者一次，有可能会大于一次</strong>。<br>因为当使用<code>QoS 1</code>发送消息时，消息会在发送者和接收者之间进行确认（<code>PUBLISH</code>和<code>PUBACK</code>）。消息会先缓存在发送者本地；只有当<strong>消息发送者</strong>成功接收到<strong>消息接收者</strong>的回复之后，发送者才认为消息已经被成功投递，并删除该条消息的本地缓存。<br><strong>图2.2 QoS 1消息发布和确认示意图</strong><br><img src="/img/mqtt/mqtt-qos1.png" alt="qos1"><br>如上图所示，发送者发布消息（<code>PUBLISH</code>），接收者收到消息后会回复确认（<code>PUBACK</code>）。</p>
-<ol>
-<li>在网络比较好时，发布的消息（<code>PUBLISH</code>）能够在第一次就到达接收者，并且接收者回复的确认（<code>PUBACK</code>）也能在第一次回复就到达发送者端。这种情况下，该条发布的消息只会被接收者收到一次；</li>
-<li>在网络比较差时，发布的消息（<code>PUBLISH</code>）不能在第一次就到达接收者，或者接收者回复的确认（<code>PUBACK</code>）不能再第一次回复就到达发送者端。发送者就会重发，<strong>重发的消息会设置<code>DUP</code>标志位</strong>。这就会导致接收者可能会多次收到同一条消息</li>
-</ol>
-<p><strong>消息发送者与接收者通过每条消息的消息ID（Packet Identifier）来跟踪、确认每条消息。总之，发送者只有收到接收者的回复确认（<code>PUBACK</code>）后才会认为消息已经成功投递，并终止重发。</strong></p>
-<h3 id="2-3-QoS-2-——-刚好一次"><a href="#2-3-QoS-2-——-刚好一次" class="headerlink" title="2.3 QoS 2 —— 刚好一次"></a>2.3 QoS 2 —— 刚好一次</h3><p>消息发送者使用<code>QoS 2</code>发送消息时，可以确保消息<strong>仅仅到达消息接收者一次，不会多次到达也不会无法到达</strong>。<br><code>QoS 2</code>也是类似于<code>QoS 1</code>的消息发布，通过在发送者和接收者之间进行确认来确保消息的投递。不同的是，<code>QoS 2</code>比<code>QoS 1</code>采用更加复杂的确认机制来投递消息：<br><strong>图2.3 QoS 2消息发布和确认示意图</strong><br><img src="/img/mqtt/mqtt-qos2.png" alt="qos1"><br><strong>消息接收者会一直保存消息的缓存，直到它向发送者回复了<code>PUBCOMP</code>响应。</strong></p>
-<hr>
-<p><strong> <em>参考文章：</em> </strong></p>
-<ol>
-<li><a href="https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels" target="_blank" rel="noopener">MQTT Essentials Part 6: Quality of Service 0, 1 &amp; 2</a></li>
-</ol>
-
+        <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。</p>
+        
+          <a class="article-more-a" href="/mosquitto-installation-guide/#more">more >></a>
+        
       
 
       
@@ -215,6 +186,10 @@
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Mosquitto</a>
         		</li>
       		
 		</ul>
@@ -234,84 +209,16 @@
 
 
       
-
+        <p class="article-more-link">
+          <a class="article-more-a" href="/mosquitto-installation-guide/">展开全文 >></a>
+        </p>
       
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
-        </div>
-      </div>
-    </span>
-  </div>
-</div>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://biteenew.github.io/mqtt-qos/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/mqtt-lwt/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          MQTT的Last Will and Testament
-        
-      </div>
-    </a>
-  
-  
-    <a href="/mqtt-retain/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MQTT的RETAIN标志位</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -331,14 +238,12 @@
 
 
 
-  
 
   
-
   
-
-  
-
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </nav>
   
 
 
@@ -366,8 +271,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: true,
-		isHome: false,
-		isPost: true,
+		isHome: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
