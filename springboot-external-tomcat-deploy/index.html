@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>Archives: 2018 | BiteeNew</title>
+  <title>使用外部Tomcat容器部署SpringBoot应用 | BiteeNew</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="BiteeNew">
-<meta property="og:url" content="https://biteenew.github.io/archives/2018/index.html">
+  <meta name="description" content="1. 前言一般情况下我们在使用SpringBoot进行应用开发之后，习惯将使用内嵌Tomcat（或者内嵌Jetty、Undertow容器）对SpringBoot的WEB应用进行部署，这种情况下我们一般使用Jar包进行部署；但是对于一些部署环境的要求，我们有时候需要使用外部的Tomcat服务器对SpringBoot应用进行部署，这时候需要将SpringBoot应用打包成War包。 项目环境：  Sp">
+<meta name="keywords" content="SpringBoot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用外部Tomcat容器部署SpringBoot应用">
+<meta property="og:url" content="https://biteenew.github.io/springboot-external-tomcat-deploy/index.html">
 <meta property="og:site_name" content="BiteeNew">
+<meta property="og:description" content="1. 前言一般情况下我们在使用SpringBoot进行应用开发之后，习惯将使用内嵌Tomcat（或者内嵌Jetty、Undertow容器）对SpringBoot的WEB应用进行部署，这种情况下我们一般使用Jar包进行部署；但是对于一些部署环境的要求，我们有时候需要使用外部的Tomcat服务器对SpringBoot应用进行部署，这时候需要将SpringBoot应用打包成War包。 项目环境：  Sp">
+<meta property="og:updated_time" content="2018-03-20T11:55:06.145Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BiteeNew">
+<meta name="twitter:title" content="使用外部Tomcat容器部署SpringBoot应用">
+<meta name="twitter:description" content="1. 前言一般情况下我们在使用SpringBoot进行应用开发之后，习惯将使用内嵌Tomcat（或者内嵌Jetty、Undertow容器）对SpringBoot的WEB应用进行部署，这种情况下我们一般使用Jar包进行部署；但是对于一些部署环境的要求，我们有时候需要使用外部的Tomcat服务器对SpringBoot应用进行部署，这时候需要将SpringBoot应用打包成War包。 项目环境：  Sp">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
   
@@ -146,36 +151,59 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-springboot-external-tomcat-deploy" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/springboot-external-tomcat-deploy/" class="archive-article-date">
-  	<time datetime="2018-03-20T11:44:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/springboot-external-tomcat-deploy/">使用外部Tomcat容器部署SpringBoot应用</a>
+    <h1 class="article-title" itemprop="name">
+      使用外部Tomcat容器部署SpringBoot应用
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+            <span class="archive-article-date">
+              阅读量：<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+        
+        <a href="/springboot-external-tomcat-deploy/" class="archive-article-date">
+  	<time datetime="2018-03-20T11:44:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
+</a>
+        
+      </header>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><p>一般情况下我们在使用SpringBoot进行应用开发之后，习惯将使用内嵌Tomcat（或者内嵌Jetty、Undertow容器）对SpringBoot的WEB应用进行部署，这种情况下我们一般使用Jar包进行部署；但是对于一些部署环境的要求，我们有时候需要使用外部的Tomcat服务器对SpringBoot应用进行部署，这时候需要将SpringBoot应用打包成War包。</p>
+<p><strong>项目环境：</strong></p>
+<ul>
+<li>SpringBoot 1.5.9.RELEASE</li>
+<li>外部tomcat服务器：Tomcat 8.5.29</li>
+</ul>
+<a id="more"></a>
+<h2 id="2-pom-xml清单"><a href="#2-pom-xml清单" class="headerlink" title="2. pom.xml清单"></a>2. pom.xml清单</h2><ul>
+<li>在pom.xml文件中将<code>&lt;packaging&gt;jar&lt;/packaging&gt;</code>改为<code>&lt;packaging&gt;war&lt;/packaging&gt;</code>，即把打包方式从jar包改成war包；</li>
+<li>将tomcat的依赖包的maven scope标记为<code>provided</code>，这样打包成war包的时候将不会包含内嵌tomcat容器，由部署系统环境在运行时为SpringBoot提供tomcat容器。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-注册Servlet启动类"><a href="#3-注册Servlet启动类" class="headerlink" title="3. 注册Servlet启动类"></a>3. 注册Servlet启动类</h2><p>更新完pom.xml文件后，我们需要创建一个Servlet启动类<code>ServletInitializer.java</code>，继承自<code>SpringBootServletInitializer.java</code>类，外部WEB容器会调用此类。<br><strong><code>Application.java</code>为我们包含main方法的启动类。</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.biteenew.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.builder.SpringApplicationBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.web.support.SpringBootServletInitializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletInitializer</span> <span class="keyword">extends</span> <span class="title">SpringBootServletInitializer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> SpringApplicationBuilder <span class="title">configure</span><span class="params">(SpringApplicationBuilder builder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> builder.sources(Application.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="4-打包部署"><a href="#4-打包部署" class="headerlink" title="4. 打包部署"></a>4. 打包部署</h2><p>完成上述两个步骤，我们就可以使用maven对应用进行打包：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip=<span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>打包完毕后，在target文件夹中就会生成我们应用程序的war包。最后我们将war包拷贝到外部tomcat服务器目录中，启动tomcat即可。</p>
+<p><strong> <em>参考文章：</em> </strong></p>
+<ol>
+<li><a href="https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#howto-create-a-deployable-war-file" target="_blank" rel="noopener">Packaging executable jar and war files</a></li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -187,7 +215,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -200,216 +228,119 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://biteenew.github.io/springboot-external-tomcat-deploy/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/mqtt-lwt/" class="archive-article-date">
-  	<time datetime="2018-01-22T10:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-22</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/mqtt-lwt/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MQTT的Last Will and Testament</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/mqtt-lwt/">MQTT的Last Will and Testament</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/mqtt-qos/" class="archive-article-date">
-  	<time datetime="2018-01-19T10:44:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/mqtt-qos/">MQTT的Quality of Service（QoS）</a>
-    </h1>
+
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/mqtt-retain/" class="archive-article-date">
-  	<time datetime="2018-01-19T04:58:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/mqtt-retain/">MQTT的RETAIN标志位</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/mqtt-v3.1.1-os-protocol-structure/" class="archive-article-date">
-  	<time datetime="2018-01-12T04:58:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/mqtt-v3.1.1-os-protocol-structure/">MQTT协议（v3.1.1） —— 协议结构概述</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2018/page/2/">2</a><a class="extend next" rel="next" href="/archives/2018/page/2/">Next &raquo;</a>
-    </nav>
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "https://biteenew.github.io/springboot-external-tomcat-deploy/",
+  owner: 'BiteeNew',
+  repo: 'biteenew.github.io',
+  oauth: {
+    client_id: 'b3492a2c65b679abc512',
+    client_secret: 'c94934fee7e757217c63313b92ae06733b63869c',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
   
 
 
@@ -438,8 +369,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
