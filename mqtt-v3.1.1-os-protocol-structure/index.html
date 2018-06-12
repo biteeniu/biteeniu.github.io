@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://biteenew.github.io/img/mqtt/remaining-length.png">
 <meta property="og:image" content="https://biteenew.github.io/img/mqtt/is_contain_packetId.png">
 <meta property="og:image" content="https://biteenew.github.io/img/mqtt/is_contain_payload.png">
-<meta property="og:updated_time" content="2018-06-12T09:38:34.507Z">
+<meta property="og:updated_time" content="2018-06-12T10:24:08.187Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MQTT协议（v3.1.1） —— 协议结构概述">
 <meta name="twitter:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
@@ -192,7 +192,7 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。<br><a id="more"></a></p>
+        <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。<a id="more"></a></p>
 <h2 id="2-MQTT控制报文的结构"><a href="#2-MQTT控制报文的结构" class="headerlink" title="2 MQTT控制报文的结构"></a>2 MQTT控制报文的结构</h2><p>MQTT协议一包完整的控制报文包含三部分：<strong>固定报文头部（Fixed Header）</strong>、<strong>可变报文头部（Variable Header）</strong>以及<strong>有效载荷（Payload）</strong>，如图1所示：<br><strong>图2.1：MQTT控制报文结构</strong><br><img src="/img/mqtt/mqtt-control-packet-structure.png" alt="图2.1 MQTT控制报文结构"><br><strong>固定报文头部（Fixed Header）：</strong> 每一包MQTT控制报文都会包含此部分，由1byte的控制报文类型 + 1byte~4bytes的剩余字段（Remaining Length）。其长度为2bytes ~ 5bytes，最小为2bytes，最大为5bytes；<br><strong>可变报文头部（Variable Header）：</strong> 只有部分MQTT控制报文包含此部分。其内容和长度根据不同的控制报文而不一样；<br><strong>有效载荷（Payload）：</strong> 只有部分MQTT控制报文包含此部分。其长度为实际用户数据的长度。</p>
 <h3 id="2-1-MQTT固定报文头部（Fixed-Header）"><a href="#2-1-MQTT固定报文头部（Fixed-Header）" class="headerlink" title="2.1 MQTT固定报文头部（Fixed Header）"></a>2.1 MQTT固定报文头部（Fixed Header）</h3><p>MQTT固定报文头部（Fixed Header）的结构如图2所示：<br><strong>图2.2：MQTT固定报文头部的结构</strong><br><img src="/img/mqtt/mqtt-fixed-header-structure.png" alt="图2。2 MQTT固定报文头部的结构"><br>如图2所示，MQTT固定报文头部由两部分组成：Byte1和Byte2 ···</p>
 <h5 id="2-1-1-Byte1"><a href="#2-1-1-Byte1" class="headerlink" title="2.1.1 Byte1"></a>2.1.1 Byte1</h5><p>Byte1的高4bits（4bit~7bit）为MQTT控制报文的类型，其值为<strong>无符号整数值</strong>；低4bits（3bit~0bit）为MQTT控制报文类型相应的标志位（Flags）。<br>MQTT协议控制报文最多可以有16种报文类型，目前（v3.1.1）使用了14种；控制报文的类型及其相应的标志位如图3所示：<br><strong>图2.3：MQTT控制报文的类型</strong><br><img src="/img/mqtt/mqtt-control-packet-type.png" alt="图2.3 MQTT控制报文的类型"><br>从图2.3我们可以了解到MQTT当前版本（v3.1.1）定义的所有控制报文类型；其中每个控制报文类型都有其相对应的控制报文标志位（3bit~0bit），当前版本仅有控制报文类型<code>发布消息（PUBLISH）</code>使用到了控制报文标志位。<code>发布消息（PUBLISH）</code>的标志位定义如下：</p>
