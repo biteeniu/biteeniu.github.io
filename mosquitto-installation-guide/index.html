@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://biteenew.github.io/mosquitto-installation-guide/index.html">
 <meta property="og:site_name" content="BiteeNew">
 <meta property="og:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
-<meta property="og:updated_time" content="2018-01-11T01:20:04.625Z">
+<meta property="og:updated_time" content="2018-06-12T10:02:36.128Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何安装并使用MQTT服务器——Mosquitto">
 <meta name="twitter:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
@@ -174,11 +174,7 @@
     </h1>
   
 
-        
-            <span class="archive-article-date">
-              阅读量：<span id="busuanzi_value_page_pv"></span>
-            </span>
-        
+
         
         <a href="/mosquitto-installation-guide/" class="archive-article-date">
   	<time datetime="2018-01-08T05:30:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
@@ -189,17 +185,18 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。</p>
-<a id="more"></a>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>在安装Mosquitto服务器之前，我们需要先准备一台Linux主机。Mosquitto支持很多Linux发行版，例如Arch Linux、CentOS、Debian、Fedora以及Ubuntu等等。我这里安装的环境如下：</p>
+        <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。<br><a id="more"></a></p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>准备一台Linux主机：Mosquitto支持很多Linux发行版，例如Arch Linux、CentOS、Debian、Fedora以及Ubuntu等。本文使用的环境如下：</p>
 <ul>
-<li>Ubuntu —— 16.04 LTS</li>
-<li>Mosquitto —— v1.4.14</li>
+<li>Ubuntu 16.04 LTS</li>
+<li>Mosquitto v1.4.14</li>
 </ul>
-<h3 id="开始安装Mosquitto"><a href="#开始安装Mosquitto" class="headerlink" title="开始安装Mosquitto"></a>开始安装Mosquitto</h3><p>打开Ubuntu的终端，执行以下指令将Mosquitto的PPA软件源添加到Ubuntu的软件管理仓库：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa</span><br></pre></td></tr></table></figure></p>
+<h2 id="方式一：使用apt安装Mosquitto"><a href="#方式一：使用apt安装Mosquitto" class="headerlink" title="方式一：使用apt安装Mosquitto"></a>方式一：使用apt安装Mosquitto</h2><p>打开Ubuntu的终端，执行以下指令将Mosquitto的PPA软件源添加到Ubuntu的软件管理仓库：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa</span><br></pre></td></tr></table></figure></p>
 <p><strong>注明：使用Mosquitto的PPA软件源可以比较方便地对Mosquitto进行在线的版本更新。</strong><br>如果提示<code>apt-add-repository</code>命令未安装，可以通过下面的命令来安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo update &amp;&amp; sudo apt-get install python-software-properties</span><br></pre></td></tr></table></figure></p>
 <p>成功添加Mosquitto的PPA软件源后，就可以在线安装Mosquitto啦。执行以下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo update &amp;&amp; sudo apt-get install mosquitto</span><br></pre></td></tr></table></figure></p>
 <p>执行完以上命令，正常情况下Mosquitto就成功安装并启动了！</p>
+<h2 id="方式二：使用Docker安装Mosquitto"><a href="#方式二：使用Docker安装Mosquitto" class="headerlink" title="方式二：使用Docker安装Mosquitto"></a>方式二：使用Docker安装Mosquitto</h2><p>先安装Docker环境，如何安装Docker请参考<a href="https://www.docker.com" target="_blank" rel="noopener">官方网站的说明</a>。</p>
+<p>然后下载<a href="/files/mosquitto-v1.4.12.tar.gz">Mosquitto的Docker镜像</a></p>
 
       
 
@@ -238,57 +235,6 @@
 
       
 
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
-        </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://biteenew.github.io/mosquitto-installation-guide/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
@@ -331,7 +277,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#开始安装Mosquitto"><span class="toc-number">1.1.</span> <span class="toc-text">开始安装Mosquitto</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式一：使用apt安装Mosquitto"><span class="toc-number">2.</span> <span class="toc-text">方式一：使用apt安装Mosquitto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式二：使用Docker安装Mosquitto"><span class="toc-number">3.</span> <span class="toc-text">方式二：使用Docker安装Mosquitto</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -351,22 +297,6 @@
   
 
   
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
-var gitment = new Gitment({
-  id: "https://biteenew.github.io/mosquitto-installation-guide/",
-  owner: 'BiteeNew',
-  repo: 'biteenew.github.io',
-  oauth: {
-    client_id: 'b3492a2c65b679abc512',
-    client_secret: 'c94934fee7e757217c63313b92ae06733b63869c',
-  },
-})
-gitment.render('gitment-ctn')
-</script>
-  
 
 
           </div>
@@ -382,9 +312,6 @@ gitment.render('gitment-ctn')
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
       	</div>
-      	<span id="busuanzi_container_site_uv">
-          本站访问量：<span id="busuanzi_value_site_uv"></span> 次
-        </span>
     </div>
   </div>
 </footer>
@@ -477,15 +404,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">MQTT</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Mosquitto</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">

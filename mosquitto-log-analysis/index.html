@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://biteenew.github.io/mosquitto-log-analysis/index.html">
 <meta property="og:site_name" content="BiteeNew">
 <meta property="og:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
-<meta property="og:updated_time" content="2018-01-10T07:07:11.771Z">
+<meta property="og:updated_time" content="2018-06-12T09:38:34.490Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mosquitto服务器的日志分析">
 <meta name="twitter:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
@@ -174,11 +174,7 @@
     </h1>
   
 
-        
-            <span class="archive-article-date">
-              阅读量：<span id="busuanzi_value_page_pv"></span>
-            </span>
-        
+
         
         <a href="/mosquitto-log-analysis/" class="archive-article-date">
   	<time datetime="2018-01-08T06:34:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
@@ -189,8 +185,7 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。</p>
-<a id="more"></a>
+        <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。<br><a id="more"></a></p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>在使用Mosquitto之前，我们需要安装Mosquitto。如果不知道如何安装Mosquitto，请参考此篇文章：<a href="http://blog.csdn.net/xukai871105/article/details/39252653" target="_blank" rel="noopener">如何安装并使用MQTT服务器——Mosquitto</a>。<br>本篇文章所使用的系统以及软件环境说明如下：</p>
 <ul>
 <li>Ubuntu - 16.04 LTS</li>
@@ -260,57 +255,6 @@
       
 
       
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
-        </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://biteenew.github.io/mosquitto-log-analysis/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
       <div class="clearfix"></div>
     </div>
   </div>
@@ -364,22 +308,6 @@
   
 
   
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
-var gitment = new Gitment({
-  id: "https://biteenew.github.io/mosquitto-log-analysis/",
-  owner: 'BiteeNew',
-  repo: 'biteenew.github.io',
-  oauth: {
-    client_id: 'b3492a2c65b679abc512',
-    client_secret: 'c94934fee7e757217c63313b92ae06733b63869c',
-  },
-})
-gitment.render('gitment-ctn')
-</script>
-  
 
 
           </div>
@@ -395,9 +323,6 @@ gitment.render('gitment-ctn')
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
       	</div>
-      	<span id="busuanzi_container_site_uv">
-          本站访问量：<span id="busuanzi_value_site_uv"></span> 次
-        </span>
     </div>
   </div>
 </footer>
@@ -490,15 +415,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">MQTT</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Mosquitto</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
