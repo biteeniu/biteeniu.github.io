@@ -6,21 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>MQTT的Last Will and Testament | BiteeNew</title>
+  <title>MQTT的RETAIN标志位 | Biteenew的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
 <meta name="keywords" content="MQTT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MQTT的Last Will and Testament">
-<meta property="og:url" content="https://biteenew.github.io/mqtt-lwt/index.html">
-<meta property="og:site_name" content="BiteeNew">
+<meta property="og:title" content="MQTT的RETAIN标志位">
+<meta property="og:url" content="https://biteenew.github.io/mqtt/mqtt-retain/index.html">
+<meta property="og:site_name" content="Biteenew的博客">
 <meta property="og:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
-<meta property="og:updated_time" content="2018-06-12T10:23:48.793Z">
+<meta property="og:image" content="https://biteenew.github.io/img/mqtt/ratain-message-show.png">
+<meta property="og:updated_time" content="2018-06-12T10:24:08.171Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MQTT的Last Will and Testament">
+<meta name="twitter:title" content="MQTT的RETAIN标志位">
 <meta name="twitter:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta name="twitter:image" content="https://biteenew.github.io/img/mqtt/ratain-message-show.png">
   
-    <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Biteenew的博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -50,24 +52,22 @@
 			<img src="/img/avatar.jpg" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">BiteeNew</a></h1>
+		  <h1 class="header-author"><a href="/">Biteenew</a></h1>
 		</hgroup>
 		
 
 		<nav class="header-menu">
 			<ul>
 			
-				<li><a href="/">主页</a></li>
+				<li><a href="/tags/Feelings">Feelings</a></li>
 	        
-				<li><a href="/archives/">归档</a></li>
-	        
-				<li><a href="/tags/MQTT">MQTT</a></li>
+				<li><a href="/tags/Java">Java</a></li>
 	        
 				<li><a href="/tags/SpringBoot">Spring-Boot</a></li>
 	        
-				<li><a href="/tags/nginx">nginx</a></li>
+				<li><a href="/tags/MQTT">MQTT</a></li>
 	        
-				<li><a href="/tags/Java">Java</a></li>
+				<li><a href="/tags/nginx">nginx</a></li>
 	        
 			</ul>
 		</nav>
@@ -109,12 +109,10 @@
 				<img src="/img/avatar.jpg" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">BiteeNew</h1>
+			  <h1 class="header-author js-header-author">Biteenew</h1>
 			</hgroup>
 			
 			
-			
-				
 			
 				
 			
@@ -138,17 +136,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/archives/">归档</a></li>
+					<li style="width: 20%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 20%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 20%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/nginx">nginx</a></li>
-		        
-					<li style="width: 16.666666666666668%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 20%"><a href="/tags/nginx">nginx</a></li>
 		        
 				</ul>
 			</nav>
@@ -163,21 +159,21 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-mqtt-lwt" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mqtt/mqtt-retain" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      MQTT的Last Will and Testament
+      MQTT的RETAIN标志位
     </h1>
   
 
 
         
-        <a href="/mqtt-lwt/" class="archive-article-date">
-  	<time datetime="2018-01-22T10:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-22</time>
+        <a href="/mqtt/mqtt-retain/" class="archive-article-date">
+  	<time datetime="2018-01-19T04:58:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-19</time>
 </a>
         
       </header>
@@ -186,26 +182,18 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。<a id="more"></a></p>
-<h2 id="2-MQTT的遗嘱消息"><a href="#2-MQTT的遗嘱消息" class="headerlink" title="2 MQTT的遗嘱消息"></a>2 MQTT的遗嘱消息</h2><p>MQTT协议通常使用在一些网络非常糟糕的应用场景，MQTT客户端与MQTT服务器之前的连接经常会由于网络原因<strong>非正常断开</strong>。<br><strong>说明：对于使用MQTT协议通信双方，连接的非正常断开指的是，客户端在没有向服务器发送<code>DISCONNET</code>请求的情况下断开了TCP连接。这在MQTT中称为连接的非正常断开，这种情况往往是由于网络突然中断、客户端掉电等不可预料的情况。</strong></p>
-<p>MQTT的遗嘱消息（<code>Last Will and Testament，简称LWT</code>）通常用于通知其他MQTT客户端自己的非正常掉线。LWT的具体使用如下说明：</p>
-<ul>
-<li>MQTT客户端在连接MQTT服务器的时候（即<code>CONNECT</code>请求），可以在连接参数里面设置Last Will消息，该消息跟正常的消息一样，也有topic；</li>
-<li>成功连接上MQTT服务器后，服务器会为该客户端保存该条Last Will消息；</li>
-<li>当MQTT服务器检测到MQTT客户端<strong>非正常断开</strong>后，MQTT服务器会将该客户端设置的该条Last Will消息推送给订阅了该topic的客户端。这样一来，其他客户端就能及时知道该客户端离线了；</li>
-<li>如果连接是正常断开（即客户端向服务器发送了<code>DISCONNET</code>请求），那么该条Last Will消息不会推送给其他订阅了该topic的客户端</li>
-</ul>
-<p><strong>客户端设置的Last Will消息跟其他发布的消息一样，也需要指定Topic、Payload、QoS以及RETAIN标志位。MQTT服务器会在以下四种情况下，将Last Will消息发布出去：</strong></p>
-<ul>
-<li>服务器检测到客户端的Socket I/O异常，或者服务器检测到客户端的网络有异常；</li>
-<li>服务器在指定的KeepAlive时间超时后，没有收到客户端的心跳消息；</li>
-<li>客户端主动关闭了Socket连接，但是关闭Socket连接之前并没有向服务器发送<code>DISCONNET</code>请求；</li>
-<li>由于协议错误原因，服务器关闭了客户端的Socket连接。</li>
-</ul>
-<p><strong>Last Will消息中的Topic、Payload、QoS以及RETAIN标志位跟通过<code>PUBLISH</code>指令发布消息的含义一样。区别在于Last Will消息是在建立连接的时候提交给MQTT服务器的。</strong></p>
+<h2 id="2-MQTT的RETAIN标志位"><a href="#2-MQTT的RETAIN标志位" class="headerlink" title="2 MQTT的RETAIN标志位"></a>2 MQTT的RETAIN标志位</h2><p>当我们使用MQTT客户端发布消息（<code>PUBLISH</code>）时，如果将RETAIN标志位设置为<code>true</code>，那么MQTT服务器会将最近收到的一条RETAIN标志位为<code>true</code>的消息保存在服务器端（内存或文件）。<br><strong>特别注意：MQTT服务器只会为每一个Topic保存最近收到的一条RETAIN标志位为<code>true</code>的消息！也就是说，如果MQTT服务器上已经为某个Topic保存了一条Retained消息，当客户端再次发布一条新的Retained消息，那么服务器上原来的那条消息会被覆盖！</strong></p>
+<p><strong>每当MQTT客户端连接到MQTT服务器并订阅了某个topic，如果该topic下有Retained消息，那么MQTT服务器会立即向客户端推送该条Retained消息。</strong></p>
+<h3 id="2-1-发布RETAIN消息"><a href="#2-1-发布RETAIN消息" class="headerlink" title="2.1 发布RETAIN消息"></a>2.1 发布RETAIN消息</h3><p>如果想让MQTT服务器为某个Topic保留消息，只需要在发布消息的时候指定RETAIN标志位为<code>true</code>即可。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String topic = <span class="string">"retained/test"</span>;</span><br><span class="line">byte[] payload = new byte[] &#123;0x00, 0x01, 0x12&#125;;</span><br><span class="line">int qos = 0;</span><br><span class="line">boolen retained = <span class="literal">true</span>;</span><br><span class="line">client.publish(topic, payload, qos, retained);</span><br></pre></td></tr></table></figure></p>
+<p><strong>特别注意：消息的RETAIN标志位与消息的QoS无关，即无论使用哪种级别的QoS，只要设置了RETAIN标志位为<code>true</code>，那么MQTT服务器就会保存该条消息！</strong></p>
+<h3 id="2-2-删除RETAIN消息"><a href="#2-2-删除RETAIN消息" class="headerlink" title="2.2 删除RETAIN消息"></a>2.2 删除RETAIN消息</h3><p>如果客户端想让MQTT服务器删除某个Topic下保存的Retained消息，唯一的方法是向MQTT服务器发布一条RETAIN标志位为<code>true</code>的<strong>空消息</strong>。<br><strong>空消息</strong>即为发布消息（<code>PUBLISH</code>）的时候，Payload中设置0个字节的内容。<br>删除了某个Topic下保存的Retained消息，如果客户端没有再发布Retained消息，则MQTT服务器上对于该Topic就没有了Retained消息。<br>下面为删除某个Topic下保存的Retained消息的例子：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String topic = <span class="string">"retained/test"</span>;</span><br><span class="line">byte[] payload = new byte[0];</span><br><span class="line">int qos = 0;</span><br><span class="line">boolen retained = <span class="literal">true</span>;</span><br><span class="line">client.publish(topic, payload, qos, retained);</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-3-RETAIN消息的应用场景举例"><a href="#2-3-RETAIN消息的应用场景举例" class="headerlink" title="2.3 RETAIN消息的应用场景举例"></a>2.3 RETAIN消息的应用场景举例</h3><p>在实际应用中，我们可以利用RETAIN标志位来完成一些特定的需求。例如物联网应用中，通常我们会有硬件设备和移动APP的交互：<br><img src="/img/mqtt/ratain-message-show.png" alt="retainedMessage"></p>
+<p>用户想通过APP来控制硬件设备，在打开APP的时候，APP需要及时知道设备的在线状态，只有设备在线用户才能通过APP去控制设备。<br>如果每个设备都对应有一个Topic，例如<code>online/status/{devId}</code>，每当设备上线或者离线，服务器都会往该Topic发布一条设备连接状态的消息，并指定RETAIN为<code>true</code>；每个APP对应地订阅<code>online/status/{devId}</code>，那么每当APP启动并成功订阅<code>online/status/{devId}</code>主题的时候，就会自动收到MQTT服务器推送的设备在线状态消息。这样一来用户就能及时知道该设备是否在线，能不能控制。</p>
+<p><strong>注明：</strong> 以上提到的<code>{devId}</code>为每个设备相应的设备ID</p>
 <hr>
 <p><strong> <em>参考文章：</em> </strong></p>
 <ol>
-<li><a href="https://www.hivemq.com/blog/mqtt-essentials-part-9-last-will-and-testament" target="_blank" rel="noopener">MQTT Essentials Part 9: Last Will and Testament</a></li>
+<li><a href="https://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages" target="_blank" rel="noopener">MQTT Essentials Part 8: Retained Messages</a></li>
 </ol>
 
       
@@ -250,18 +238,18 @@
   
 <nav id="article-nav">
   
-    <a href="/springboot-how-to-run/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/mqtt/mqtt-qos/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          SpringBoot应用的部署/启动
+          MQTT的Quality of Service（QoS）
         
       </div>
     </a>
   
   
-    <a href="/mqtt-qos/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MQTT的Quality of Service（QoS）</div>
+    <a href="/mqtt/mqtt-v3.1.1-os-protocol-structure/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MQTT协议（v3.1.1） —— 协议结构概述</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -305,7 +293,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 BiteeNew
+    		&copy; 2018 Biteenew
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -404,6 +392,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">

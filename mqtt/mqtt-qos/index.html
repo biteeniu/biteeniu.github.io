@@ -6,21 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>如何安装并使用MQTT服务器——Mosquitto | BiteeNew</title>
+  <title>MQTT的Quality of Service（QoS） | Biteenew的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
-<meta name="keywords" content="MQTT,Mosquitto">
+  <meta name="description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta name="keywords" content="MQTT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何安装并使用MQTT服务器——Mosquitto">
-<meta property="og:url" content="https://biteenew.github.io/mosquitto-installation-guide/index.html">
-<meta property="og:site_name" content="BiteeNew">
-<meta property="og:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
-<meta property="og:updated_time" content="2018-06-12T10:23:24.529Z">
+<meta property="og:title" content="MQTT的Quality of Service（QoS）">
+<meta property="og:url" content="https://biteenew.github.io/mqtt/mqtt-qos/index.html">
+<meta property="og:site_name" content="Biteenew的博客">
+<meta property="og:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-qos0.png">
+<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-qos1.png">
+<meta property="og:image" content="https://biteenew.github.io/img/mqtt/mqtt-qos2.png">
+<meta property="og:updated_time" content="2018-06-12T10:24:08.178Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何安装并使用MQTT服务器——Mosquitto">
-<meta name="twitter:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
+<meta name="twitter:title" content="MQTT的Quality of Service（QoS）">
+<meta name="twitter:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta name="twitter:image" content="https://biteenew.github.io/img/mqtt/mqtt-qos0.png">
   
-    <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Biteenew的博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -50,24 +54,22 @@
 			<img src="/img/avatar.jpg" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">BiteeNew</a></h1>
+		  <h1 class="header-author"><a href="/">Biteenew</a></h1>
 		</hgroup>
 		
 
 		<nav class="header-menu">
 			<ul>
 			
-				<li><a href="/">主页</a></li>
+				<li><a href="/tags/Feelings">Feelings</a></li>
 	        
-				<li><a href="/archives/">归档</a></li>
-	        
-				<li><a href="/tags/MQTT">MQTT</a></li>
+				<li><a href="/tags/Java">Java</a></li>
 	        
 				<li><a href="/tags/SpringBoot">Spring-Boot</a></li>
 	        
-				<li><a href="/tags/nginx">nginx</a></li>
+				<li><a href="/tags/MQTT">MQTT</a></li>
 	        
-				<li><a href="/tags/Java">Java</a></li>
+				<li><a href="/tags/nginx">nginx</a></li>
 	        
 			</ul>
 		</nav>
@@ -109,12 +111,10 @@
 				<img src="/img/avatar.jpg" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">BiteeNew</h1>
+			  <h1 class="header-author js-header-author">Biteenew</h1>
 			</hgroup>
 			
 			
-			
-				
 			
 				
 			
@@ -138,17 +138,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/archives/">归档</a></li>
+					<li style="width: 20%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 20%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 20%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/nginx">nginx</a></li>
-		        
-					<li style="width: 16.666666666666668%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 20%"><a href="/tags/nginx">nginx</a></li>
 		        
 				</ul>
 			</nav>
@@ -163,21 +161,21 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-mosquitto-installation-guide" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mqtt/mqtt-qos" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      如何安装并使用MQTT服务器——Mosquitto
+      MQTT的Quality of Service（QoS）
     </h1>
   
 
 
         
-        <a href="/mosquitto-installation-guide/" class="archive-article-date">
-  	<time datetime="2018-01-08T05:30:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
+        <a href="/mqtt/mqtt-qos/" class="archive-article-date">
+  	<time datetime="2018-01-19T10:44:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-19</time>
 </a>
         
       </header>
@@ -185,18 +183,26 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。<a id="more"></a></p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>准备一台Linux主机：Mosquitto支持很多Linux发行版，例如Arch Linux、CentOS、Debian、Fedora以及Ubuntu等。本文使用的环境如下：</p>
+        <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。<a id="more"></a></p>
+<h2 id="2-MQTT的消息服务质量QoS"><a href="#2-MQTT的消息服务质量QoS" class="headerlink" title="2 MQTT的消息服务质量QoS"></a>2 MQTT的消息服务质量QoS</h2><p>MQTT的消息服务质量（Quality of Service，QoS）是MQTT协议确保消息可靠投递的一种机制。MQTT的消息服务质量共有三种：</p>
 <ul>
-<li>Ubuntu 16.04 LTS</li>
-<li>Mosquitto v1.4.14</li>
+<li>QoS 0 —— At most once，最多一次</li>
+<li>QoS 1 —— At least once，至少一次</li>
+<li>QoS 2 —— Exactly once，刚好一次</li>
 </ul>
-<h2 id="方式一：使用apt安装Mosquitto"><a href="#方式一：使用apt安装Mosquitto" class="headerlink" title="方式一：使用apt安装Mosquitto"></a>方式一：使用apt安装Mosquitto</h2><p>打开Ubuntu的终端，执行以下指令将Mosquitto的PPA软件源添加到Ubuntu的软件管理仓库：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa</span><br></pre></td></tr></table></figure></p>
-<p><strong>注明：使用Mosquitto的PPA软件源可以比较方便地对Mosquitto进行在线的版本更新。</strong><br>如果提示<code>apt-add-repository</code>命令未安装，可以通过下面的命令来安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo update &amp;&amp; sudo apt-get install python-software-properties</span><br></pre></td></tr></table></figure></p>
-<p>成功添加Mosquitto的PPA软件源后，就可以在线安装Mosquitto啦。执行以下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo update &amp;&amp; sudo apt-get install mosquitto</span><br></pre></td></tr></table></figure></p>
-<p>执行完以上命令，正常情况下Mosquitto就成功安装并启动了！</p>
-<h2 id="方式二：使用Docker安装Mosquitto"><a href="#方式二：使用Docker安装Mosquitto" class="headerlink" title="方式二：使用Docker安装Mosquitto"></a>方式二：使用Docker安装Mosquitto</h2><p>先安装Docker环境，如何安装Docker请参考<a href="https://www.docker.com" target="_blank" rel="noopener">官方网站的说明</a>。</p>
-<p>然后下载<a href="/files/mosquitto-v1.4.12.tar.gz">Mosquitto的Docker镜像</a></p>
+<h3 id="2-1-QoS-0-——-最多一次"><a href="#2-1-QoS-0-——-最多一次" class="headerlink" title="2.1 QoS 0 —— 最多一次"></a>2.1 QoS 0 —— 最多一次</h3><p>消息发送者使用<code>QoS 0</code>发送消息时，消息最多投递一次；即消息一旦发送出去，其可达性完全依靠TCP层的协议。所以使用<code>QoS 0</code>发送消息时有可能会导致消息丢失。<br><strong>图2.1 QoS 0消息发布示意图</strong><br><img src="/img/mqtt/mqtt-qos0.png" alt="qos0"><br>如上图所示，MQTT消息发送者使用<code>QoS 0</code>发送消息时，MQTT的消息接收者不会回复确认；消息的可达性完全建立在TCP协议上。</p>
+<h3 id="2-2-QoS-1-——-至少一次"><a href="#2-2-QoS-1-——-至少一次" class="headerlink" title="2.2 QoS 1 —— 至少一次"></a>2.2 QoS 1 —— 至少一次</h3><p>消息发送者使用<code>QoS 1</code>发送消息时，可以确保消息<strong>至少到达消息接收者一次，有可能会大于一次</strong>。<br>因为当使用<code>QoS 1</code>发送消息时，消息会在发送者和接收者之间进行确认（<code>PUBLISH</code>和<code>PUBACK</code>）。消息会先缓存在发送者本地；只有当<strong>消息发送者</strong>成功接收到<strong>消息接收者</strong>的回复之后，发送者才认为消息已经被成功投递，并删除该条消息的本地缓存。<br><strong>图2.2 QoS 1消息发布和确认示意图</strong><br><img src="/img/mqtt/mqtt-qos1.png" alt="qos1"><br>如上图所示，发送者发布消息（<code>PUBLISH</code>），接收者收到消息后会回复确认（<code>PUBACK</code>）。</p>
+<ol>
+<li>在网络比较好时，发布的消息（<code>PUBLISH</code>）能够在第一次就到达接收者，并且接收者回复的确认（<code>PUBACK</code>）也能在第一次回复就到达发送者端。这种情况下，该条发布的消息只会被接收者收到一次；</li>
+<li>在网络比较差时，发布的消息（<code>PUBLISH</code>）不能在第一次就到达接收者，或者接收者回复的确认（<code>PUBACK</code>）不能再第一次回复就到达发送者端。发送者就会重发，<strong>重发的消息会设置<code>DUP</code>标志位</strong>。这就会导致接收者可能会多次收到同一条消息</li>
+</ol>
+<p><strong>消息发送者与接收者通过每条消息的消息ID（Packet Identifier）来跟踪、确认每条消息。总之，发送者只有收到接收者的回复确认（<code>PUBACK</code>）后才会认为消息已经成功投递，并终止重发。</strong></p>
+<h3 id="2-3-QoS-2-——-刚好一次"><a href="#2-3-QoS-2-——-刚好一次" class="headerlink" title="2.3 QoS 2 —— 刚好一次"></a>2.3 QoS 2 —— 刚好一次</h3><p>消息发送者使用<code>QoS 2</code>发送消息时，可以确保消息<strong>仅仅到达消息接收者一次，不会多次到达也不会无法到达</strong>。<br><code>QoS 2</code>也是类似于<code>QoS 1</code>的消息发布，通过在发送者和接收者之间进行确认来确保消息的投递。不同的是，<code>QoS 2</code>比<code>QoS 1</code>采用更加复杂的确认机制来投递消息：<br><strong>图2.3 QoS 2消息发布和确认示意图</strong><br><img src="/img/mqtt/mqtt-qos2.png" alt="qos1"><br><strong>消息接收者会一直保存消息的缓存，直到它向发送者回复了<code>PUBCOMP</code>响应。</strong></p>
+<hr>
+<p><strong> <em>参考文章：</em> </strong></p>
+<ol>
+<li><a href="https://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels" target="_blank" rel="noopener">MQTT Essentials Part 6: Quality of Service 0, 1 &amp; 2</a></li>
+</ol>
 
       
 
@@ -211,10 +217,6 @@
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Mosquitto</a>
         		</li>
       		
 		</ul>
@@ -244,15 +246,20 @@
   
 <nav id="article-nav">
   
-    <a href="/mosquitto-log-analysis/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/mqtt/mqtt-lwt/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Mosquitto服务器的日志分析
+          MQTT的Last Will and Testament
         
       </div>
     </a>
   
+  
+    <a href="/mqtt/mqtt-retain/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MQTT的RETAIN标志位</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
@@ -269,19 +276,6 @@
             </div>
         </div>
         
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式一：使用apt安装Mosquitto"><span class="toc-number">2.</span> <span class="toc-text">方式一：使用apt安装Mosquitto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式二：使用Docker安装Mosquitto"><span class="toc-number">3.</span> <span class="toc-text">方式二：使用Docker安装Mosquitto</span></a></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
         
     </div>
 </aside>
@@ -307,7 +301,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 BiteeNew
+    		&copy; 2018 Biteenew
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -406,6 +400,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">

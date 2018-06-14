@@ -6,24 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>【译】以生产者-消费者为例阐述何如在Java中正确地使用wait，notify和notifyAll | BiteeNew</title>
+  <title>MQTT的Last Will and Testament | Biteenew的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="英文原文地址：How to use wait, notify and notifyAll in Java - Producer Consumer Example以下是我翻译的中文，在保留原意的基础上对原文的代码稍有调整。">
-<meta name="keywords" content="Java">
+  <meta name="description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta name="keywords" content="MQTT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【译】以生产者-消费者为例阐述何如在Java中正确地使用wait，notify和notifyAll">
-<meta property="og:url" content="https://biteenew.github.io/how-to-use-wait-notify-notifyall/index.html">
-<meta property="og:site_name" content="BiteeNew">
-<meta property="og:description" content="英文原文地址：How to use wait, notify and notifyAll in Java - Producer Consumer Example以下是我翻译的中文，在保留原意的基础上对原文的代码稍有调整。">
-<meta property="og:image" content="https://biteenew.github.io/img/black-face.jpg">
-<meta property="og:image" content="https://biteenew.github.io/img/wait-method.jpg">
-<meta property="og:updated_time" content="2018-06-12T10:22:51.225Z">
+<meta property="og:title" content="MQTT的Last Will and Testament">
+<meta property="og:url" content="https://biteenew.github.io/mqtt/mqtt-lwt/index.html">
+<meta property="og:site_name" content="Biteenew的博客">
+<meta property="og:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta property="og:updated_time" content="2018-06-12T10:23:48.793Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【译】以生产者-消费者为例阐述何如在Java中正确地使用wait，notify和notifyAll">
-<meta name="twitter:description" content="英文原文地址：How to use wait, notify and notifyAll in Java - Producer Consumer Example以下是我翻译的中文，在保留原意的基础上对原文的代码稍有调整。">
-<meta name="twitter:image" content="https://biteenew.github.io/img/black-face.jpg">
+<meta name="twitter:title" content="MQTT的Last Will and Testament">
+<meta name="twitter:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
   
-    <link rel="alternative" href="/atom.xml" title="BiteeNew" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Biteenew的博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -53,24 +50,22 @@
 			<img src="/img/avatar.jpg" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">BiteeNew</a></h1>
+		  <h1 class="header-author"><a href="/">Biteenew</a></h1>
 		</hgroup>
 		
 
 		<nav class="header-menu">
 			<ul>
 			
-				<li><a href="/">主页</a></li>
+				<li><a href="/tags/Feelings">Feelings</a></li>
 	        
-				<li><a href="/archives/">归档</a></li>
-	        
-				<li><a href="/tags/MQTT">MQTT</a></li>
+				<li><a href="/tags/Java">Java</a></li>
 	        
 				<li><a href="/tags/SpringBoot">Spring-Boot</a></li>
 	        
-				<li><a href="/tags/nginx">nginx</a></li>
+				<li><a href="/tags/MQTT">MQTT</a></li>
 	        
-				<li><a href="/tags/Java">Java</a></li>
+				<li><a href="/tags/nginx">nginx</a></li>
 	        
 			</ul>
 		</nav>
@@ -112,12 +107,10 @@
 				<img src="/img/avatar.jpg" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">BiteeNew</h1>
+			  <h1 class="header-author js-header-author">Biteenew</h1>
 			</hgroup>
 			
 			
-			
-				
 			
 				
 			
@@ -141,17 +134,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/archives/">归档</a></li>
+					<li style="width: 20%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 20%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 20%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/nginx">nginx</a></li>
-		        
-					<li style="width: 16.666666666666668%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 20%"><a href="/tags/nginx">nginx</a></li>
 		        
 				</ul>
 			</nav>
@@ -166,21 +157,21 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-how-to-use-wait-notify-notifyall" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mqtt/mqtt-lwt" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      【译】以生产者-消费者为例阐述何如在Java中正确地使用wait，notify和notifyAll
+      MQTT的Last Will and Testament
     </h1>
   
 
 
         
-        <a href="/how-to-use-wait-notify-notifyall/" class="archive-article-date">
-  	<time datetime="2018-06-09T02:33:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-09</time>
+        <a href="/mqtt/mqtt-lwt/" class="archive-article-date">
+  	<time datetime="2018-01-22T10:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-22</time>
 </a>
         
       </header>
@@ -188,21 +179,28 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <p>英文原文地址：<a href="https://javarevisited.blogspot.com/2015/07/how-to-use-wait-notify-and-notifyall-in.html" target="_blank" rel="noopener">How to use wait, notify and notifyAll in Java - Producer Consumer Example</a><br>以下是我翻译的中文，在保留原意的基础上对原文的代码稍有调整。<a id="more"></a></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在Java中，你可以使用<code>wait</code>，<code>notify</code>和<code>notifyAll</code>方法来实现线程间的通信。举个栗子，你的程序中运行着两个线程，分别是<strong>生产者线程</strong>和<strong>消费者线程</strong>。假设有一个固定容量的消息队列：当队列中有可消费的消息时，生产者线程会通知消费者线程进行消息的消费；同样地，当队列中有额外的空间时，消费者线程会通知生产者线程进行消息的生产。即：当消息队列满了，生产者线程应该停止生产并进入等待状态；当消息队列为空的时候，消费者线程应该停止消费并进入等待状态。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果某些线程正在等待某些条件变为<code>true</code>，你可以在条件改变的时候使用<code>notify</code>或者<code>notifyAll</code>方法来通知这些线程并唤醒它们。<code>notify</code>方法和<code>notifyAll</code>方法都会向等待的线程发送通知，区别在于：如果有多个线程处于等待状态，<code>notify</code>发送的通知只会被其中一个线程收到，且不能保证是哪个线程收到；而<code>notifyAll</code>发送的通知会被所有线程收到。如果只有一个线程在等待<strong>对象锁</strong>，那么<code>notify</code>和<code>notifyAll</code>的效果是一样的，发出的通知都会被该线程接收到。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>在这篇Java多线程教程中，你将会学习到如何使用<code>wait</code>，<code>notify</code>和<code>notifyAll</code>方法实现线程间通信，并解决生产者-消费者的问题。另外，如果你真正想掌握并发和多线程，我强烈建议你读一读<a href="https://www.amazon.com/dp/0321349601/?tag=javamysqlanta-20" target="_blank" rel="noopener">Java Concurrency In Practice</a>这本书，作者是Brian Goetz。没读过此书，你对Java多线程的理解是不完整的。</strong></p>
-<h2 id="如何在代码中使用wait和notify方法"><a href="#如何在代码中使用wait和notify方法" class="headerlink" title="如何在代码中使用wait和notify方法"></a>如何在代码中使用wait和notify方法</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>wait</code>和<code>notify</code>都是定义在<code>java.lang.Object</code>类中的方法。虽然它们都是很基础的概念，但是想在实际代码中使用它们却不是那么容易呢。不信你可以在面试中让面试者使用<code>wait</code>和<code>notify</code>徒手撸出代码来解决<strong>生产者-消费者问题</strong>？我相信很多人会给你一个黑人问号脸（What The Fuck？？？）：<br><img src="/img/black-face.jpg" alt="black-face"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;很多人都会对这个问题不知所措或者错误地使用<code>wait</code>和<code>notify</code>，例如代码块使用同步的地方错了、没有用正确的对象来调用<code>wait</code>方法。老实说，这些困扰着很多程序员。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于上述问题，第一个困惑：如何使用<code>wait</code>方法？<code>wait</code>方法不是<code>java.lang.Thread</code>类中定义的，所以你不能直接向调用<code>Thread.sleep()</code>那样来调用<code>wait</code>方法。正确调用<code>wait</code>方法的姿势应该是这样子的：<strong>你有一个被多个线程共享的对象实例，你需要使用该对象实例来调用<code>wait</code>方法！</strong> 在生产者-消费者问题里面，这个被共享的对象实例就是指被生产者和消费者共享的队列实例。第二个困惑：应该在同步代码块（synchronized block）中调用<code>wait</code>方法还是在同步的方法（synchronized method）中调用<code>wait</code>方法？如果使用同步代码块（synchronized block），哪个对象应该被放在同步块中？<strong>答案是：加锁的对象和你要获取锁的对象应该是同一个！</strong> 在我们这个例子中，就是那个队列的对象实例。<br><img src="/img/wait-method.jpg" alt="black-face"></p>
-<h2 id="在循环体中使用wait和notify方法，而不是if代码块中"><a href="#在循环体中使用wait和notify方法，而不是if代码块中" class="headerlink" title="在循环体中使用wait和notify方法，而不是if代码块中"></a>在循环体中使用wait和notify方法，而不是if代码块中</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;你现在已经知道需要使用一个同步的、共享的对象来调用<code>wait</code>方法，接下来要做的就是在<code>while</code>循环中调用<code>wait</code>方法，而不是在<code>if</code>代码块中调用。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们需要在某些条件成立的情况下调用<code>wait</code>方法，例如生产者线程应该在队列满的时候调用<code>wait</code>。这时候我们首先会想到使用<code>if</code>来判断条件是否成立。但是在<code>if</code>代码块中调用<code>wait</code>方法可能会产生BUG，因为线程有可能会在等待条件未改变的情况下被<strong>虚假唤醒（spurious wakeup）</strong>。如果没有使用循环来在线程唤醒后检查等待条件，就很可能会造成错误。例如会造成往满队列中写数据或者从空队列中取数据。这就是我们应该在循环体中调用<code>wait</code>，而不是在<code>if</code>块中调用<code>wait</code>的原因。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;另外，我也推荐阅读《Effective Java》这本书里面关于这部分内容的描述，也许是<code>wait</code>和<code>notify</code>使用的最佳实践。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;基于上述知识，这里给出在Java中调用<code>wait</code>和<code>notify</code>的标准方式：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在Java中调用wait方法的正确姿势</span></span><br><span class="line"><span class="keyword">synchronized</span> (sharedObject) &#123;</span><br><span class="line">   <span class="keyword">while</span> (condition) &#123;</span><br><span class="line">      sharedObject.wait(); <span class="comment">// 在循环体中调用wait方法：线程会释放对象锁，等待被唤醒</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// 在这里执行一些操作：例如将消息写入队列或者从队列中获取消息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正如我所说的那样，始终应该在循环体中调用<code>wait</code>。这个循环体是用来对线程<strong>进入等待</strong>和<strong>被唤醒后</strong>的条件进行检测。<strong>如果条件成立，并且<code>notify</code>或<code>notifyAll</code>方法在线程执行<code>wait</code>方法之前被调用了，线程就有可能一直<code>wait</code>，导致死锁。</strong></p>
-<h2 id="Java-wait-，notify-和notifyAll-的例子"><a href="#Java-wait-，notify-和notifyAll-的例子" class="headerlink" title="Java wait()，notify()和notifyAll()的例子"></a>Java wait()，notify()和notifyAll()的例子</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这个例子将演示如何使用我们上面讨论的标准方法来使用<code>wait()</code>，<code>notify()</code>和<code>notifyAll()</code>。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>前言：</strong> 在这个例子中，我们有两个线程：生产者线程和消费者线程，分别由Producer和Consumer两个类来表示（两个类均继承自Thread类）。我们使用<code>LinkedList</code>对象实例作为共享的消息队列。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>任务：</strong> 生产者运行在一个死循环中，并不断生产消息、将消息写入队列。通过<code>while(queue.size == maxSize)</code>条件来判断队列是否已满。<strong>记住：在执行<code>while(queue.size == maxSize)</code>条件检查之前，先给队列的对象实例加锁，保证我们执行检查时不会有其他线程修改队列。</strong> 如果队列满了，生产者线程会调用<code>wait</code>挂起，直到消费者消费了消息并调用<code>notify()</code>通知生产者继续消费。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.biteenew.java.base;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> java.util.Queue;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 生产者线程</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> luzhanghong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2018-06-09 14:23</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger LOGGER = LoggerFactory.getLogger(Producer.class);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Queue&lt;Integer&gt; queue;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> maxSize;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> messageCount = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Producer</span><span class="params">(Queue&lt;Integer&gt; queue, <span class="keyword">int</span> maxSize, String threadName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(threadName);</span><br><span class="line">        <span class="keyword">this</span>.queue = queue;</span><br><span class="line">        <span class="keyword">this</span>.maxSize = maxSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (queue) &#123;  <span class="comment">// 在条件判断之前给共享资源加锁</span></span><br><span class="line">                <span class="keyword">while</span> (queue.size() == maxSize) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        LOGGER.info(<span class="string">"消息队列已满: 生产者线程调用wait方法进入等待状态 ..."</span>);</span><br><span class="line">                        queue.wait(); <span class="comment">// 在循环体中：使用共享对象来调用wait方法，释放共享资源的锁</span></span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    sleep(<span class="number">1000</span>);  <span class="comment">// 让生产者每1秒钟生产一条消息</span></span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">int</span> messageId = messageCount++;</span><br><span class="line">                LOGGER.info(<span class="string">"生产消息: &#123;&#125;"</span>, messageId);</span><br><span class="line">                queue.add(messageId);  <span class="comment">// 将消息写入队列</span></span><br><span class="line">                queue.notifyAll();     <span class="comment">// 通知消费者线程，对消息进行消费</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 消费者线程</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> luzhanghong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2018-06-09 14:37</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger LOGGER = LoggerFactory.getLogger(Consumer.class);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Queue&lt;Integer&gt; queue;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Consumer</span><span class="params">(Queue&lt;Integer&gt; queue, String threadName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(threadName);</span><br><span class="line">        <span class="keyword">this</span>.queue = queue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (queue) &#123;  <span class="comment">// 在条件判断之前给共享资源加锁</span></span><br><span class="line">                <span class="keyword">while</span> (queue.isEmpty()) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        LOGGER.info(<span class="string">"消息队列为空: 消费者线程调用wait方法进入等待状态 ..."</span>);</span><br><span class="line">                        queue.wait();  <span class="comment">// 在循环体中：使用共享对象来调用wait方法，释放共享资源的锁</span></span><br><span class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                LOGGER.info(<span class="string">"消费消息: &#123;&#125;"</span>, queue.remove());</span><br><span class="line">                queue.notifyAll();     <span class="comment">// 通知生产者线程，可以继续生产消息了</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Put together</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Launcher</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Queue&lt;Integer&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> maxSize = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">new</span> Producer(queue, maxSize, <span class="string">"producer-thread"</span>).start();</span><br><span class="line">        <span class="keyword">new</span> Consumer(queue, <span class="string">"consumer-thread"</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>执行的结果如下日志所示：</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">2018-06-09 14:59:46.149 INFO  [producer-thread] 生产消息: 1</span><br><span class="line">2018-06-09 14:59:47.166 INFO  [producer-thread] 生产消息: 2</span><br><span class="line">2018-06-09 14:59:48.167 INFO  [producer-thread] 生产消息: 3</span><br><span class="line">2018-06-09 14:59:48.167 INFO  [consumer-thread] 消费消息: 1</span><br><span class="line">2018-06-09 14:59:48.167 INFO  [consumer-thread] 消费消息: 2</span><br><span class="line">2018-06-09 14:59:48.167 INFO  [consumer-thread] 消费消息: 3</span><br><span class="line">2018-06-09 14:59:48.167 INFO  [consumer-thread] 消息队列为空: 消费者线程调用<span class="built_in">wait</span>方法进入等待状态 ...</span><br><span class="line">2018-06-09 14:59:49.167 INFO  [producer-thread] 生产消息: 4</span><br><span class="line">2018-06-09 14:59:50.168 INFO  [producer-thread] 生产消息: 5</span><br><span class="line">2018-06-09 14:59:51.168 INFO  [producer-thread] 生产消息: 6</span><br><span class="line">2018-06-09 14:59:52.169 INFO  [producer-thread] 生产消息: 7</span><br><span class="line">2018-06-09 14:59:53.170 INFO  [producer-thread] 生产消息: 8</span><br><span class="line">2018-06-09 14:59:53.170 INFO  [producer-thread] 消息队列已满: 生产者线程调用<span class="built_in">wait</span>方法进入等待状态 ...</span><br><span class="line">2018-06-09 14:59:53.170 INFO  [consumer-thread] 消费消息: 4</span><br><span class="line">2018-06-09 14:59:53.170 INFO  [consumer-thread] 消费消息: 5</span><br><span class="line">2018-06-09 14:59:53.170 INFO  [consumer-thread] 消费消息: 6</span><br><span class="line">2018-06-09 14:59:53.170 INFO  [consumer-thread] 消费消息: 7</span><br><span class="line">2018-06-09 14:59:53.170 INFO  [consumer-thread] 消费消息: 8</span><br><span class="line">2018-06-09 14:59:53.170 INFO  [consumer-thread] 消息队列为空: 消费者线程调用<span class="built_in">wait</span>方法进入等待状态 ...</span><br><span class="line">2018-06-09 14:59:54.170 INFO  [producer-thread] 生产消息: 9</span><br><span class="line">2018-06-09 14:59:54.170 INFO  [consumer-thread] 消费消息: 9</span><br><span class="line">2018-06-09 14:59:54.170 INFO  [consumer-thread] 消息队列为空: 消费者线程调用<span class="built_in">wait</span>方法进入等待状态 ...</span><br><span class="line">2018-06-09 14:59:55.171 INFO  [producer-thread] 生产消息: 10</span><br><span class="line">2018-06-09 14:59:56.171 INFO  [producer-thread] 生产消息: 11</span><br><span class="line">2018-06-09 14:59:57.172 INFO  [producer-thread] 生产消息: 12</span><br><span class="line">2018-06-09 14:59:58.172 INFO  [producer-thread] 生产消息: 13</span><br><span class="line">2018-06-09 14:59:59.173 INFO  [producer-thread] 生产消息: 14</span><br><span class="line">2018-06-09 14:59:59.173 INFO  [producer-thread] 消息队列已满: 生产者线程调用<span class="built_in">wait</span>方法进入等待状态 ...</span><br><span class="line">2018-06-09 14:59:59.173 INFO  [consumer-thread] 消费消息: 10</span><br><span class="line">2018-06-09 14:59:59.173 INFO  [consumer-thread] 消费消息: 11</span><br><span class="line">2018-06-09 14:59:59.173 INFO  [consumer-thread] 消费消息: 12</span><br><span class="line">2018-06-09 14:59:59.173 INFO  [consumer-thread] 消费消息: 13</span><br><span class="line">2018-06-09 14:59:59.173 INFO  [consumer-thread] 消费消息: 14</span><br><span class="line">2018-06-09 14:59:59.173 INFO  [consumer-thread] 消息队列为空: 消费者线程调用<span class="built_in">wait</span>方法进入等待状态 ...</span><br><span class="line">2018-06-09 15:00:00.174 INFO  [producer-thread] 生产消息: 15</span><br><span class="line">2018-06-09 15:00:01.174 INFO  [producer-thread] 生产消息: 16</span><br><span class="line">2018-06-09 15:00:02.175 INFO  [producer-thread] 生产消息: 17</span><br><span class="line">2018-06-09 15:00:03.175 INFO  [producer-thread] 生产消息: 18</span><br><span class="line">2018-06-09 15:00:04.175 INFO  [producer-thread] 生产消息: 19</span><br><span class="line">2018-06-09 15:00:04.175 INFO  [producer-thread] 消息队列已满: 生产者线程调用<span class="built_in">wait</span>方法进入等待状态 ...</span><br></pre></td></tr></table></figure></p>
-<h2 id="使用wait-，notify-和notifyAll-需要注意的地方"><a href="#使用wait-，notify-和notifyAll-需要注意的地方" class="headerlink" title="使用wait()，notify()和notifyAll()需要注意的地方"></a>使用wait()，notify()和notifyAll()需要注意的地方</h2><ol>
-<li>你可以使用<code>wait()</code>和<code>notify()</code>方法来实现Java的线程间通信。不仅一个或两个线程可以这样做，多线程之间同样可以使用这种方法达到线程间通信的目的。</li>
-<li>要在同步方法或者同步块中调用<code>wait()</code>，<code>notify()</code>和<code>notifyAll()</code>方法，否则JVM会抛异常：<code>IllegalMonitorStateException</code>。</li>
-<li>要在循环体中调用<code>wait()</code>和<code>notify()</code>方法，不要在<code>if</code>块中调用。因为循环可以做到在<code>wait()</code>前后对条件进行检测。</li>
-<li>使用共享对象来调用<code>wait()</code>方法。</li>
-<li>最好使用<code>notifyAll()</code>而不是<code>notify()</code>，原因在<a href="https://javarevisited.blogspot.com/2012/10/difference-between-notify-and-notifyall-java-example.html" target="_blank" rel="noopener">这里</a>。</li>
+        <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。<a id="more"></a></p>
+<h2 id="2-MQTT的遗嘱消息"><a href="#2-MQTT的遗嘱消息" class="headerlink" title="2 MQTT的遗嘱消息"></a>2 MQTT的遗嘱消息</h2><p>MQTT协议通常使用在一些网络非常糟糕的应用场景，MQTT客户端与MQTT服务器之前的连接经常会由于网络原因<strong>非正常断开</strong>。<br><strong>说明：对于使用MQTT协议通信双方，连接的非正常断开指的是，客户端在没有向服务器发送<code>DISCONNET</code>请求的情况下断开了TCP连接。这在MQTT中称为连接的非正常断开，这种情况往往是由于网络突然中断、客户端掉电等不可预料的情况。</strong></p>
+<p>MQTT的遗嘱消息（<code>Last Will and Testament，简称LWT</code>）通常用于通知其他MQTT客户端自己的非正常掉线。LWT的具体使用如下说明：</p>
+<ul>
+<li>MQTT客户端在连接MQTT服务器的时候（即<code>CONNECT</code>请求），可以在连接参数里面设置Last Will消息，该消息跟正常的消息一样，也有topic；</li>
+<li>成功连接上MQTT服务器后，服务器会为该客户端保存该条Last Will消息；</li>
+<li>当MQTT服务器检测到MQTT客户端<strong>非正常断开</strong>后，MQTT服务器会将该客户端设置的该条Last Will消息推送给订阅了该topic的客户端。这样一来，其他客户端就能及时知道该客户端离线了；</li>
+<li>如果连接是正常断开（即客户端向服务器发送了<code>DISCONNET</code>请求），那么该条Last Will消息不会推送给其他订阅了该topic的客户端</li>
+</ul>
+<p><strong>客户端设置的Last Will消息跟其他发布的消息一样，也需要指定Topic、Payload、QoS以及RETAIN标志位。MQTT服务器会在以下四种情况下，将Last Will消息发布出去：</strong></p>
+<ul>
+<li>服务器检测到客户端的Socket I/O异常，或者服务器检测到客户端的网络有异常；</li>
+<li>服务器在指定的KeepAlive时间超时后，没有收到客户端的心跳消息；</li>
+<li>客户端主动关闭了Socket连接，但是关闭Socket连接之前并没有向服务器发送<code>DISCONNET</code>请求；</li>
+<li>由于协议错误原因，服务器关闭了客户端的Socket连接。</li>
+</ul>
+<p><strong>Last Will消息中的Topic、Payload、QoS以及RETAIN标志位跟通过<code>PUBLISH</code>指令发布消息的含义一样。区别在于Last Will消息是在建立连接的时候提交给MQTT服务器的。</strong></p>
+<hr>
+<p><strong> <em>参考文章：</em> </strong></p>
+<ol>
+<li><a href="https://www.hivemq.com/blog/mqtt-essentials-part-9-last-will-and-testament" target="_blank" rel="noopener">MQTT Essentials Part 9: Last Will and Testament</a></li>
 </ol>
-<p>以上就是Java的<code>wait()</code>，<code>notify()</code>和<code>notifyAll()</code>的正确使用姿势。</p>
 
       
 
@@ -216,7 +214,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
         		</li>
       		
 		</ul>
@@ -228,7 +226,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
+        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
         		</li>
       		
 		</ul>
@@ -246,9 +244,18 @@
   
 <nav id="article-nav">
   
+    <a href="/springboot/springboot-how-to-run/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          启动SpringBoot应用的几种方式
+        
+      </div>
+    </a>
   
-    <a href="/springboot-how-to-run/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SpringBoot应用的部署/启动</div>
+  
+    <a href="/mqtt/mqtt-qos/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MQTT的Quality of Service（QoS）</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -292,7 +299,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 BiteeNew
+    		&copy; 2018 Biteenew
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -391,6 +398,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">
