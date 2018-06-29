@@ -6,19 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>启动SpringBoot应用的几种方式 | Biteenew的博客</title>
+  <title>Archives: 2018 | Biteenew的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1 直接从IDE中运行通常开发过程中，我们需要从IDE中启动SpringBoot应用。这时候我们可以定义一个启动类，比如Launcher.java，此类包含一个启动方法public static void main(String[] args)；并在启动类Launcher.java上添加注解@SpringBootApplication。">
-<meta name="keywords" content="SpringBoot">
-<meta property="og:type" content="article">
-<meta property="og:title" content="启动SpringBoot应用的几种方式">
-<meta property="og:url" content="https://biteenew.github.io/springboot/springboot-how-to-run/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Biteenew的博客">
+<meta property="og:url" content="https://biteenew.github.io/archives/2018/page/3/index.html">
 <meta property="og:site_name" content="Biteenew的博客">
-<meta property="og:description" content="1 直接从IDE中运行通常开发过程中，我们需要从IDE中启动SpringBoot应用。这时候我们可以定义一个启动类，比如Launcher.java，此类包含一个启动方法public static void main(String[] args)；并在启动类Launcher.java上添加注解@SpringBootApplication。">
-<meta property="og:updated_time" content="2018-06-14T01:32:46.769Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="启动SpringBoot应用的几种方式">
-<meta name="twitter:description" content="1 直接从IDE中运行通常开发过程中，我们需要从IDE中启动SpringBoot应用。这时候我们可以定义一个启动类，比如Launcher.java，此类包含一个启动方法public static void main(String[] args)；并在启动类Launcher.java上添加注解@SpringBootApplication。">
+<meta name="twitter:title" content="Biteenew的博客">
   
     <link rel="alternative" href="/atom.xml" title="Biteenew的博客" type="application/atom+xml">
   
@@ -163,136 +158,80 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-springboot/springboot-how-to-run" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      启动SpringBoot应用的几种方式
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/mqtt/mosquitto-installation-guide/" class="archive-article-date">
+  	<time datetime="2018-01-08T05:30:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-08</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/mqtt/mosquitto-installation-guide/">如何安装并使用MQTT服务器——Mosquitto</a>
     </h1>
   
 
-
-        
-        <a href="/springboot/springboot-how-to-run/" class="archive-article-date">
-  	<time datetime="2018-03-20T11:44:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
-</a>
-        
-      </header>
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-直接从IDE中运行"><a href="#1-直接从IDE中运行" class="headerlink" title="1 直接从IDE中运行"></a>1 直接从IDE中运行</h2><p>通常开发过程中，我们需要从IDE中启动SpringBoot应用。这时候我们可以定义一个启动类，比如<code>Launcher.java</code>，此类包含一个启动方法<code>public static void main(String[] args)</code>；并在启动类<code>Launcher.java</code>上添加注解<code>@SpringBootApplication</code>。<a id="more"></a>最后，直接在IDE中，右键<code>Launcher.java</code>类执行<code>Run Launcher</code>即可启动SpringBoot应用。<code>Launcher.java</code>类代码如下所示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.biteenew.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Launcher</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Launcher.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="2-打包成JAR包运行"><a href="#2-打包成JAR包运行" class="headerlink" title="2 打包成JAR包运行"></a>2 打包成JAR包运行</h2><p>将SpringBoot打包成JAR包运行，一般用于部署的情况。将SpringBoot应用打包成JAR包，需要在pom.xml文件中添加<code>spring-boot-maven-plugin</code>依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>然后执行Maven打包指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip=<span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<p>打包结束，出现<code>BUILD SUCCESS</code>即打包成功。会在Maven项目目录中，出现target目录，里面包含了我们的JAR包。<br>最后使用java命令，运行JAR包：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar springboot-example.jar</span><br></pre></td></tr></table></figure></p>
-<h2 id="3-使用Maven-Plugin运行"><a href="#3-使用Maven-Plugin运行" class="headerlink" title="3 使用Maven Plugin运行"></a>3 使用Maven Plugin运行</h2><p>一般情况下，SpringBoot提供了Maven插件：<code>spring-boot-maven-plugin</code>提供了启动SpringBoot应用的另一种方式：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn spring-boot:run</span><br></pre></td></tr></table></figure></p>
-<p><strong>注意：必须在pom.xml文件所在的目录下指令该指令！</strong></p>
-<h2 id="4-打包成WAR包运行"><a href="#4-打包成WAR包运行" class="headerlink" title="4 打包成WAR包运行"></a>4 打包成WAR包运行</h2><p>一般情况下我们在使用SpringBoot进行应用开发之后，习惯将使用内嵌Tomcat（或者内嵌Jetty、Undertow容器）对SpringBoot的WEB应用进行部署运行，这种情况下我们一般使用JAR包进行部署；但是对于一些部署环境的要求，我们有时候需要使用外部的Tomcat服务器对SpringBoot应用进行部署，这时候需要将SpringBoot应用打包成WAR包。对于这种情况，SpringBoot同样提供了很方便的配置：</p>
-<h3 id="步骤1：修改pom-xml"><a href="#步骤1：修改pom-xml" class="headerlink" title="步骤1：修改pom.xml"></a>步骤1：修改pom.xml</h3><ul>
-<li>在pom.xml文件中将<code>&lt;packaging&gt;jar&lt;/packaging&gt;</code>改为<code>&lt;packaging&gt;war&lt;/packaging&gt;</code>，即把打包方式从JAR包改成WAR包；</li>
-<li>将Tomcat的依赖包的maven scope标记为<code>provided</code>，这样打包成WAR包的时候将不会包含内嵌Tomcat容器，由部署系统环境在运行时为SpringBoot提供Tomcat容器。</li>
-</ul>
-<p>pom.xml文件依赖如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="步骤2：-注册Servlet启动类"><a href="#步骤2：-注册Servlet启动类" class="headerlink" title="步骤2： 注册Servlet启动类"></a>步骤2： 注册Servlet启动类</h3><p>更新完pom.xml文件后，我们需要创建一个Servlet启动类<code>ServletInitializer.java</code>，继承自<code>SpringBootServletInitializer.java</code>类，外部WEB容器会调用此类。<br><strong><code>Application.java</code>为我们包含main方法的启动类。</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.biteenew.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.builder.SpringApplicationBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.web.support.SpringBootServletInitializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletInitializer</span> <span class="keyword">extends</span> <span class="title">SpringBootServletInitializer</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> SpringApplicationBuilder <span class="title">configure</span><span class="params">(SpringApplicationBuilder builder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> builder.sources(Application.class);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>完成上述两个步骤，我们就可以使用Maven对SpringBoot应用进行打包：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip=<span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
-<p>打包完毕后，在target文件夹中就会生成我们应用程序的WAR包。最后我们将WAR包拷贝到外部Tomcat服务器目录中，启动Tomcat即可。</p>
-<p><strong> <em>参考文章：</em> </strong></p>
-<ol>
-<li><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-running-your-application.html" target="_blank" rel="noopener">Running Your Application</a></li>
-<li><a href="https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#howto-create-a-deployable-war-file" target="_blank" rel="noopener">Packaging executable jar and war files</a></li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Mosquitto</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/SpringBoot//" class="article-tag-list-link color1">SpringBoot</a>
+        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/java/how-to-use-wait-notify-notifyall/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          【译】以生产者-消费者为例阐述何如在Java中正确地使用wait，notify和notifyAll
-        
-      </div>
-    </a>
   
   
-    <a href="/mqtt/mqtt-lwt/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MQTT的Last Will and Testament</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+    </div></section>
   
 
+    
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/archives/2018/page/2/">&laquo; 上一页</a><a class="page-number" href="/archives/2018/">1</a><a class="page-number" href="/archives/2018/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
   
 
-  
-
-  
-
-  
 
 
           </div>
@@ -317,8 +256,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
