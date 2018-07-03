@@ -60,6 +60,8 @@
 	        
 				<li><a href="/tags/MQTT">MQTT</a></li>
 	        
+				<li><a href="/tags/RabbitMQ">RabbitMQ</a></li>
+	        
 				<li><a href="/tags/nginx">Nginx</a></li>
 	        
 				<li><a href="/tags/SSL">SSL/TLS</a></li>
@@ -121,6 +123,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -133,17 +137,19 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 16.666666666666668%"><a href="/tags/Feelings">Feelings</a></li>
+					<li style="width: 14.285714285714286%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 14.285714285714286%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 14.285714285714286%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 14.285714285714286%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/nginx">Nginx</a></li>
+					<li style="width: 14.285714285714286%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/tags/SSL">SSL/TLS</a></li>
+					<li style="width: 14.285714285714286%"><a href="/tags/nginx">Nginx</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/tags/SSL">SSL/TLS</a></li>
 		        
 				</ul>
 			</nav>
@@ -159,6 +165,95 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-rabbitmq/rabbitmq_delay_queue" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/rabbitmq/rabbitmq_delay_queue/">RabbitMQ实现延迟队列</a>
+    </h1>
+  
+
+
+        
+        <a href="/rabbitmq/rabbitmq_delay_queue/" class="archive-article-date">
+  	<time datetime="2018-07-02T08:26:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-02</time>
+</a>
+        
+      </header>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RabbitMQ本身并不提供延迟队列的功能，但是我们仍然可以使用RabbitMQ的<code>TTL（Time-To-Live）</code>和<code>DLX（Dead Letter Exchanges）</code>这两个扩展特性来实现延迟队列，实现消息的延迟消费和延迟重试的功能。
+        
+          <a class="article-more-a" href="/rabbitmq/rabbitmq_delay_queue/#more">阅读全文 >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RabbitMQ</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/rabbitmq/rabbitmq_delay_queue/">阅读全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-ssl/convert_pem_to_jks" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -516,95 +611,6 @@
 
 
   
-    <article id="post-springboot/springboot-how-to-run" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/springboot/springboot-how-to-run/">启动SpringBoot应用的几种方式</a>
-    </h1>
-  
-
-
-        
-        <a href="/springboot/springboot-how-to-run/" class="archive-article-date">
-  	<time datetime="2018-03-20T11:44:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
-</a>
-        
-      </header>
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-直接从IDE中运行"><a href="#1-直接从IDE中运行" class="headerlink" title="1 直接从IDE中运行"></a>1 直接从IDE中运行</h2><p>通常开发过程中，我们需要从IDE中启动SpringBoot应用。这时候我们可以定义一个启动类，比如<code>Launcher.java</code>，此类包含一个启动方法<code>public static void main(String[] args)</code>；并在启动类<code>Launcher.java</code>上添加注解<code>@SpringBootApplication</code>。
-        
-          <a class="article-more-a" href="/springboot/springboot-how-to-run/#more">阅读全文 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/SpringBoot//" class="article-tag-list-link color1">SpringBoot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/springboot/springboot-how-to-run/">阅读全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
@@ -732,6 +738,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Mosquitto</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">

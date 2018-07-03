@@ -6,19 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteenew.github.io">
-  <title>MQTT的Last Will and Testament | Biteenew的博客</title>
+  <title>Archives: 2018/7 | Biteenew的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
-<meta name="keywords" content="MQTT">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MQTT的Last Will and Testament">
-<meta property="og:url" content="https://biteenew.github.io/mqtt/mqtt-lwt/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Biteenew的博客">
+<meta property="og:url" content="https://biteenew.github.io/archives/2018/07/index.html">
 <meta property="og:site_name" content="Biteenew的博客">
-<meta property="og:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
-<meta property="og:updated_time" content="2018-06-12T10:23:48.793Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MQTT的Last Will and Testament">
-<meta name="twitter:description" content="1 MQTT介绍MQTT是一种基于客户端/服务器架构（CS架构）的发布/订阅模式的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。">
+<meta name="twitter:title" content="Biteenew的博客">
   
     <link rel="alternative" href="/atom.xml" title="Biteenew的博客" type="application/atom+xml">
   
@@ -169,138 +164,72 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-mqtt/mqtt-lwt" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      MQTT的Last Will and Testament
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/rabbitmq/rabbitmq_delay_queue/" class="archive-article-date">
+  	<time datetime="2018-07-02T08:26:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-02</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/rabbitmq/rabbitmq_delay_queue/">RabbitMQ实现延迟队列</a>
     </h1>
   
 
-
-        
-        <a href="/mqtt/mqtt-lwt/" class="archive-article-date">
-  	<time datetime="2018-01-22T10:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-22</time>
-</a>
-        
-      </header>
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-MQTT介绍"><a href="#1-MQTT介绍" class="headerlink" title="1 MQTT介绍"></a>1 MQTT介绍</h2><p><a href="http://mqtt.org/" target="_blank" rel="noopener">MQTT</a>是一种基于客户端/服务器架构（CS架构）的<strong>发布/订阅模式</strong>的消息传输协议。它最初由IBM开发，并被设计成为轻量、开放、简单以及易于实现的消息传输协议。MQTT很适合应用于环境受限（窄带、高延迟、不可靠的网络环境）的机器与机器（M2M）、物联网（IoT）设备之间的消息通信。<a id="more"></a></p>
-<h2 id="2-MQTT的遗嘱消息"><a href="#2-MQTT的遗嘱消息" class="headerlink" title="2 MQTT的遗嘱消息"></a>2 MQTT的遗嘱消息</h2><p>MQTT协议通常使用在一些网络非常糟糕的应用场景，MQTT客户端与MQTT服务器之前的连接经常会由于网络原因<strong>非正常断开</strong>。<br><strong>说明：对于使用MQTT协议通信双方，连接的非正常断开指的是，客户端在没有向服务器发送<code>DISCONNET</code>请求的情况下断开了TCP连接。这在MQTT中称为连接的非正常断开，这种情况往往是由于网络突然中断、客户端掉电等不可预料的情况。</strong></p>
-<p>MQTT的遗嘱消息（<code>Last Will and Testament，简称LWT</code>）通常用于通知其他MQTT客户端自己的非正常掉线。LWT的具体使用如下说明：</p>
-<ul>
-<li>MQTT客户端在连接MQTT服务器的时候（即<code>CONNECT</code>请求），可以在连接参数里面设置Last Will消息，该消息跟正常的消息一样，也有topic；</li>
-<li>成功连接上MQTT服务器后，服务器会为该客户端保存该条Last Will消息；</li>
-<li>当MQTT服务器检测到MQTT客户端<strong>非正常断开</strong>后，MQTT服务器会将该客户端设置的该条Last Will消息推送给订阅了该topic的客户端。这样一来，其他客户端就能及时知道该客户端离线了；</li>
-<li>如果连接是正常断开（即客户端向服务器发送了<code>DISCONNET</code>请求），那么该条Last Will消息不会推送给其他订阅了该topic的客户端</li>
-</ul>
-<p><strong>客户端设置的Last Will消息跟其他发布的消息一样，也需要指定Topic、Payload、QoS以及RETAIN标志位。MQTT服务器会在以下四种情况下，将Last Will消息发布出去：</strong></p>
-<ul>
-<li>服务器检测到客户端的Socket I/O异常，或者服务器检测到客户端的网络有异常；</li>
-<li>服务器在指定的KeepAlive时间超时后，没有收到客户端的心跳消息；</li>
-<li>客户端主动关闭了Socket连接，但是关闭Socket连接之前并没有向服务器发送<code>DISCONNET</code>请求；</li>
-<li>由于协议错误原因，服务器关闭了客户端的Socket连接。</li>
-</ul>
-<p><strong>Last Will消息中的Topic、Payload、QoS以及RETAIN标志位跟通过<code>PUBLISH</code>指令发布消息的含义一样。区别在于Last Will消息是在建立连接的时候提交给MQTT服务器的。</strong></p>
-<hr>
-<p><strong> <em>参考文章：</em> </strong></p>
-<ol>
-<li><a href="https://www.hivemq.com/blog/mqtt-essentials-part-9-last-will-and-testament" target="_blank" rel="noopener">MQTT Essentials Part 9: Last Will and Testament</a></li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">MQTT</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RabbitMQ</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/MQTT//" class="article-tag-list-link color5">MQTT</a>
+        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/springboot/springboot-how-to-run/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          启动SpringBoot应用的几种方式
-        
-      </div>
-    </a>
   
   
-    <a href="/mqtt/mqtt-qos/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">MQTT的Quality of Service（QoS）</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+    </div></section>
   
 
-  
+    
 
-  
-
-  
-
-  
 
 
           </div>
@@ -325,8 +254,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
