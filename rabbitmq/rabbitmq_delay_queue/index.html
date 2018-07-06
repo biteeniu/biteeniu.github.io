@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="biteeniu">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;RabbitMQ本身并不提供延迟队列的功能，但是我们仍然可以使用RabbitMQ的TTL（Time-To-Live）和DLX（Dead Letter Exchanges）这两个扩展特性来实现延迟队列，实现消息的延迟消费和延迟重试的功能。">
 <meta property="og:image" content="https://biteeniu.github.io/img/rabbitmq/rabbitmq-delay-queue.png">
-<meta property="og:updated_time" content="2018-07-05T09:26:19.543Z">
+<meta property="og:updated_time" content="2018-07-06T03:22:11.426Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RabbitMQ实现延迟队列">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;RabbitMQ本身并不提供延迟队列的功能，但是我们仍然可以使用RabbitMQ的TTL（Time-To-Live）和DLX（Dead Letter Exchanges）这两个扩展特性来实现延迟队列，实现消息的延迟消费和延迟重试的功能。">
@@ -289,6 +289,19 @@
         </div>
         
         
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-延迟队列的应用场景"><span class="toc-number">1.</span> <span class="toc-text">1 延迟队列的应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Time-To-Live-Extensions-amp-Dead-Letter-Exchanges"><span class="toc-number">2.</span> <span class="toc-text">2 Time-To-Live Extensions &amp; Dead Letter Exchanges</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-设计思路"><span class="toc-number">3.</span> <span class="toc-text">3 设计思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-代码实现"><span class="toc-number">4.</span> <span class="toc-text">4 代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-延迟消费模式：方式一：为发布的每条消息设置TTL"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 延迟消费模式：方式一：为发布的每条消息设置TTL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-延迟消费模式：方式二：为队列设置TTL"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 延迟消费模式：方式二：为队列设置TTL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-延迟重试模式测试结果：采用方式二：为队列设置TTL"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 延迟重试模式测试结果：采用方式二：为队列设置TTL</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
     </div>
 </aside>
 
@@ -415,6 +428,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">MQTT</a>
               </li>
              
@@ -423,11 +440,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+                <a href="javascript:void(0)" class="js-tag color2">others</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">others</a>
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -436,10 +453,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">SSL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
             
             <div class="clearfix"></div>
