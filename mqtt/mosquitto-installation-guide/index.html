@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://biteeniu.github.io/mqtt/mosquitto-installation-guide/index.html">
 <meta property="og:site_name" content="BiteeNiu">
 <meta property="og:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
-<meta property="og:updated_time" content="2018-06-12T10:23:24.529Z">
+<meta property="og:updated_time" content="2018-07-17T06:47:50.957Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何安装并使用MQTT服务器——Mosquitto">
 <meta name="twitter:description" content="Eclipse Mosquitto™是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了MQTT协议的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像Arduino一样的微控制器。">
@@ -192,16 +192,16 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><a href="https://mosquitto.org" target="_blank" rel="noopener">Eclipse Mosquitto™</a>是一款开源的（EPL/EDL licensed）消息代理服务器，它实现了<a href="http://mqtt.org" target="_blank" rel="noopener">MQTT协议</a>的v3.1以及v3.1.1版本，并提供轻量级消息订阅/发布模式的服务。这使得Mosquitto非常适用于物联网领域的低功耗设备之间的消息通信，例如手机、嵌入式计算机以及像<a href="https://www.arduino.cc" target="_blank" rel="noopener">Arduino</a>一样的微控制器。<a id="more"></a></p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>准备一台Linux主机：Mosquitto支持很多Linux发行版，例如Arch Linux、CentOS、Debian、Fedora以及Ubuntu等。本文使用的环境如下：</p>
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><p>准备一台Linux主机：Mosquitto支持很多Linux发行版，例如Arch Linux、CentOS、Debian、Fedora以及Ubuntu等。本文使用的环境如下：</p>
 <ul>
 <li>Ubuntu 16.04 LTS</li>
 <li>Mosquitto v1.4.14</li>
 </ul>
-<h2 id="方式一：使用apt安装Mosquitto"><a href="#方式一：使用apt安装Mosquitto" class="headerlink" title="方式一：使用apt安装Mosquitto"></a>方式一：使用apt安装Mosquitto</h2><p>打开Ubuntu的终端，执行以下指令将Mosquitto的PPA软件源添加到Ubuntu的软件管理仓库：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-方式一：使用apt安装Mosquitto"><a href="#2-方式一：使用apt安装Mosquitto" class="headerlink" title="2 方式一：使用apt安装Mosquitto"></a>2 方式一：使用apt安装Mosquitto</h2><p>打开Ubuntu的终端，执行以下指令将Mosquitto的PPA软件源添加到Ubuntu的软件管理仓库：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa</span><br></pre></td></tr></table></figure></p>
 <p><strong>注明：使用Mosquitto的PPA软件源可以比较方便地对Mosquitto进行在线的版本更新。</strong><br>如果提示<code>apt-add-repository</code>命令未安装，可以通过下面的命令来安装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo update &amp;&amp; sudo apt-get install python-software-properties</span><br></pre></td></tr></table></figure></p>
 <p>成功添加Mosquitto的PPA软件源后，就可以在线安装Mosquitto啦。执行以下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo update &amp;&amp; sudo apt-get install mosquitto</span><br></pre></td></tr></table></figure></p>
 <p>执行完以上命令，正常情况下Mosquitto就成功安装并启动了！</p>
-<h2 id="方式二：使用Docker安装Mosquitto"><a href="#方式二：使用Docker安装Mosquitto" class="headerlink" title="方式二：使用Docker安装Mosquitto"></a>方式二：使用Docker安装Mosquitto</h2><p>先安装Docker环境，如何安装Docker请参考<a href="https://www.docker.com" target="_blank" rel="noopener">官方网站的说明</a>。</p>
+<h2 id="3-方式二：使用Docker安装Mosquitto"><a href="#3-方式二：使用Docker安装Mosquitto" class="headerlink" title="3 方式二：使用Docker安装Mosquitto"></a>3 方式二：使用Docker安装Mosquitto</h2><p>先安装Docker环境，如何安装Docker请参考<a href="https://www.docker.com" target="_blank" rel="noopener">官方网站的说明</a>。</p>
 <p>然后下载<a href="/files/mosquitto-v1.4.12.tar.gz">Mosquitto的Docker镜像</a></p>
 
       
@@ -283,7 +283,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式一：使用apt安装Mosquitto"><span class="toc-number">2.</span> <span class="toc-text">方式一：使用apt安装Mosquitto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式二：使用Docker安装Mosquitto"><span class="toc-number">3.</span> <span class="toc-text">方式二：使用Docker安装Mosquitto</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-准备工作"><span class="toc-number">1.</span> <span class="toc-text">1 准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-方式一：使用apt安装Mosquitto"><span class="toc-number">2.</span> <span class="toc-text">2 方式一：使用apt安装Mosquitto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-方式二：使用Docker安装Mosquitto"><span class="toc-number">3.</span> <span class="toc-text">3 方式二：使用Docker安装Mosquitto</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -303,13 +303,28 @@
   
 
   
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "https://biteeniu.github.io/mqtt/mosquitto-installation-guide/",
+  owner: 'biteeniu',
+  repo: 'biteeniu.github.io',
+  oauth: {
+    client_id: '6d8b0aa38b7fba8b5f44',
+    client_secret: 'efda2318ebf1f3d24e825d46bc36612db88cbedb',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
         </div>
       </div>
       <footer id="footer">
-  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
@@ -411,11 +426,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -431,7 +450,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -439,11 +458,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+                <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">

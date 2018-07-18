@@ -17,7 +17,7 @@
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;GitHub Pages是GitHub提供的一个免费使用的静态网站服务器，我们可以将我们的应用的静态资源文件上传到该服务器上，GitHub Pages可以帮我们实时部署，提供服务。">
 <meta property="og:image" content="https://biteeniu.github.io/img/others/github-new-repository.png">
 <meta property="og:image" content="https://biteeniu.github.io/img/others/hello.png">
-<meta property="og:updated_time" content="2018-07-05T09:16:05.814Z">
+<meta property="og:updated_time" content="2018-07-17T06:47:50.949Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何使用GitHub Pages">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;GitHub Pages是GitHub提供的一个免费使用的静态网站服务器，我们可以将我们的应用的静态资源文件上传到该服务器上，GitHub Pages可以帮我们实时部署，提供服务。">
@@ -195,8 +195,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a>是GitHub提供的一个免费使用的静态网站服务器，我们可以将我们的应用的静态资源文件上传到该服务器上，GitHub Pages可以帮我们实时部署，提供服务。<a id="more"></a>当我们修改静态资源文件后，推送到该服务器上，它会帮我们实时更新，非常方便！<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>GitHub Pages对每个GitHub账号的免费存储空间限制为1GB。由于是免费的主机，GitHub也对我们的服务使用的带宽有所限制。</strong>不过这对于我们一些个人的服务够了，比如个人博客。当然也可以自己花钱去阿里云或者亚马逊上买一台主机服务，申请自己的域名。</p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;想要使用GitHub Pages，必须拥有一个GitHub账号。GitHub账号移步<a href="https://github.com" target="_blank" rel="noopener">GitHub官网</a>。</p>
-<h2 id="开搞！开搞！"><a href="#开搞！开搞！" class="headerlink" title="开搞！开搞！"></a>开搞！开搞！</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录GitHub，然后创建一个仓库（<code>repository</code>）。仓库名称<strong>必须</strong>命名为：<code>username.github.io</code>格式，这里<code>username</code>就是你自己GitHub账号的<strong>用户名</strong>。如下图所示：<br><img src="/img/others/github-new-repository.png" alt="new-repository"></p>
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;想要使用GitHub Pages，必须拥有一个GitHub账号。GitHub账号移步<a href="https://github.com" target="_blank" rel="noopener">GitHub官网</a>。</p>
+<h2 id="2-开搞！开搞！"><a href="#2-开搞！开搞！" class="headerlink" title="2 开搞！开搞！"></a>2 开搞！开搞！</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录GitHub，然后创建一个仓库（<code>repository</code>）。仓库名称<strong>必须</strong>命名为：<code>username.github.io</code>格式，这里<code>username</code>就是你自己GitHub账号的<strong>用户名</strong>。如下图所示：<br><img src="/img/others/github-new-repository.png" alt="new-repository"></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上图我用的GitHub账号的用户名就是<code>biteeniu</code>。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仓库创建完毕后，将仓库拉到本地你的机器，开发你的服务：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:biteeniu/biteeniu.github.io.git</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;仓库clone下来后，进入本地仓库目录中：创建一个<code>index.html</code>文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> biteeniu.github.io/</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Hello World"</span> &gt; index.html</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用git指令add、commit并push到远程的GitHub仓库中：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add index.html</span><br><span class="line">git commit -m <span class="string">"add index.html"</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
@@ -245,11 +245,11 @@
   
 <nav id="article-nav">
   
-    <a href="/ci-cd/build-a-private-docker-registry/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/ci-cd/jenkins-ci/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          搭建一个私有的Docker镜像仓库
+          Jenkins+Git+Maven+Docker持续集成、部署实践
         
       </div>
     </a>
@@ -283,7 +283,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开搞！开搞！"><span class="toc-number">2.</span> <span class="toc-text">开搞！开搞！</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-准备工作"><span class="toc-number">1.</span> <span class="toc-text">1 准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-开搞！开搞！"><span class="toc-number">2.</span> <span class="toc-text">2 开搞！开搞！</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -303,13 +303,28 @@
   
 
   
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "https://biteeniu.github.io/others/how-to-use-github-pages/",
+  owner: 'biteeniu',
+  repo: 'biteeniu.github.io',
+  oauth: {
+    client_id: '6d8b0aa38b7fba8b5f44',
+    client_secret: 'efda2318ebf1f3d24e825d46bc36612db88cbedb',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
         </div>
       </div>
       <footer id="footer">
-  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
@@ -411,11 +426,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -431,7 +450,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -439,11 +458,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+                <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">

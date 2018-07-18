@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="BiteeNiu">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一般情况下，我们需要使用Docker镜像的时候，我们会去公共的镜像仓库，比如Docker Hub搜索并拉取到我们本地机器。但是实际开发中，公司内部通常都会自己搭建一个私有的Docker镜像仓库，用于存放公司内部开发的一些服务镜像，这些镜像是私有的，没经过授权的其他第三方机构或者个人开发者是没办法访问到的。">
 <meta property="og:image" content="https://biteeniu.github.io/img/docker/basic-auth-ui.png">
-<meta property="og:updated_time" content="2018-07-10T09:26:23.998Z">
+<meta property="og:updated_time" content="2018-07-17T06:47:50.966Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建一个私有的Docker镜像仓库">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一般情况下，我们需要使用Docker镜像的时候，我们会去公共的镜像仓库，比如Docker Hub搜索并拉取到我们本地机器。但是实际开发中，公司内部通常都会自己搭建一个私有的Docker镜像仓库，用于存放公司内部开发的一些服务镜像，这些镜像是私有的，没经过授权的其他第三方机构或者个人开发者是没办法访问到的。">
@@ -194,8 +194,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;一般情况下，我们需要使用Docker镜像的时候，我们会去公共的镜像仓库，比如<a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a>搜索并拉取到我们本地机器。但是实际开发中，公司内部通常都会自己搭建一个私有的Docker镜像仓库，用于存放公司内部开发的一些服务镜像，这些镜像是私有的，没经过授权的其他第三方机构或者个人开发者是没办法访问到的。<a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本篇文章记录了一次私有Docker镜像仓库的搭建过程。</p>
-<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本篇文章所使用的软件环境：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本次搭建过程所使用的机器只有一台，操作系统：<code>Ubuntu 16.04.4 LTS</code>；机器的IP（内网IP）为：<code>10.200.0.206</code>；所有的操作都是在这台机器上进行。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机器上安装的Docker版本为<code>1.12.3</code>；Docker-Compose版本为<code>1.9.0-rc4</code></p>
-<h2 id="2-搭建Docker私有镜像仓库"><a href="#2-搭建Docker私有镜像仓库" class="headerlink" title="2. 搭建Docker私有镜像仓库"></a>2. 搭建Docker私有镜像仓库</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从<a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a>上拉取<code>registry</code>镜像到本地（<code>retistry</code>是Docker官方提供的一个用于搭建镜像仓库的Docker镜像）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry</span><br></pre></td></tr></table></figure></p>
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作"></a>1 准备工作</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本篇文章所使用的软件环境：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本次搭建过程所使用的机器只有一台，操作系统：<code>Ubuntu 16.04.4 LTS</code>；机器的IP（内网IP）为：<code>10.200.0.206</code>；所有的操作都是在这台机器上进行。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机器上安装的Docker版本为<code>1.12.3</code>；Docker-Compose版本为<code>1.9.0-rc4</code></p>
+<h2 id="2-搭建Docker私有镜像仓库"><a href="#2-搭建Docker私有镜像仓库" class="headerlink" title="2 搭建Docker私有镜像仓库"></a>2 搭建Docker私有镜像仓库</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从<a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a>上拉取<code>registry</code>镜像到本地（<code>retistry</code>是Docker官方提供的一个用于搭建镜像仓库的Docker镜像）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编辑<code>docker-compose.yml</code>文件，增加以下内容：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Docker私有仓库@10.200.0.206:5000</span></span><br><span class="line">registry:</span><br><span class="line">  image: registry:latest</span><br><span class="line">  container_name: registry</span><br><span class="line">  ports:</span><br><span class="line">    - <span class="string">'5000:5000'</span></span><br><span class="line">  volumes:</span><br><span class="line">    - <span class="string">'/docker/volumes/registry:/var/lib/registry'</span></span><br><span class="line">  restart: always</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在<code>10.200.0.206</code>机器上创建一个目录<code>/docker/volumes/registry</code>作为<code>registry</code>的数据卷，并映射到容器中的<code>/var/lib/registry</code>目录。执行下面的指令运行<code>registry</code>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d registry</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运行成功后，我们可以另外找一台机器，然后从<a href="https://hub.docker.com" target="_blank" rel="noopener">Docker Hub</a>上找一个镜像，比如redis，拉取下来：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull redis</span><br></pre></td></tr></table></figure></p>
@@ -205,7 +205,7 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上，我们已经搭建了一个私有Docker镜像仓库<code>10.200.0.206:5000</code>并成功将<code>redis</code>镜像push到该仓库中。现在我们从该私有仓库拉取<code>redis</code>镜像来验证一下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker pull 10.200.0.206:5000/redis</span><br><span class="line"></span><br><span class="line">... 输出的日志信息 ...</span><br><span class="line">Using default tag: latest</span><br><span class="line">latest: Pulling from redis</span><br><span class="line">Digest: sha256:4b3351a079109964b63558c9ff1122ca8e0446992dba1ea6209e01a719818e7c</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> 10.200.0.206:5000/redis:latest</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;从输出的日志看，我们已经成功往新创建的私有仓库push镜像，并成功从新创建的私有仓库中pull镜像。我们也可以使用指令来查看私有仓库中有哪些镜像：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl 10.200.0.206:5000/v2/_catalog</span><br><span class="line"></span><br><span class="line">... 输出的日志信息 ... </span><br><span class="line">&#123;<span class="string">"repositories"</span>:[<span class="string">"redis"</span>]&#125;</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以看到我们的私有镜像仓库里面只有一个我们之前push上去的redis镜像。</p>
-<h2 id="3-为私有镜像仓库配置基本的安全认证"><a href="#3-为私有镜像仓库配置基本的安全认证" class="headerlink" title="3. 为私有镜像仓库配置基本的安全认证"></a>3. 为私有镜像仓库配置基本的安全认证</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面搭建的私有<code>Docker Registry</code>是没有任何访问的认证的，任何能访问到<code>10.200.0.206</code>主机的人都可以访问到该仓库。现在我们为私有仓库加上最基本的安全认证：<strong>用户名/密码认证</strong>。只有拥有正确用户名和密码的人才能够访问我们的私有仓库。</p>
+<h2 id="3-为私有镜像仓库配置基本的安全认证"><a href="#3-为私有镜像仓库配置基本的安全认证" class="headerlink" title="3 为私有镜像仓库配置基本的安全认证"></a>3 为私有镜像仓库配置基本的安全认证</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面搭建的私有<code>Docker Registry</code>是没有任何访问的认证的，任何能访问到<code>10.200.0.206</code>主机的人都可以访问到该仓库。现在我们为私有仓库加上最基本的安全认证：<strong>用户名/密码认证</strong>。只有拥有正确用户名和密码的人才能够访问我们的私有仓库。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;首先，创建一个存储密码的文件：用户名设置为<code>test</code>，密码设置为<code>123456</code>；我们这里将密码文件创建在宿主机的数据卷<code>/docker/volumes/registry/auth</code>目录下面：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /docker/volumes/registry &amp;&amp; mkdir auth</span><br><span class="line">docker run --entrypoint htpasswd registry:latest -Bbn <span class="built_in">test</span> 123456 &gt; auth/htpasswd</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后，修改<code>docker-compose.yml</code>文件，增加以下配置：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码认证数据卷映射：<code>/docker/volumes/registry/auth:/auth</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三个环境变量：<code>REGISTRY_AUTH: &quot;htpasswd&quot;</code>、<code>REGISTRY_AUTH_HTPASSWD_REALM: &quot;Registry Realm&quot;</code>和<code>REGISTRY_AUTH_HTPASSWD_PATH: &quot;/auth/htpasswd&quot;</code><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;修改后完整的<code>docker-compose.yml</code>文件内容如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Docker私有仓库@10.200.0.206:5000</span></span><br><span class="line">registry:</span><br><span class="line">  image: registry:latest</span><br><span class="line">  container_name: registry</span><br><span class="line">  ports:</span><br><span class="line">    - <span class="string">'5000:5000'</span></span><br><span class="line">  volumes:</span><br><span class="line">    - <span class="string">'/docker/volumes/registry:/var/lib/registry'</span> </span><br><span class="line">    - <span class="string">'/docker/volumes/registry/auth:/auth'</span></span><br><span class="line">  environment:</span><br><span class="line">    REGISTRY_AUTH: <span class="string">"htpasswd"</span></span><br><span class="line">    REGISTRY_AUTH_HTPASSWD_REALM: <span class="string">"Registry Realm"</span></span><br><span class="line">    REGISTRY_AUTH_HTPASSWD_PATH: <span class="string">"/auth/htpasswd"</span></span><br><span class="line">  restart: always</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最后，删除并重启<code>registry</code>容器：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose stop registry &amp;&amp; docker-compose rm -f registry &amp;&amp; docker-compose up -d registry</span><br></pre></td></tr></table></figure></p>
@@ -263,18 +263,18 @@
   
 <nav id="article-nav">
   
-    <a href="/ci-cd/jenkins-ci/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/redis/redis-delay-queue/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Jenkins+Git+Maven+Docker持续集成、部署实践
+          使用Redis实现延迟队列
         
       </div>
     </a>
   
   
-    <a href="/others/how-to-use-github-pages/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">如何使用GitHub Pages</div>
+    <a href="/ci-cd/jenkins-ci/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Jenkins+Git+Maven+Docker持续集成、部署实践</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -301,7 +301,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-准备工作"><span class="toc-number">1.</span> <span class="toc-text">1. 准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-搭建Docker私有镜像仓库"><span class="toc-number">2.</span> <span class="toc-text">2. 搭建Docker私有镜像仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-为私有镜像仓库配置基本的安全认证"><span class="toc-number">3.</span> <span class="toc-text">3. 为私有镜像仓库配置基本的安全认证</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-准备工作"><span class="toc-number">1.</span> <span class="toc-text">1 准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-搭建Docker私有镜像仓库"><span class="toc-number">2.</span> <span class="toc-text">2 搭建Docker私有镜像仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-为私有镜像仓库配置基本的安全认证"><span class="toc-number">3.</span> <span class="toc-text">3 为私有镜像仓库配置基本的安全认证</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -321,13 +321,28 @@
   
 
   
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "https://biteeniu.github.io/ci-cd/build-a-private-docker-registry/",
+  owner: 'biteeniu',
+  repo: 'biteeniu.github.io',
+  oauth: {
+    client_id: '6d8b0aa38b7fba8b5f44',
+    client_secret: 'efda2318ebf1f3d24e825d46bc36612db88cbedb',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
         </div>
       </div>
       <footer id="footer">
-  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
@@ -429,11 +444,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -449,7 +468,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -457,11 +476,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+                <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">

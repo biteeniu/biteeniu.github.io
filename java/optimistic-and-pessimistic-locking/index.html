@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://biteeniu.github.io/java/optimistic-and-pessimistic-locking/index.html">
 <meta property="og:site_name" content="BiteeNiu">
 <meta property="og:description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
-<meta property="og:updated_time" content="2018-06-13T10:02:54.190Z">
+<meta property="og:updated_time" content="2018-07-17T05:22:13.851Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）">
 <meta name="twitter:description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
@@ -194,7 +194,7 @@
         <p>事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。<a id="more"></a></p>
 <p>举个<strong>火车票售票</strong>的栗子（不加并发控制的情况）：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有两个旅客<strong>同时</strong>使用手机售票APP购买同一趟列车的车票。两人同时下单购买，售票系统后台<strong>同时（并发）</strong>接收到两个购票请求<strong>（对应两个事务）</strong>，都会先查询余票，由于是并发请求，所以两次余票查询结果的相同，这里假设查询结果的余票数量为<code>20</code>；然后售票系统开始对这两个事务进行处理：分别将系统中的余票数量修改为<code>20-1=19</code>并写回数据库。<strong>这样一来，就导致了实际售出<code>2</code>张车票，但是售票系统中的余票数量却只减少了<code>1</code>张</strong>。这就是缺少并发控制带来的问题。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）是并发控制主要采用的两种技术手段。</strong></p>
-<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><p><strong>悲观锁（Pessimistic Locking）：</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。也就是说，悲观锁对数据在并发的情况下被外界修改<br>悲观锁主要用于资源并发访问冲突激烈的情况<br><strong>乐观锁（Optimistic Locking）：</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定不会发生并发冲突，只在提交操作时检查是否违反数据完整性。</p>
+<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><p><strong>悲观锁（Pessimistic Locking）</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。也就是说，悲观锁对数据在并发的情况下被外界修改<br>悲观锁主要用于资源并发访问冲突激烈的情况<br><strong>乐观锁（Optimistic Locking）</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定不会发生并发冲突，只在提交操作时检查是否违反数据完整性。</p>
 <p>Transactional isolation is usually implemented by locking whatever is accessed in a transaction. There are two different approaches to transactional locking: Pessimistic locking and optimistic locking.<br>The disadvantage of pessimistic locking is that a resource is locked from the time it is first accessed in a transaction until the transaction is finished, making it inaccessible to other transactions during that time. If most transactions simply look at the resource and never change it, an exclusive lock may be overkill as it may cause lock contention, and optimistic locking may be a better approach. With pessimistic locking, locks are applied in a fail-safe way. In the banking application example, an account is locked as soon as it is accessed in a transaction. Attempts to use the account in other transactions while it is locked will either result in the other process being delayed until the account lock is released, or that the process transaction will be rolled back. The lock exists until the transaction has either been committed or rolled back.</p>
 <h2 id="Java中的悲观锁和乐观锁"><a href="#Java中的悲观锁和乐观锁" class="headerlink" title="Java中的悲观锁和乐观锁"></a>Java中的悲观锁和乐观锁</h2><p><strong> <em>参考文章：</em> </strong></p>
 <ol>
@@ -302,13 +302,28 @@
   
 
   
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "https://biteeniu.github.io/java/optimistic-and-pessimistic-locking/",
+  owner: 'biteeniu',
+  repo: 'biteeniu.github.io',
+  oauth: {
+    client_id: '6d8b0aa38b7fba8b5f44',
+    client_secret: 'efda2318ebf1f3d24e825d46bc36612db88cbedb',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
         </div>
       </div>
       <footer id="footer">
-  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
@@ -410,11 +425,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -430,7 +449,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -438,11 +457,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+                <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">
