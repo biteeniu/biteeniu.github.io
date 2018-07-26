@@ -249,6 +249,89 @@
 
 
   
+    <article id="post-redis/redis-distributed-lock" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/redis/redis-distributed-lock/">Redis分布式锁实践</a>
+    </h1>
+  
+
+
+        
+        <a href="/redis/redis-distributed-lock/" class="archive-article-date">
+  	<time datetime="2018-07-16T11:00:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-16</time>
+</a>
+        
+      </header>
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本文主要参考<a href="https://wudashan.cn/2017/10/23/Redis-Distributed-Lock-Implement/" target="_blank" rel="noopener">Redis分布式锁的正确实现方式（Java版）</a>这篇文章。个人觉得这篇文对Redis分布式锁的用法理解挺到位的，所以对这篇文章所提到的技术点进行一个实践、验证，加深自己对分布式锁的认识。
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Redis//" class="article-tag-list-link color1">Redis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ci-cd/build-a-private-docker-registry" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -437,7 +520,7 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a>是GitHub提供的一个免费使用的静态网站服务器，我们可以将我们的应用的静态资源文件上传到该服务器上，GitHub Pages可以帮我们实时部署，提供服务。
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a>是GitHub提供的一个免费使用的静态网站服务器，为我们提供<strong>免费的存储空间</strong>和<strong>免费的域名</strong>。我们可以将我们的应用的静态资源文件上传到该服务器上，GitHub Pages可以帮我们实时部署，提供服务。
         
       
 
@@ -464,89 +547,6 @@
 			 
         		<li class="article-tag-list-item">
         			<a href="/categories/others//" class="article-tag-list-link color2">others</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-java/java-delay-queue" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/java/java-delay-queue/">Java延迟队列DelayQueue</a>
-    </h1>
-  
-
-
-        
-        <a href="/java/java-delay-queue/" class="archive-article-date">
-  	<time datetime="2018-07-04T06:21:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-04</time>
-</a>
-        
-      </header>
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于分布式的延迟队列，我们可以使用RabbitMQ、Redis等实现；对于进程内的延迟队列，Java本身就提供了比较方便使用的<code>DelayQueue</code>。
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/DelayQueue//" class="article-tag-list-link color1">DelayQueue</a>
         		</li>
       		
 		</ul>
@@ -702,11 +702,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">

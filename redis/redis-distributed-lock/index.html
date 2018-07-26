@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteeniu.github.io">
-  <title>Archives: 2018/6 | BiteeNiu</title>
+  <title>Redis分布式锁实践 | BiteeNiu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="BiteeNiu">
-<meta property="og:url" content="https://biteeniu.github.io/archives/2018/06/index.html">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本文主要参考Redis分布式锁的正确实现方式（Java版）这篇文章。个人觉得这篇文对Redis分布式锁的用法理解挺到位的，所以对这篇文章所提到的技术点进行一个实践、验证，加深自己对分布式锁的认识。">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis分布式锁实践">
+<meta property="og:url" content="https://biteeniu.github.io/redis/redis-distributed-lock/index.html">
 <meta property="og:site_name" content="BiteeNiu">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本文主要参考Redis分布式锁的正确实现方式（Java版）这篇文章。个人觉得这篇文对Redis分布式锁的用法理解挺到位的，所以对这篇文章所提到的技术点进行一个实践、验证，加深自己对分布式锁的认识。">
+<meta property="og:updated_time" content="2018-07-26T03:47:42.707Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BiteeNiu">
+<meta name="twitter:title" content="Redis分布式锁实践">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本文主要参考Redis分布式锁的正确实现方式（Java版）这篇文章。个人觉得这篇文对Redis分布式锁的用法理解挺到位的，所以对这篇文章所提到的技术点进行一个实践、验证，加深自己对分布式锁的认识。">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNiu" type="application/atom+xml">
   
@@ -164,219 +169,190 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-redis/redis-distributed-lock" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis分布式锁实践
+    </h1>
+  
+
+
+        
+        <a href="/redis/redis-distributed-lock/" class="archive-article-date">
+  	<time datetime="2018-07-16T11:00:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-16</time>
+</a>
+        
+      </header>
     
+
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本文主要参考<a href="https://wudashan.cn/2017/10/23/Redis-Distributed-Lock-Implement/" target="_blank" rel="noopener">Redis分布式锁的正确实现方式（Java版）</a>这篇文章。个人觉得这篇文对Redis分布式锁的用法理解挺到位的，所以对这篇文章所提到的技术点进行一个实践、验证，加深自己对分布式锁的认识。<a id="more"></a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>注明：本文重点在于对Redis分布式锁的实践，学习并加深理解。文中涉及到的一些关于概念的解说（措辞有调整），摘抄自其它博文，文末的参考文章会列出来。</strong></p>
+<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对于分布式场景的应用，<strong>数据一致性</strong>一直是一个比较重要的话题。然而<strong>分布式的CAP原则</strong>告诉我们：任何一个分布式系统都无法同时满足<strong>一致性（Consistency）</strong>、<strong>可用性（Availability）</strong>和<strong>分区容错性（Partition tolerance）</strong>，最多只能同时满足其中两项。所以，很多情况下我们需要根据自己的业务场景来对这三项进行取舍。在大多数的场景中，我们不得不牺牲<strong>强一致性</strong>来换取系统的高可用性，只要在用户可接受的最终时间范围内来保证数据的<strong>最终一致性</strong>即可。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在分布式应用中，我们通常需要通过分布式事务、分布式锁等技术手段来保证数据的<strong>最终一致性</strong>。对于分布式锁的实现，目前比较常用的有以下几种方案：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. 基于数据库实现分布式锁<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 基于ZooKeeper实现分布式锁<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. 基于缓存（Redis，Memcached、Tair）实现分布式锁</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>我们对分布式锁的要求：</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. <strong>互斥性</strong>——在任意时刻，保证只有一个客户端（或线程）持有锁<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. <strong>不会发生死锁</strong>——锁可重入；若当前持有锁的客户端（或线程）崩溃了导致没有解锁，也能保证后续的其他客户端（或线程）能加锁<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. <strong>加锁和解锁的必须为同一个客户端（或线程）</strong>——除非加锁的客户端崩溃导致没有解锁，就等待锁超时自动解锁，否则其他客户端不能解别人的锁<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. <strong>具有高可用的加锁、解锁功能</strong>——只要大部分的Redis节点正常运行，客户端就可以加锁和解锁<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5. <strong>具有高性能的加锁、解锁操作</strong>——性能不好会导致分布式应用的响应很慢，甚至垮掉</p>
+<h2 id="2-加锁代码实现"><a href="#2-加锁代码实现" class="headerlink" title="2 加锁代码实现"></a>2 加锁代码实现</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本文使用Jedis客户端来实现Java与Redis的交互：<strong>如果只想知道正确的加锁、解锁代码可以直接翻到【2.3 加锁代码——正确的姿势】和【3.3 解锁代码——正确的姿势】。</strong><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="2-1-加锁代码——错误示例1"><a href="#2-1-加锁代码——错误示例1" class="headerlink" title="2.1 加锁代码——错误示例1"></a>2.1 加锁代码——错误示例1</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此示例代码基于Redis的<code>SETNX</code>和<code>EXPIRE</code>指令的组合来实现加锁操作，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取分布式锁——错误的示例1</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis Jedis实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key 用key来当锁，因为key是唯一的</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> clientId 执行加锁操作的客户端（或线程）的ID，必须保证唯一性</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> expireTime 锁的超时时间，单位秒——超过此时间未解锁则Redis会删除锁</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">lockWithWrongWay1</span><span class="params">(Jedis jedis, String key, String clientId, <span class="keyword">int</span> expireTime)</span> </span>&#123;</span><br><span class="line">    Long result = jedis.setnx(key, clientId);</span><br><span class="line">    <span class="keyword">if</span> (result == <span class="number">1</span>) &#123;</span><br><span class="line">        LOGGER.info(<span class="string">"Client[&#123;&#125;] execute SETNX ok."</span>, clientId);</span><br><span class="line">        <span class="comment">// 在执行EXPIRE指令之前，延时10秒钟，方便我们手动杀掉加锁的客户端进程（模拟客户端崩溃情况）</span></span><br><span class="line">        sleep(<span class="number">10000</span>);</span><br><span class="line">        <span class="comment">// 若在执行EXPIRE指令之前，该客户端突然崩溃，则无法设置过期时间，将发生死锁情况</span></span><br><span class="line">        <span class="keyword">return</span> jedis.expire(key, expireTime) == <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>SETNX</code>是<code>SET if Not eXists</code>，即仅在没有其他客户端对<code>key</code>进行加锁的情况下才可以加锁；<code>EXPIRE</code>的作用是给锁设置一个过期时间。<strong>这种使用方式存在的问题：客户端成功执行了<code>SETNX</code>指令，但是在执行<code>EXPIRE</code>指令的时候，客户端突然崩溃，就会导致死锁！</strong>下面我们写一个测试程序来验证一下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取分布式锁——错误的示例1的测试方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis Jedis</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testLockWithWrongWay1</span><span class="params">(Jedis jedis)</span> </span>&#123;</span><br><span class="line">    String key = <span class="string">"distributed-lock-key"</span>;  <span class="comment">// 加锁的key</span></span><br><span class="line">    String clientId = UUID.randomUUID().toString();  <span class="comment">// 客户端ID</span></span><br><span class="line">    <span class="keyword">int</span> expireTime = <span class="number">20</span>;  <span class="comment">// 锁的超时时间设置为20秒</span></span><br><span class="line">    LOGGER.info(<span class="string">"Client[&#123;&#125;] now try to get lock."</span>, clientId);</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="keyword">boolean</span> lockResult = RedisLockHelper.lockWithWrongWay1(jedis, key, clientId, expireTime);</span><br><span class="line">        <span class="keyword">if</span> (lockResult) &#123;</span><br><span class="line">            LOGGER.info(<span class="string">"Client[&#123;&#125;] get lock success."</span>, clientId);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            LOGGER.warn(<span class="string">"Client[&#123;&#125;] get lock failed."</span>, clientId);</span><br><span class="line">        &#125;</span><br><span class="line">        sleep(<span class="number">1000</span>);  <span class="comment">// 客户端每隔1秒尝试获取一次锁</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 程序启动入口方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> args args</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    GenericObjectPoolConfig poolConfig = <span class="keyword">new</span> GenericObjectPoolConfig();</span><br><span class="line">    JedisPool jedisPool = <span class="keyword">new</span> JedisPool(poolConfig, <span class="string">"10.200.0.206"</span>);</span><br><span class="line">    <span class="comment">// 测试获取分布式锁——错误的示例1</span></span><br><span class="line">    testLockWithWrongWay1(jedisPool.getResource());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**  ---- 测试过程描述 ----</span></span><br><span class="line"><span class="comment">* 同时启动两个测试进程（客户端），当其中一个进程（客户端）打印出"Client[···] execute SETNX ok."日志的时候，手动结束该进程（客户端）。</span></span><br><span class="line"><span class="comment">* 可以观察到，另一个进程（客户端）一直在尝试获取锁，但是始终无法获取到锁，该锁也始终不会被释放。这就是死锁的现象。</span></span><br><span class="line"><span class="comment">* **/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**---- 输出的日志信息 ----**/</span></span><br><span class="line"><span class="comment">// 成功加锁的客户端输出的日志</span></span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">25</span> <span class="number">17</span>:<span class="number">42</span>:<span class="number">39.034</span> INFO  Client[<span class="number">09f</span>c0441-c443-<span class="number">461e-8</span>e17-f463691dfef0] now <span class="keyword">try</span> to get lock.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">25</span> <span class="number">17</span>:<span class="number">42</span>:<span class="number">39.045</span> INFO  Client[<span class="number">09f</span>c0441-c443-<span class="number">461e-8</span>e17-f463691dfef0] execute SETNX ok.</span><br><span class="line"></span><br><span class="line"><span class="comment">// 始终无法加锁的客户端输出的日志</span></span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">25</span> <span class="number">17</span>:<span class="number">42</span>:<span class="number">43.236</span> INFO  Client[<span class="number">212038</span>bd-e525-<span class="number">4</span>cfe-b155-e8a2b614193d] now <span class="keyword">try</span> to get lock.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">25</span> <span class="number">17</span>:<span class="number">42</span>:<span class="number">43.288</span> WARN  Client[<span class="number">212038</span>bd-e525-<span class="number">4</span>cfe-b155-e8a2b614193d] get lock failed.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">25</span> <span class="number">17</span>:<span class="number">42</span>:<span class="number">44.291</span> WARN  Client[<span class="number">212038</span>bd-e525-<span class="number">4</span>cfe-b155-e8a2b614193d] get lock failed.</span><br><span class="line">··· ···</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">25</span> <span class="number">17</span>:<span class="number">49</span>:<span class="number">43.937</span> WARN  Client[<span class="number">212038</span>bd-e525-<span class="number">4</span>cfe-b155-e8a2b614193d] get lock failed.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">25</span> <span class="number">17</span>:<span class="number">49</span>:<span class="number">44.940</span> WARN  Client[<span class="number">212038</span>bd-e525-<span class="number">4</span>cfe-b155-e8a2b614193d] get lock failed.</span><br></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由于<code>SETNX</code>和<code>EXPIRE</code>这两条指令是分别执行的，整个加锁操作不具备<strong>原子性</strong>，在执行<code>EXPIRE</code>之前加锁客户端突然崩溃了，导致没有设置锁的超时时间，形成死锁。使用<code>SETNX</code>和<code>EXPIRE</code>两条指令组合来实现加锁操作的做法，有可能是所使用的Redis版本过低（<code>&lt; Redis 2.6.12</code>），<code>SET</code>指令还不支持多参数（同时设置超时时间）所做的一种方案。</p>
+<h3 id="2-2-加锁代码——错误示例2"><a href="#2-2-加锁代码——错误示例2" class="headerlink" title="2.2 加锁代码——错误示例2"></a>2.2 加锁代码——错误示例2</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此示例代码基于Redis的<code>SETNX</code>、<code>GET</code>和<code>GETSET</code>三个指令的组合来实现加锁操作，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取分布式锁——错误的示例2</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis Jedis实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key 用key来当锁，因为key是唯一的</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> expireTime 锁的超时时间，单位秒——超过此时间未解锁则Redis会删除锁</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> true-加锁成功；false-加锁失败</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">lockWithWrongWay2</span><span class="params">(Jedis jedis, String key, <span class="keyword">int</span> expireTime)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> expires = System.currentTimeMillis() + (expireTime * <span class="number">1000L</span>);</span><br><span class="line">    <span class="comment">// 若当前锁不存在，则SETNX可以设置成功（成功加锁，将过期时间作为锁的value值），返回1</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="number">1</span> == jedis.setnx(key, String.valueOf(expires))) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 若当前锁存在，则获取锁的过期时间</span></span><br><span class="line">    String value = jedis.get(key);</span><br><span class="line">    <span class="keyword">if</span> (value != <span class="keyword">null</span> &amp;&amp; Long.parseLong(value) &lt; System.currentTimeMillis()) &#123;</span><br><span class="line">        <span class="comment">// 锁已经过期，获取上一个锁的过期时间，并设置当前锁的过期时间</span></span><br><span class="line">        String oldValue = jedis.getSet(key, String.valueOf(expires));</span><br><span class="line">        <span class="keyword">if</span> (oldValue != <span class="keyword">null</span> &amp;&amp; oldValue.equals(value)) &#123;</span><br><span class="line">            <span class="comment">// 考虑多线程并发的情况，只有一个线程的设置值与当前值相同，它才有加锁的权利</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>上面加锁代码的问题所在：</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. 锁的过期时间由客户端生成，并通过获取锁的过期时间来跟客户端本地时间进行比较来判断锁是否已经过期；这就需要分布式中的每个客户端的时间必须同步。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 锁不具备加锁者的唯一标识，这意味着任何其他客户端都可以解开这个锁（<code>DEL指令删除锁</code>）。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. 锁过期时，若多个客户端同时执行<code>GETSET</code>指令进行加锁，虽然最终只有一个客户端可以加锁，但是该客户端的<strong>锁的过期时间</strong>可能被其他客户端覆盖。</p>
+<h3 id="2-3-加锁代码——正确的姿势"><a href="#2-3-加锁代码——正确的姿势" class="headerlink" title="2.3 加锁代码——正确的姿势"></a>2.3 加锁代码——正确的姿势</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总结一下上面两种错误的加锁方式：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. 错误示例1——加锁代码不具备原子性，容易被加锁客户端的异常、崩溃打断加锁过程而出现死锁。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 错误示例2——(1) 加锁客户端自己管理锁的过期时间，当多个客户端时间不同步时，容易出现加锁、解锁混乱；(2) 锁不具备加锁者的唯一标识，其他人可以随便解锁；这样的锁没什么意义。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>正确的加锁代码应该是这样的（这个要求Redis版本要大于<code>2.6.12</code>，因为SET指令只有<code>2.6.12</code>以上的版本才支持多参数）：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String LOCK_SUCCESS = <span class="string">"OK"</span>;  <span class="comment">// OK表示加锁成功</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String EX = <span class="string">"EX"</span>;  <span class="comment">// 设置键的过期时间为second秒。SET key value EX second效果等同于SETEX key second value。</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String PX = <span class="string">"PX"</span>;  <span class="comment">// 设置键的过期时间为millisecond毫秒。SET key value PX millisecond效果等同于PSETEX key millisecond value。</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String NX = <span class="string">"NX"</span>;  <span class="comment">// 只在键不存在时，才对键进行设置操作。SET key value NX 效果等同于SETNX key value。</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String XX = <span class="string">"XX"</span>;  <span class="comment">// 只在键已经存在时，才对键进行设置操作。</span></span><br><span class="line"></span><br><span class="line">··· ···</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取分布式锁——正确的姿势</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis Jedis实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key 用key来当锁，因为key是唯一的</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> clientId 执行加锁操作的客户端（或线程）的ID，必须保证唯一性</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> expireTime 锁的超时时间，单位秒——超过此时间未解锁则Redis会删除锁</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> true-加锁成功；false-加锁失败</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">lockWithCorrectWay</span><span class="params">(Jedis jedis, String key, String clientId, <span class="keyword">int</span> expireTime)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> LOCK_SUCCESS.equals(jedis.set(key, clientId, NX, PX, expireTime*<span class="number">1000L</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>上面的加锁代码虽然解决了之前的问题，但是我觉得还是有个小小的缺点：<code>不可重入</code>。同一个客户端不能在锁过期之前重入该锁，当然锁的可重入在某些场景并不是非常必要。虽然不可重入，但是并不会导致死锁，因为锁本身有过期时间。</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我们接下来编写一个测试方法来测试该锁的可重入性：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取分布式锁——正确的姿势——测试锁的可重入性</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis Jedis</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testReentrantLockWithCorrectWay</span><span class="params">(Jedis jedis)</span> </span>&#123;</span><br><span class="line">    String key = <span class="string">"distributed-lock-key"</span>;  <span class="comment">// 加锁的key</span></span><br><span class="line">    String clientId = UUID.randomUUID().toString();  <span class="comment">// 客户端ID</span></span><br><span class="line">    <span class="keyword">int</span> expireTime = <span class="number">5</span>;  <span class="comment">// 锁的超时时间设置为5秒</span></span><br><span class="line">    LOGGER.info(<span class="string">"Client[&#123;&#125;] now try to get lock."</span>, clientId);</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="keyword">boolean</span> lockResult = RedisLockHelper.lockWithCorrectWay(jedis, key, clientId, expireTime);</span><br><span class="line">        <span class="keyword">if</span> (lockResult) &#123;</span><br><span class="line">            LOGGER.info(<span class="string">"Client[&#123;&#125;] get lock success."</span>, clientId);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            LOGGER.warn(<span class="string">"Client[&#123;&#125;] get lock failed."</span>, clientId);</span><br><span class="line">        &#125;</span><br><span class="line">        sleep(<span class="number">2000</span>);  <span class="comment">// 同一个客户端每隔2秒尝试获取一次锁</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**---- 输出的日志信息 ----**/</span></span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">10</span>:<span class="number">36</span>:<span class="number">39.514</span> INFO  Client[<span class="number">5</span>c76a05f-a53e-<span class="number">4568</span>-b03b-bf142269f55e] now <span class="keyword">try</span> to get lock.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">10</span>:<span class="number">36</span>:<span class="number">39.521</span> INFO  Client[<span class="number">5</span>c76a05f-a53e-<span class="number">4568</span>-b03b-bf142269f55e] get lock success.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">10</span>:<span class="number">36</span>:<span class="number">41.525</span> WARN  Client[<span class="number">5</span>c76a05f-a53e-<span class="number">4568</span>-b03b-bf142269f55e] get lock failed.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">10</span>:<span class="number">36</span>:<span class="number">43.527</span> WARN  Client[<span class="number">5</span>c76a05f-a53e-<span class="number">4568</span>-b03b-bf142269f55e] get lock failed.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">10</span>:<span class="number">36</span>:<span class="number">45.530</span> INFO  Client[<span class="number">5</span>c76a05f-a53e-<span class="number">4568</span>-b03b-bf142269f55e] get lock success.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">10</span>:<span class="number">36</span>:<span class="number">47.532</span> WARN  Client[<span class="number">5</span>c76a05f-a53e-<span class="number">4568</span>-b03b-bf142269f55e] get lock failed.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">10</span>:<span class="number">36</span>:<span class="number">49.535</span> WARN  Client[<span class="number">5</span>c76a05f-a53e-<span class="number">4568</span>-b03b-bf142269f55e] get lock failed.</span><br><span class="line"><span class="number">2018</span>-<span class="number">07</span>-<span class="number">26</span> <span class="number">10</span>:<span class="number">36</span>:<span class="number">51.539</span> INFO  Client[<span class="number">5</span>c76a05f-a53e-<span class="number">4568</span>-b03b-bf142269f55e] get lock success.</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 可以看到：锁的过期时间为5秒，在锁过期之前，就算是同一个客户端也没法重入该锁，说明该锁不具备可重入性。</span></span><br><span class="line"><span class="comment">* **/</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="3-解锁代码实现"><a href="#3-解锁代码实现" class="headerlink" title="3 解锁代码实现"></a>3 解锁代码实现</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;按照上面的尿性，同样先来两个错误的解锁示例代码，再来正确的解锁代码。</p>
+<h3 id="3-1-解锁代码——错误示例1"><a href="#3-1-解锁代码——错误示例1" class="headerlink" title="3.1 解锁代码——错误示例1"></a>3.1 解锁代码——错误示例1</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此示例直接使用Redis的<code>DEL</code>指令来删解锁：<strong>此解锁代码问题在于，它没有判断这把锁是不是它持有的就删除。这样一来，就可以随便解开任意客户端加的锁，这是不允许的。</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 解锁——错误的示例1</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis Jedis</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key key</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unlockWithWrongWay1</span><span class="params">(Jedis jedis, String key)</span> </span>&#123;</span><br><span class="line">    jedis.del(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-2-解锁代码——错误示例2"><a href="#3-2-解锁代码——错误示例2" class="headerlink" title="3.2 解锁代码——错误示例2"></a>3.2 解锁代码——错误示例2</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此示例在错误示例1的基础上增加了一个判断操作，判断该锁是不是自己的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 解锁——错误的示例2</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis Jedis</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key key</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> clientId 客户端ID，具备唯一性</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">unlockWithWrongWay2</span><span class="params">(Jedis jedis, String key, String clientId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (clientId.equals(jedis.get(key))) &#123;</span><br><span class="line">        jedis.del(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这样的解锁代码同样有问题：<strong>不具备原子性</strong>。解锁代码判断该锁确实属于自己之后，若在执行<code>DEL</code>指令之前，该锁突然过期并且被别的客户端成功加锁，此时再执行<code>DEL</code>指令，就会删掉别人的锁。导致当前该锁本应存在，但是却被误删而变得不存在，导致数据一致性失效。</p>
+<h3 id="3-3-解锁代码——正确的姿势"><a href="#3-3-解锁代码——正确的姿势" class="headerlink" title="3.3 解锁代码——正确的姿势"></a>3.3 解锁代码——正确的姿势</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Long UNLOCK_SUCCESS = <span class="number">1L</span>;    <span class="comment">// 1表示解锁成功</span></span><br><span class="line"></span><br><span class="line">··· ···</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 解锁——正确的姿势</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> jedis Jedis</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> key key</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> clientId 客户端ID，具备唯一性</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">unlockWithCorrectWay</span><span class="params">(Jedis jedis, String key, String clientId)</span> </span>&#123;</span><br><span class="line">    String script = <span class="string">"if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end"</span>;</span><br><span class="line">    Object result = jedis.eval(script, Collections.singletonList(key), Collections.singletonList(clientId));</span><br><span class="line">    <span class="keyword">return</span> UNLOCK_SUCCESS.equals(result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面的解锁代码使用了Redis的<code>EVAL</code>指令来运行<a href="http://www.lua.org/" target="_blank" rel="noopener">Lua脚本</a>：从Redis 2.6.0版本开始，通过内置的Lua解释器，可以使用<code>EVAL</code>命令对Lua脚本进行求值。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>说明一下（摘抄自<a href="http://redisdoc.com/script/eval.html#id2" target="_blank" rel="noopener">脚本的原子性</a>）：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Redis 使用单个 Lua 解释器去运行所有脚本，并且， Redis 也保证脚本会以原子性(atomic)的方式执行：当某个脚本正在运行的时候，不会有其他脚本或 Redis 命令被执行。这和使用 MULTI / EXEC 包围的事务很类似。在其他别的客户端看来，脚本的效果(effect)要么是不可见的(not visible)，要么就是已完成的(already completed)。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;另一方面，这也意味着，执行一个运行缓慢的脚本并不是一个好主意。写一个跑得很快很顺溜的脚本并不难，因为脚本的运行开销(overhead)非常少，但是当你不得不使用一些跑得比较慢的脚本时，请小心，因为当这些蜗牛脚本在慢吞吞地运行的时候，其他客户端会因为服务器正忙而无法执行命令。</strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里<code>if redis.call(&#39;get&#39;, KEYS[1]) == ARGV[1] then return redis.call(&#39;del&#39;, KEYS[1]) else return 0 end</code>就是一个Lua脚本代码。在Lua中，可以使用<code>redis.call()</code>来执行Redis指令。我们将<code>key</code>赋值给<code>KEYS[1]</code>，将<code>clientId</code>赋值给<code>ARGV[1]</code>。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面脚本的意思是：先执行Redis的<code>GET</code>指令并将获取到的结果与<code>clientId</code>进行对比（判断锁是不是自己的），如果锁是自己的则进一步执行Redis的<code>DEL</code>指令删除锁并返回删除结果；如果锁不是自己的则直接返回0。这个脚本涉及到了两个Redis指令，两个指令的组合的原子性由Redis保证（上面已经说明）。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在Redis中执行Lua脚本的简单用法可以参考这里：<a href="http://redisdoc.com/script/eval.html#eval" target="_blank" rel="noopener">EVAL</a>&nbsp;或这里：<a href="http://www.cnblogs.com/huangxincheng/p/6230129.html" target="_blank" rel="noopener">http://www.cnblogs.com/huangxincheng/p/6230129.html</a></p>
+<h2 id="4-结语"><a href="#4-结语" class="headerlink" title="4 结语"></a>4 结语</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面就说完了Redis分布式锁的实践过程，个人觉得除了锁的可重入性之外，另外一点比较难把握的就是锁的过期时间。</p>
+<p><strong> <em>参考文章：</em> </strong></p>
+<ol>
+<li><a href="https://wudashan.cn/2017/10/23/Redis-Distributed-Lock-Implement/" target="_blank" rel="noopener">Redis分布式锁的正确实现方式（Java版）</a></li>
+<li><a href="http://www.54tianzhisheng.cn/2018/04/24/Distributed_lock/" target="_blank" rel="noopener">分布式锁看这篇就够了</a></li>
+<li><a href="http://www.hollischuang.com/archives/1716" target="_blank" rel="noopener">分布式锁的几种实现方式~</a></li>
+<li><a href="http://redisdoc.com/index.html" target="_blank" rel="noopener">Redis 命令参考</a></li>
+<li><a href="https://redis.io/topics/distlock" target="_blank" rel="noopener">Distributed locks with Redis</a></li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/ssl/convert_pem_to_jks/" class="archive-article-date">
-  	<time datetime="2018-06-29T05:51:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-29</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/ssl/convert_pem_to_jks/">如何将PEM证书转换成JKS证书</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">SSL</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Redis</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/SSL//" class="article-tag-list-link color4">SSL</a>
+        			<a href="/categories/Redis//" class="article-tag-list-link color1">Redis</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/feelings/walk-alone/" class="archive-article-date">
-  	<time datetime="2018-06-14T09:39:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-14</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/redis/redis-delay-queue/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          使用Redis实现延迟队列
+        
+      </div>
+    </a>
+  
+  
+    <a href="/ci-cd/build-a-private-docker-registry/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">搭建一个私有的Docker镜像仓库</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/feelings/walk-alone/">天地孤影，任我行</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Feelings</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Feelings//" class="article-tag-list-link color4">Feelings</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-前言"><span class="toc-number">1.</span> <span class="toc-text">1 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-加锁代码实现"><span class="toc-number">2.</span> <span class="toc-text">2 加锁代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-加锁代码——错误示例1"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 加锁代码——错误示例1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-加锁代码——错误示例2"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 加锁代码——错误示例2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-加锁代码——正确的姿势"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 加锁代码——正确的姿势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-解锁代码实现"><span class="toc-number">3.</span> <span class="toc-text">3 解锁代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-解锁代码——错误示例1"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 解锁代码——错误示例1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-解锁代码——错误示例2"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 解锁代码——错误示例2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-解锁代码——正确的姿势"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 解锁代码——正确的姿势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-结语"><span class="toc-number">4.</span> <span class="toc-text">4 结语</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/java/optimistic-and-pessimistic-locking/" class="archive-article-date">
-  	<time datetime="2018-06-13T01:10:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/java/optimistic-and-pessimistic-locking/">乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）</a>
-    </h1>
+        
+    </div>
+</aside>
+
+
+
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/java/how-to-use-wait-notify-notifyall/" class="archive-article-date">
-  	<time datetime="2018-06-09T02:33:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/java/how-to-use-wait-notify-notifyall/">【译】以生产者-消费者为例阐述何如在Java中正确地使用wait，notify和notifyAll</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Java//" class="article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
+  
+
+  <!--添加Valine评论-->
+  
+    <section id="comments" class="comments">
+      <style>
+        .comments{margin:30px;padding:10px;background:#fff}
+        @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+      </style>
+      <div id="vcomment" class="comment"></div>
+<script src="//cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script>
+<script src='/js/Valine.min.js'></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+   new Valine({
+            av: AV,
+            el: '#vcomment',
+            notify: notify,
+            verify: verify,
+            app_id: "N4ObDnfMx74nc2B4RST15FDu-gzGzoHsz",
+            app_key: "bnk1NP1rfgrTaW7MC9U0CkLx",
+            placeholder: "留言提示：留言时填写正确的邮箱可第一时间获得评论反馈哦🍀",
+            avatar: "retro",
+            avatar_cdn: "https://sdn.geekzu.org/avatar/retro",
+            pageSize: 15
+    });
+</script>
+
+    </section>
+  
 
 
           </div>
@@ -400,8 +376,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
