@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://biteeniu.github.io/redis/redis-distributed-lock/index.html">
 <meta property="og:site_name" content="BiteeNiu">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本文主要参考Redis分布式锁的正确实现方式（Java版）这篇文章。个人觉得这篇文对Redis分布式锁的用法理解挺到位的，所以对这篇文章所提到的技术点进行一个实践、验证，加深自己对分布式锁的认识。">
-<meta property="og:updated_time" content="2018-07-26T03:47:42.707Z">
+<meta property="og:updated_time" content="2018-07-26T03:57:42.492Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis分布式锁实践">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本文主要参考Redis分布式锁的正确实现方式（Java版）这篇文章。个人觉得这篇文对Redis分布式锁的用法理解挺到位的，所以对这篇文章所提到的技术点进行一个实践、验证，加深自己对分布式锁的认识。">
@@ -212,7 +212,7 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面的解锁代码使用了Redis的<code>EVAL</code>指令来运行<a href="http://www.lua.org/" target="_blank" rel="noopener">Lua脚本</a>：从Redis 2.6.0版本开始，通过内置的Lua解释器，可以使用<code>EVAL</code>命令对Lua脚本进行求值。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>说明一下（摘抄自<a href="http://redisdoc.com/script/eval.html#id2" target="_blank" rel="noopener">脚本的原子性</a>）：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Redis 使用单个 Lua 解释器去运行所有脚本，并且， Redis 也保证脚本会以原子性(atomic)的方式执行：当某个脚本正在运行的时候，不会有其他脚本或 Redis 命令被执行。这和使用 MULTI / EXEC 包围的事务很类似。在其他别的客户端看来，脚本的效果(effect)要么是不可见的(not visible)，要么就是已完成的(already completed)。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;另一方面，这也意味着，执行一个运行缓慢的脚本并不是一个好主意。写一个跑得很快很顺溜的脚本并不难，因为脚本的运行开销(overhead)非常少，但是当你不得不使用一些跑得比较慢的脚本时，请小心，因为当这些蜗牛脚本在慢吞吞地运行的时候，其他客户端会因为服务器正忙而无法执行命令。</strong></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这里<code>if redis.call(&#39;get&#39;, KEYS[1]) == ARGV[1] then return redis.call(&#39;del&#39;, KEYS[1]) else return 0 end</code>就是一个Lua脚本代码。在Lua中，可以使用<code>redis.call()</code>来执行Redis指令。我们将<code>key</code>赋值给<code>KEYS[1]</code>，将<code>clientId</code>赋值给<code>ARGV[1]</code>。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面脚本的意思是：先执行Redis的<code>GET</code>指令并将获取到的结果与<code>clientId</code>进行对比（判断锁是不是自己的），如果锁是自己的则进一步执行Redis的<code>DEL</code>指令删除锁并返回删除结果；如果锁不是自己的则直接返回0。这个脚本涉及到了两个Redis指令，两个指令的组合的原子性由Redis保证（上面已经说明）。</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在Redis中执行Lua脚本的简单用法可以参考这里：<a href="http://redisdoc.com/script/eval.html#eval" target="_blank" rel="noopener">EVAL</a>&nbsp;或这里：<a href="http://www.cnblogs.com/huangxincheng/p/6230129.html" target="_blank" rel="noopener">http://www.cnblogs.com/huangxincheng/p/6230129.html</a></p>
-<h2 id="4-结语"><a href="#4-结语" class="headerlink" title="4 结语"></a>4 结语</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面就说完了Redis分布式锁的实践过程，个人觉得除了锁的可重入性之外，另外一点比较难把握的就是锁的过期时间。</p>
+<h2 id="4-结语"><a href="#4-结语" class="headerlink" title="4 结语"></a>4 结语</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上面就说完了Redis分布式锁的实践过程，个人觉得除了锁的可重入性之外，另外一点比较难把握的就是锁的过期时间。使用缓存（Redis、Memcached、Tair）来实现分布式锁，性能会比较好；但是通过给锁设置失效时间来二次保证锁的可用性（保证锁最终一定会被释放）并不是非常靠谱。</p>
 <p><strong> <em>参考文章：</em> </strong></p>
 <ol>
 <li><a href="https://wudashan.cn/2017/10/23/Redis-Distributed-Lock-Implement/" target="_blank" rel="noopener">Redis分布式锁的正确实现方式（Java版）</a></li>
@@ -268,7 +268,7 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          使用Redis实现延迟队列
+          Redis实现延迟队列
         
       </div>
     </a>
@@ -464,15 +464,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Feelings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -488,11 +488,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+                <a href="javascript:void(0)" class="js-tag color4">RabbitMQ</a>
               </li>
              
               <li class="article-tag-list-item">
