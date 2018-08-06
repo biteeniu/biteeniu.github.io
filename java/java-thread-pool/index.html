@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteeniu.github.io">
-  <title>乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking） | BiteeNiu</title>
+  <title>Java线程池的使用——ThreadPoolExecutor | BiteeNiu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
+  <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在应用程序中恰当地使用线程池技术可以大大提升应用处理业务的效率。我们应该始终使用线程池来创建、管理线程，而不是在程序中显式地使用new Thread(Runnable)的方式">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）">
-<meta property="og:url" content="https://biteeniu.github.io/java/optimistic-and-pessimistic-locking/index.html">
+<meta property="og:title" content="Java线程池的使用——ThreadPoolExecutor">
+<meta property="og:url" content="https://biteeniu.github.io/java/java-thread-pool/index.html">
 <meta property="og:site_name" content="BiteeNiu">
-<meta property="og:description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
-<meta property="og:updated_time" content="2018-07-17T05:22:13.851Z">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在应用程序中恰当地使用线程池技术可以大大提升应用处理业务的效率。我们应该始终使用线程池来创建、管理线程，而不是在程序中显式地使用new Thread(Runnable)的方式">
+<meta property="og:updated_time" content="2018-08-06T09:02:43.561Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）">
-<meta name="twitter:description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
+<meta name="twitter:title" content="Java线程池的使用——ThreadPoolExecutor">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在应用程序中恰当地使用线程池技术可以大大提升应用处理业务的效率。我们应该始终使用线程池来创建、管理线程，而不是在程序中显式地使用new Thread(Runnable)的方式">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNiu" type="application/atom+xml">
   
@@ -169,21 +169,21 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-java/optimistic-and-pessimistic-locking" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-java/java-thread-pool" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）
+      Java线程池的使用——ThreadPoolExecutor
     </h1>
   
 
 
         
-        <a href="/java/optimistic-and-pessimistic-locking/" class="archive-article-date">
-  	<time datetime="2018-06-13T01:10:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-13</time>
+        <a href="/java/java-thread-pool/" class="archive-article-date">
+  	<time datetime="2018-08-06T12:11:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-06</time>
 </a>
         
       </header>
@@ -191,16 +191,35 @@
 
     <div class="article-entry" itemprop="articleBody">
       
-        <p>事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。<a id="more"></a></p>
-<p>举个<strong>火车票售票</strong>的栗子（不加并发控制的情况）：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有两个旅客<strong>同时</strong>使用手机售票APP购买同一趟列车的车票。两人同时下单购买，售票系统后台<strong>同时（并发）</strong>接收到两个购票请求<strong>（对应两个事务）</strong>，都会先查询余票，由于是并发请求，所以两次余票查询结果的相同，这里假设查询结果的余票数量为<code>20</code>；然后售票系统开始对这两个事务进行处理：分别将系统中的余票数量修改为<code>20-1=19</code>并写回数据库。<strong>这样一来，就导致了实际售出<code>2</code>张车票，但是售票系统中的余票数量却只减少了<code>1</code>张</strong>。这就是缺少并发控制带来的问题。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）是并发控制主要采用的两种技术手段。</strong></p>
-<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><p><strong>悲观锁（Pessimistic Locking）</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。也就是说，悲观锁对数据在并发的情况下被外界修改<br>悲观锁主要用于资源并发访问冲突激烈的情况<br><strong>乐观锁（Optimistic Locking）</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定不会发生并发冲突，只在提交操作时检查是否违反数据完整性。</p>
-<p>Transactional isolation is usually implemented by locking whatever is accessed in a transaction. There are two different approaches to transactional locking: Pessimistic locking and optimistic locking.<br>The disadvantage of pessimistic locking is that a resource is locked from the time it is first accessed in a transaction until the transaction is finished, making it inaccessible to other transactions during that time. If most transactions simply look at the resource and never change it, an exclusive lock may be overkill as it may cause lock contention, and optimistic locking may be a better approach. With pessimistic locking, locks are applied in a fail-safe way. In the banking application example, an account is locked as soon as it is accessed in a transaction. Attempts to use the account in other transactions while it is locked will either result in the other process being delayed until the account lock is released, or that the process transaction will be rolled back. The lock exists until the transaction has either been committed or rolled back.</p>
-<h2 id="Java中的悲观锁和乐观锁"><a href="#Java中的悲观锁和乐观锁" class="headerlink" title="Java中的悲观锁和乐观锁"></a>Java中的悲观锁和乐观锁</h2><p><strong> <em>参考文章：</em> </strong></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在应用程序中恰当地使用<strong>线程池技术</strong>可以大大提升应用处理业务的效率。我们应该始终使用线程池来创建、管理线程，而不是在程序中显式地使用<code>new Thread(Runnable)</code>的方式<a id="more"></a>来创建线程，因为使用线程池可以<strong>对线程进行统一管理：创建、销毁线程开销较大，线程池可以对线程池中的线程进行复用，无需反复创建和销毁线程。</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java中通用的创建线程池的类应该是<code>java.util.concurrent</code>包下面的<code>ThreadPoolExecutor</code>类；当然Java提供了<code>java.util.concurrent.Executors</code>工具类来帮助我们快速创建各种定义好的线程池，例如：</p>
 <ol>
-<li><a href="https://docs.jboss.org/jbossas/docs/Server_Configuration_Guide/4/html/TransactionJTA_Overview-Pessimistic_and_optimistic_locking.html" target="_blank" rel="noopener">Pessimistic and optimistic locking</a></li>
-<li><a href="https://zh.wikipedia.org/wiki/%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6" target="_blank" rel="noopener">维基百科-并发控制</a></li>
+<li><code>Executors.newFixedThreadPool(int nThreads)</code>——创建一个固定数量线程的线程池。</li>
+<li><code>Executors.newSingleThreadExecutor()</code>——创建一个只包含单个线程的线程池，可以保证所有任务按照指定顺序(FIFO，LIFO， 优先级)始终被<strong>同一个线程</strong>执行。</li>
+<li><code>Executors.newCachedThreadPool()</code>——创建一个可缓存的线程池，该线程池会根据任务的需要动态创建、回收线程。</li>
+<li><code>Executors.newScheduledThreadPool(int corePoolSize)</code>——创建一个具有定时功能的线程池，适用于执行定时任务。</li>
 </ol>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上四种定义好的线程池在某些场景确实很方便我们的使用，但是我们需要根据自己的使用场景，有所保留地使用它们，因为如果盲目使用可能会导致隐患，例如以下问题：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>FixedThreadPool</code>和<code>SingleThreadPool</code>所允许的任务队列最大长度为<code>Integer.MAX_VALUE</code>，这有可能会随着工作队列中的任务堆积而导致<code>OOM</code>；</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>CachedThreadPool</code>和<code>ScheduledThreadPool</code>所允许创建的线程数量为<code>Integer.MAX_VALUE</code>，这也有可能因为创建大量线程导致<code>OOM</code>或者线程切换开销巨大。</strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上四种线程池实际上是对<code>ThreadPoolExecutor</code>类进行了一个封装，我们最好能直接了解并使用<code>ThreadPoolExecutor</code>类来创建线程池，这样可以控制线程数量、工作队列大小以及自定义的饱和策略等。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>ThreadPoolExecutor</code>类的构造函数如下所示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                              TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                              BlockingQueue&lt;Runnable&gt; workQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">                              ThreadFactory threadFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">                              RejectedExecutionHandler handler)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (corePoolSize &lt; <span class="number">0</span> ||</span><br><span class="line">        maximumPoolSize &lt;= <span class="number">0</span> ||</span><br><span class="line">        maximumPoolSize &lt; corePoolSize ||</span><br><span class="line">        keepAliveTime &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">    <span class="keyword">if</span> (workQueue == <span class="keyword">null</span> || threadFactory == <span class="keyword">null</span> || handler == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">    <span class="keyword">this</span>.acc = System.getSecurityManager() == <span class="keyword">null</span> ? <span class="keyword">null</span> : AccessController.getContext();</span><br><span class="line">    <span class="keyword">this</span>.corePoolSize = corePoolSize;</span><br><span class="line">    <span class="keyword">this</span>.maximumPoolSize = maximumPoolSize;</span><br><span class="line">    <span class="keyword">this</span>.workQueue = workQueue;</span><br><span class="line">    <span class="keyword">this</span>.keepAliveTime = unit.toNanos(keepAliveTime);</span><br><span class="line">    <span class="keyword">this</span>.threadFactory = threadFactory;</span><br><span class="line">    <span class="keyword">this</span>.handler = handler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>构造函数的参数说明如下：</strong></p>
+<ol>
+<li><code>corePoolSize</code>——线程池中的核心线程数，一旦创建就会一直保留在线程池中（除非将<code>allowCoreThreadTimeout</code>参数设置成<code>true</code>）</li>
+<li><code>maximumPoolSize</code>——线程池中允许存活的最大线程数</li>
+<li><code>keepAliveTime</code>——当创建的线程数量<strong>超过了</strong>核心线程数，允许线程池中处于空闲状态的线程的最大存活时间</li>
+<li><code>unit</code>——<code>keepAliveTime</code>参数的单位</li>
+<li><code>workQueue</code>——工作队列，用于存放将被执行的线程任务（<code>Runnable tasks</code>）</li>
+<li><code>threadFactory</code>——创建线程的工厂，用于标记区分不同线程池所创建出来的线程</li>
+<li><code>handler</code>——当线程数或者工作队列达到上限时，线程池的饱和策略处理逻辑handler</li>
+</ol>
+<p><strong>线程池内部的处理逻辑：</strong></p>
+<ol>
+<li>当线程池中的线程数量<strong>小于</strong>核心线程数：新提交一个任务时，无论是否存在空闲的线程，线程池都将新建一个新的线程来执行新任务；</li>
+<li>当线程池中的线程数量<strong>大于或等于</strong>核心线程数：新提交的任务会被存储到<strong>工作队列</strong>中，等待空闲线程来执行，而不会创建新线程；</li>
+<li>当工作队列已满，并且线程数量小于<strong>最大线程数</strong>的时候，如果继续提交新的任务，线程池会创建新线程来处理任务；</li>
+<li>当工作队列已满，并且线程数量已达到最大值：继续提交新任务时，线程池会触发拒绝策略处理逻辑；</li>
+<li>当任务执行完，线程空闲超过<code>keepAliveTime</code>时间后，线程池会销毁处于空闲状态的线程，但是会保留<code>corePoolSize</code>个数的线程。</li>
+</ol>
+<p><strong>总结：</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新任务提交后，线程池会优先创建新的线程来处理，只有当<strong>非空闲的线程</strong>数量达到了<strong>核心线程数</strong>的时候，才会将后续提交的任务存储到工作队列中，直到工作队列积满并且在非空闲线程数小于最大线程数时，线程池又会创建新的线程来处理任务。<strong>最后当工作队列和非空闲线程都达到了上限，则触发拒绝策略逻辑。</strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;测试代码：<a href="https://github.com/biteeniu/java-base-example/tree/master/java-thread-pool" target="_blank" rel="noopener">java-thread-pool</a></p>
 
       
 
@@ -244,18 +263,9 @@
   
 <nav id="article-nav">
   
-    <a href="/feelings/walk-alone/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          天地孤影，任我行
-        
-      </div>
-    </a>
   
-  
-    <a href="/java/how-to-use-wait-notify-notifyall/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">【译】以生产者-消费者为例阐述何如在Java中正确地使用wait，notify和notifyAll</div>
+    <a href="/redis/redis-distributed-lock/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Redis分布式锁实践</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -282,7 +292,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关概念"><span class="toc-number">1.</span> <span class="toc-text">相关概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java中的悲观锁和乐观锁"><span class="toc-number">2.</span> <span class="toc-text">Java中的悲观锁和乐观锁</span></a></li></ol>
+                    目录，不存在的…
                     </div>
                 </span>
             </div>

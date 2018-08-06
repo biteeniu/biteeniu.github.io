@@ -6,19 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://biteeniu.github.io">
-  <title>乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking） | BiteeNiu</title>
+  <title>Archives: 2018/8 | BiteeNiu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
-<meta name="keywords" content="Java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）">
-<meta property="og:url" content="https://biteeniu.github.io/java/optimistic-and-pessimistic-locking/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="BiteeNiu">
+<meta property="og:url" content="https://biteeniu.github.io/archives/2018/08/index.html">
 <meta property="og:site_name" content="BiteeNiu">
-<meta property="og:description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
-<meta property="og:updated_time" content="2018-07-17T05:22:13.851Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）">
-<meta name="twitter:description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
+<meta name="twitter:title" content="BiteeNiu">
   
     <link rel="alternative" href="/atom.xml" title="BiteeNiu" type="application/atom+xml">
   
@@ -169,46 +164,36 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-java/optimistic-and-pessimistic-locking" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/java/java-thread-pool/" class="archive-article-date">
+  	<time datetime="2018-08-06T12:11:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-06</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/java/java-thread-pool/">Java线程池的使用——ThreadPoolExecutor</a>
     </h1>
   
 
-
-        
-        <a href="/java/optimistic-and-pessimistic-locking/" class="archive-article-date">
-  	<time datetime="2018-06-13T01:10:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-13</time>
-</a>
-        
-      </header>
-    
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。<a id="more"></a></p>
-<p>举个<strong>火车票售票</strong>的栗子（不加并发控制的情况）：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;有两个旅客<strong>同时</strong>使用手机售票APP购买同一趟列车的车票。两人同时下单购买，售票系统后台<strong>同时（并发）</strong>接收到两个购票请求<strong>（对应两个事务）</strong>，都会先查询余票，由于是并发请求，所以两次余票查询结果的相同，这里假设查询结果的余票数量为<code>20</code>；然后售票系统开始对这两个事务进行处理：分别将系统中的余票数量修改为<code>20-1=19</code>并写回数据库。<strong>这样一来，就导致了实际售出<code>2</code>张车票，但是售票系统中的余票数量却只减少了<code>1</code>张</strong>。这就是缺少并发控制带来的问题。</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）是并发控制主要采用的两种技术手段。</strong></p>
-<h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><p><strong>悲观锁（Pessimistic Locking）</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。也就是说，悲观锁对数据在并发的情况下被外界修改<br>悲观锁主要用于资源并发访问冲突激烈的情况<br><strong>乐观锁（Optimistic Locking）</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定不会发生并发冲突，只在提交操作时检查是否违反数据完整性。</p>
-<p>Transactional isolation is usually implemented by locking whatever is accessed in a transaction. There are two different approaches to transactional locking: Pessimistic locking and optimistic locking.<br>The disadvantage of pessimistic locking is that a resource is locked from the time it is first accessed in a transaction until the transaction is finished, making it inaccessible to other transactions during that time. If most transactions simply look at the resource and never change it, an exclusive lock may be overkill as it may cause lock contention, and optimistic locking may be a better approach. With pessimistic locking, locks are applied in a fail-safe way. In the banking application example, an account is locked as soon as it is accessed in a transaction. Attempts to use the account in other transactions while it is locked will either result in the other process being delayed until the account lock is released, or that the process transaction will be rolled back. The lock exists until the transaction has either been committed or rolled back.</p>
-<h2 id="Java中的悲观锁和乐观锁"><a href="#Java中的悲观锁和乐观锁" class="headerlink" title="Java中的悲观锁和乐观锁"></a>Java中的悲观锁和乐观锁</h2><p><strong> <em>参考文章：</em> </strong></p>
-<ol>
-<li><a href="https://docs.jboss.org/jbossas/docs/Server_Configuration_Guide/4/html/TransactionJTA_Overview-Pessimistic_and_optimistic_locking.html" target="_blank" rel="noopener">Pessimistic and optimistic locking</a></li>
-<li><a href="https://zh.wikipedia.org/wiki/%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6" target="_blank" rel="noopener">维基百科-并发控制</a></li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -220,7 +205,7 @@
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -233,78 +218,18 @@
 	</div>
 
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/feelings/walk-alone/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          天地孤影，任我行
-        
-      </div>
-    </a>
   
   
-    <a href="/java/how-to-use-wait-notify-notifyall/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">【译】以生产者-消费者为例阐述何如在Java中正确地使用wait，notify和notifyAll</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#相关概念"><span class="toc-number">1.</span> <span class="toc-text">相关概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java中的悲观锁和乐观锁"><span class="toc-number">2.</span> <span class="toc-text">Java中的悲观锁和乐观锁</span></a></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
-        
-    </div>
-</aside>
-
-
-
+    </div></section>
   
 
-  
+    
 
-  
-
-  
-
-  
-
-  <!--添加Valine评论-->
-  
 
 
           </div>
@@ -328,8 +253,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
