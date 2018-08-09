@@ -9,7 +9,7 @@
   <title>Jenkins+Git+Maven+Docker持续集成、部署实践 | BiteeNiu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Jenkins是基于Java开发的一个开源软件项目。Jenkins允许持续集成工具和持续交付项目，可以处理任何类型的构建或持续集成，例如我们可以使用Jenkins来对Maven开发的项目进行打包、部署等。">
-<meta name="keywords" content="Jenkins">
+<meta name="keywords" content="CI-CD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jenkins+Git+Maven+Docker持续集成、部署实践">
 <meta property="og:url" content="https://biteeniu.github.io/ci-cd/jenkins-ci/index.html">
@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://biteeniu.github.io/img/jenkins/maven-build-config.png">
 <meta property="og:image" content="https://biteeniu.github.io/img/jenkins/post-steps.png">
 <meta property="og:image" content="https://biteeniu.github.io/img/jenkins/deploy-over-ssh.png">
-<meta property="og:updated_time" content="2018-07-12T05:58:50.911Z">
+<meta property="og:updated_time" content="2018-08-08T03:02:10.731Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jenkins+Git+Maven+Docker持续集成、部署实践">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Jenkins是基于Java开发的一个开源软件项目。Jenkins允许持续集成工具和持续交付项目，可以处理任何类型的构建或持续集成，例如我们可以使用Jenkins来对Maven开发的项目进行打包、部署等。">
@@ -81,6 +81,10 @@
 				<li><a href="/tags/nginx">Nginx</a></li>
 	        
 				<li><a href="/tags/SSL">SSL/TLS</a></li>
+	        
+				<li><a href="/tags/TCP">TCP</a></li>
+	        
+				<li><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 	        
 			</ul>
 		</nav>
@@ -141,6 +145,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -153,19 +161,23 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/tags/Feelings">Feelings</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/nginx">Nginx</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/nginx">Nginx</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SSL">SSL/TLS</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SSL">SSL/TLS</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/TCP">TCP</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 		        
 				</ul>
 			</nav>
@@ -231,13 +243,16 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>注意：在构建项目之前，我们需要事先登录我们的远程主机，编辑好服务部署的<code>docker-compose.yml</code>文件：</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">'2'</span></span><br><span class="line">services:</span><br><span class="line">  rabbitmq-delay-queue:</span><br><span class="line">    image: 10.200.0.206:5000/rabbitmq-delay-queue:1.0</span><br><span class="line">    container_name: rabbitmq-delay-queue</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;然后，我们再次点击【<strong>构建</strong>】，重新构建我们的项目。这时候，当Docker镜像制作完毕并推送到私有仓库后，Jenkins会通过SSH登录我们指定的远程主机，执行部署指令！</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>以上，我们就完成了一次<code>Jenkins + Git + Maven + Docker</code>的持续集成、部署实践。</strong></p>
-<p><strong> <em>参考文章：</em> </strong></p>
+<p><br><br></p>
+<blockquote>
+<p><strong> <em>——————–【参考文章】——————–</em> </strong></p>
 <ol>
 <li><a href="https://jenkins.io/doc/book/installing/" target="_blank" rel="noopener">Installing Jenkins</a></li>
 <li><a href="https://blog.csdn.net/xichenguan/article/details/78976870" target="_blank" rel="noopener">Jenkins with Docker</a></li>
 <li><a href="https://docs.docker.com/edge/engine/reference/commandline/dockerd/" target="_blank" rel="noopener">dockerd</a></li>
 <li><a href="https://ystyle.top/2016/04/16/docker-jenkins-git-mavenzi-dong-hua-gou-jian-yu-bu-shu/" target="_blank" rel="noopener">docker + jenkins + git + maven自动化构建与部署</a></li>
 </ol>
+</blockquote>
 
       
 
@@ -251,7 +266,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Jenkins</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">CI-CD</a>
         		</li>
       		
 		</ul>
@@ -449,11 +464,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color1">CI-CD</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -481,15 +492,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">SSL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
               </li>
             
             <div class="clearfix"></div>

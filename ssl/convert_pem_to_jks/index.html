@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://biteeniu.github.io/ssl/convert_pem_to_jks/index.html">
 <meta property="og:site_name" content="BiteeNiu">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在使用SSL/TLS进行通信的时候，经常需要加载OpenSSL生成的PEM格式证书。由于Java的JDK不支持直接加载PEM格式的证书，所以需要将PEM格式证书转换成Java能够直接加载的JKS格式证书。">
-<meta property="og:updated_time" content="2018-07-02T08:24:45.679Z">
+<meta property="og:updated_time" content="2018-08-08T03:05:36.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何将PEM证书转换成JKS证书">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在使用SSL/TLS进行通信的时候，经常需要加载OpenSSL生成的PEM格式证书。由于Java的JDK不支持直接加载PEM格式的证书，所以需要将PEM格式证书转换成Java能够直接加载的JKS格式证书。">
@@ -70,6 +70,10 @@
 				<li><a href="/tags/nginx">Nginx</a></li>
 	        
 				<li><a href="/tags/SSL">SSL/TLS</a></li>
+	        
+				<li><a href="/tags/TCP">TCP</a></li>
+	        
+				<li><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 	        
 			</ul>
 		</nav>
@@ -130,6 +134,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -142,19 +150,23 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/tags/Feelings">Feelings</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/nginx">Nginx</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/nginx">Nginx</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SSL">SSL/TLS</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SSL">SSL/TLS</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/TCP">TCP</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 		        
 				</ul>
 			</nav>
@@ -205,12 +217,15 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上，就成功将<code>cert.pem</code>和<code>cert.key.pem</code>证书文件和证书的密钥文件转换成<code>JKS</code>格式的证书<code>keystore.jks</code></p>
 <h2 id="2-导出Truststore证书"><a href="#2-导出Truststore证书" class="headerlink" title="2 导出Truststore证书"></a>2 导出Truststore证书</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;接下来，我们使用<code>keytool</code>工具将根证书<code>ca.cert.pem</code>转换成<code>JKS</code>格式的<code>truststore.jks</code>文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">keytool -import -file ca.cert.pem -keystore truststore.jks</span><br><span class="line">Enter keystore password:  </span><br><span class="line">Re-enter new password: </span><br><span class="line">  这里省略输出的信息 ....</span><br><span class="line">Trust this certificate? [no]:  yes</span><br><span class="line">Certificate was added to keystore</span><br></pre></td></tr></table></figure></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>Enter keystore password:</code>为导出的<code>truststore.jks</code>设置密码；<code>Trust this certificate? [no]:</code>输入<code>yes</code>即可。</strong></p>
-<p><strong> <em>参考文章：</em> </strong></p>
+<p><br><br></p>
+<blockquote>
+<p><strong> <em>——————–【参考文章】——————–</em> </strong></p>
 <ol>
 <li><a href="http://roopindersingh.com/programming/converting-pem-certificates-and-private-keys-to-jks/" target="_blank" rel="noopener">Converting PEM certificates and private keys to JKS</a></li>
 <li><a href="https://pa55word.wordpress.com/2009/01/21/how-to-get-your-java-keystoretruststore-from-pem-files/" target="_blank" rel="noopener">How to get your java keystore/truststore from pem files</a></li>
 <li><a href="https://blog.codecentric.de/en/2013/01/how-to-use-self-signed-pem-client-certificates-in-java/" target="_blank" rel="noopener">How to use self-signed PEM client certificates in Java</a></li>
 </ol>
+</blockquote>
 
       
 
@@ -422,11 +437,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color1">CI-CD</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -454,15 +465,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">SSL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
               </li>
             
             <div class="clearfix"></div>

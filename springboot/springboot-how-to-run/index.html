@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://biteeniu.github.io/springboot/springboot-how-to-run/index.html">
 <meta property="og:site_name" content="BiteeNiu">
 <meta property="og:description" content="1 直接从IDE中运行通常开发过程中，我们需要从IDE中启动SpringBoot应用。这时候我们可以定义一个启动类，比如Launcher.java，此类包含一个启动方法public static void main(String[] args)；并在启动类Launcher.java上添加注解@SpringBootApplication。">
-<meta property="og:updated_time" content="2018-06-14T01:32:46.769Z">
+<meta property="og:updated_time" content="2018-08-08T03:05:36.028Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="启动SpringBoot应用的几种方式">
 <meta name="twitter:description" content="1 直接从IDE中运行通常开发过程中，我们需要从IDE中启动SpringBoot应用。这时候我们可以定义一个启动类，比如Launcher.java，此类包含一个启动方法public static void main(String[] args)；并在启动类Launcher.java上添加注解@SpringBootApplication。">
@@ -70,6 +70,10 @@
 				<li><a href="/tags/nginx">Nginx</a></li>
 	        
 				<li><a href="/tags/SSL">SSL/TLS</a></li>
+	        
+				<li><a href="/tags/TCP">TCP</a></li>
+	        
+				<li><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 	        
 			</ul>
 		</nav>
@@ -130,6 +134,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -142,19 +150,23 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/tags/Feelings">Feelings</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/nginx">Nginx</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/nginx">Nginx</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SSL">SSL/TLS</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SSL">SSL/TLS</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/TCP">TCP</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 		        
 				</ul>
 			</nav>
@@ -206,11 +218,14 @@
 <h3 id="步骤2：-注册Servlet启动类"><a href="#步骤2：-注册Servlet启动类" class="headerlink" title="步骤2： 注册Servlet启动类"></a>步骤2： 注册Servlet启动类</h3><p>更新完pom.xml文件后，我们需要创建一个Servlet启动类<code>ServletInitializer.java</code>，继承自<code>SpringBootServletInitializer.java</code>类，外部WEB容器会调用此类。<br><strong><code>Application.java</code>为我们包含main方法的启动类。</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.biteenew.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.builder.SpringApplicationBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.web.support.SpringBootServletInitializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletInitializer</span> <span class="keyword">extends</span> <span class="title">SpringBootServletInitializer</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> SpringApplicationBuilder <span class="title">configure</span><span class="params">(SpringApplicationBuilder builder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> builder.sources(Application.class);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>完成上述两个步骤，我们就可以使用Maven对SpringBoot应用进行打包：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip=<span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
 <p>打包完毕后，在target文件夹中就会生成我们应用程序的WAR包。最后我们将WAR包拷贝到外部Tomcat服务器目录中，启动Tomcat即可。</p>
-<p><strong> <em>参考文章：</em> </strong></p>
+<p><br><br></p>
+<blockquote>
+<p><strong> <em>——————–【参考文章】——————–</em> </strong></p>
 <ol>
 <li><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-running-your-application.html" target="_blank" rel="noopener">Running Your Application</a></li>
 <li><a href="https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#howto-create-a-deployable-war-file" target="_blank" rel="noopener">Packaging executable jar and war files</a></li>
 </ol>
+</blockquote>
 
       
 
@@ -422,11 +437,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color1">CI-CD</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -454,15 +465,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">SSL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
               </li>
             
             <div class="clearfix"></div>

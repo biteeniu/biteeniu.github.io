@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://biteeniu.github.io/java/optimistic-and-pessimistic-locking/index.html">
 <meta property="og:site_name" content="BiteeNiu">
 <meta property="og:description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
-<meta property="og:updated_time" content="2018-07-17T05:22:13.851Z">
+<meta property="og:updated_time" content="2018-08-08T03:00:46.261Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）">
 <meta name="twitter:description" content="事务隔离通常是通过给事务中访问的资源加锁来实现的。在多用户并发读写同一个数据资源的情况下如果不加任何控制，资源的统一性将会被破坏。">
@@ -70,6 +70,10 @@
 				<li><a href="/tags/nginx">Nginx</a></li>
 	        
 				<li><a href="/tags/SSL">SSL/TLS</a></li>
+	        
+				<li><a href="/tags/TCP">TCP</a></li>
+	        
+				<li><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 	        
 			</ul>
 		</nav>
@@ -130,6 +134,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -142,19 +150,23 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/tags/Feelings">Feelings</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/nginx">Nginx</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/nginx">Nginx</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SSL">SSL/TLS</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SSL">SSL/TLS</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/TCP">TCP</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 		        
 				</ul>
 			</nav>
@@ -196,11 +208,14 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>乐观锁（Optimistic Locking）和悲观锁（Pessimistic Locking）是并发控制主要采用的两种技术手段。</strong></p>
 <h2 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h2><p><strong>悲观锁（Pessimistic Locking）</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定会发生并发冲突，屏蔽一切可能违反数据完整性的操作。也就是说，悲观锁对数据在并发的情况下被外界修改<br>悲观锁主要用于资源并发访问冲突激烈的情况<br><strong>乐观锁（Optimistic Locking）</strong><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;悲观锁假定不会发生并发冲突，只在提交操作时检查是否违反数据完整性。</p>
 <p>Transactional isolation is usually implemented by locking whatever is accessed in a transaction. There are two different approaches to transactional locking: Pessimistic locking and optimistic locking.<br>The disadvantage of pessimistic locking is that a resource is locked from the time it is first accessed in a transaction until the transaction is finished, making it inaccessible to other transactions during that time. If most transactions simply look at the resource and never change it, an exclusive lock may be overkill as it may cause lock contention, and optimistic locking may be a better approach. With pessimistic locking, locks are applied in a fail-safe way. In the banking application example, an account is locked as soon as it is accessed in a transaction. Attempts to use the account in other transactions while it is locked will either result in the other process being delayed until the account lock is released, or that the process transaction will be rolled back. The lock exists until the transaction has either been committed or rolled back.</p>
-<h2 id="Java中的悲观锁和乐观锁"><a href="#Java中的悲观锁和乐观锁" class="headerlink" title="Java中的悲观锁和乐观锁"></a>Java中的悲观锁和乐观锁</h2><p><strong> <em>参考文章：</em> </strong></p>
+<h2 id="Java中的悲观锁和乐观锁"><a href="#Java中的悲观锁和乐观锁" class="headerlink" title="Java中的悲观锁和乐观锁"></a>Java中的悲观锁和乐观锁</h2><p><br><br></p>
+<blockquote>
+<p><strong> <em>——————–【参考文章】——————–</em> </strong></p>
 <ol>
 <li><a href="https://docs.jboss.org/jbossas/docs/Server_Configuration_Guide/4/html/TransactionJTA_Overview-Pessimistic_and_optimistic_locking.html" target="_blank" rel="noopener">Pessimistic and optimistic locking</a></li>
 <li><a href="https://zh.wikipedia.org/wiki/%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6" target="_blank" rel="noopener">维基百科-并发控制</a></li>
 </ol>
+</blockquote>
 
       
 
@@ -412,11 +427,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color1">CI-CD</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -444,15 +455,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">SSL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
               </li>
             
             <div class="clearfix"></div>

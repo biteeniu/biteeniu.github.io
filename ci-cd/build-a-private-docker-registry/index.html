@@ -9,14 +9,14 @@
   <title>搭建一个私有的Docker镜像仓库 | BiteeNiu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一般情况下，我们需要使用Docker镜像的时候，我们会去公共的镜像仓库，比如Docker Hub搜索并拉取到我们本地机器。但是实际开发中，公司内部通常都会自己搭建一个私有的Docker镜像仓库，用于存放公司内部开发的一些服务镜像，这些镜像是私有的，没经过授权的其他第三方机构或者个人开发者是没办法访问到的。">
-<meta name="keywords" content="Docker">
+<meta name="keywords" content="CI-CD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建一个私有的Docker镜像仓库">
 <meta property="og:url" content="https://biteeniu.github.io/ci-cd/build-a-private-docker-registry/index.html">
 <meta property="og:site_name" content="BiteeNiu">
 <meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一般情况下，我们需要使用Docker镜像的时候，我们会去公共的镜像仓库，比如Docker Hub搜索并拉取到我们本地机器。但是实际开发中，公司内部通常都会自己搭建一个私有的Docker镜像仓库，用于存放公司内部开发的一些服务镜像，这些镜像是私有的，没经过授权的其他第三方机构或者个人开发者是没办法访问到的。">
 <meta property="og:image" content="https://biteeniu.github.io/img/docker/basic-auth-ui.png">
-<meta property="og:updated_time" content="2018-07-17T06:47:50.966Z">
+<meta property="og:updated_time" content="2018-08-08T03:01:52.319Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建一个私有的Docker镜像仓库">
 <meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;一般情况下，我们需要使用Docker镜像的时候，我们会去公共的镜像仓库，比如Docker Hub搜索并拉取到我们本地机器。但是实际开发中，公司内部通常都会自己搭建一个私有的Docker镜像仓库，用于存放公司内部开发的一些服务镜像，这些镜像是私有的，没经过授权的其他第三方机构或者个人开发者是没办法访问到的。">
@@ -72,6 +72,10 @@
 				<li><a href="/tags/nginx">Nginx</a></li>
 	        
 				<li><a href="/tags/SSL">SSL/TLS</a></li>
+	        
+				<li><a href="/tags/TCP">TCP</a></li>
+	        
+				<li><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 	        
 			</ul>
 		</nav>
@@ -132,6 +136,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -144,19 +152,23 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/tags/Feelings">Feelings</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Feelings">Feelings</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/Java">Java</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/Java">Java</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SpringBoot">Spring-Boot</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/MQTT">MQTT</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/MQTT">MQTT</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/RabbitMQ">RabbitMQ</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/nginx">Nginx</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/nginx">Nginx</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/tags/SSL">SSL/TLS</a></li>
+					<li style="width: 11.11111111111111%"><a href="/tags/SSL">SSL/TLS</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/TCP">TCP</a></li>
+		        
+					<li style="width: 11.11111111111111%"><a href="/tags/CI-CD">Docker-CI/CD</a></li>
 		        
 				</ul>
 			</nav>
@@ -215,11 +227,14 @@
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>注明：当我们使用<code>docker login</code>指令登录私有仓库后，Docker会为我们保存用户名密码（默认存放在用户home目录下的.docker文件夹下：<code>~/.docker/config.json</code>），这样就不需要我们每次push或pull镜像的时候都<code>docker login</code>一下输入账号密码。</strong></p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;此时，我们再通过浏览器打开链接：<a href="http://10.200.0.206:5000/v2/_catalog" target="_blank" rel="noopener">http://10.200.0.206:5000/v2/_catalog</a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来查看仓库中的镜像，会提示我们输入用户名密码：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/img/docker/basic-auth-ui.png" alt="basic-auth-ui"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;或者使用curl指定用户名密码进行访问：<code>curl -u test:123456 http://10.200.0.206:5000/v2/_catalog</code></p>
 <p><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;以上就是Docker私有镜像仓库的基本搭建过程，本文只用到了基本的用户名密码认证，更高级的例如HTTPS的配置请参考官方的文档！</strong></p>
-<p><strong> <em>参考文章：</em> </strong></p>
+<p><br><br></p>
+<blockquote>
+<p><strong> <em>——————–【参考文章】——————–</em> </strong></p>
 <ol>
 <li><a href="https://docs.docker.com/registry" target="_blank" rel="noopener">Docker Registry</a></li>
 <li><a href="https://docs.docker.com/registry/insecure" target="_blank" rel="noopener">Deploy a plain HTTP registry</a></li>
 </ol>
+</blockquote>
 
       
 
@@ -233,7 +248,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Docker</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">CI-CD</a>
         		</li>
       		
 		</ul>
@@ -431,11 +446,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Jenkins</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color1">CI-CD</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -463,15 +474,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">SSL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">TCP</a>
               </li>
             
             <div class="clearfix"></div>
